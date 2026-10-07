@@ -1,7 +1,7 @@
 <?php
 $phone = (string) setting('contact_phone', '(11) 98223-1363');
 $whats = preg_replace('/\D+/', '', (string) setting('whatsapp_number', '5511982231363'));
-$instagram = ltrim((string) setting('instagram', 'dmrassessoriaoficial'), '@');
+$instagram = ltrim((string) setting('instagram', 'dmrassessoria'), '@');
 $email = (string) setting('contact_email', 'contato@dmrassessoria.com.br');
 $year = date('Y');
 ?>

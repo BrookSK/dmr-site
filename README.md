@@ -252,7 +252,7 @@ Conforme o briefing, **nenhum dado foi inventado**. Os pontos abaixo foram deixa
 ## 14. Credenciais e dados de contato padrão (ajustáveis no painel)
 
 - **WhatsApp / Telefone:** (11) 98223-1363 — `5511982231363`
-- **Instagram:** @dmrassessoriaoficial
+- **Instagram:** @dmrassessoria
 - **Website:** www.dmrassessoria.com.br
 
 Todos esses valores podem ser alterados em **Configurações → Geral**.

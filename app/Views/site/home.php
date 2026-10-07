@@ -418,7 +418,7 @@ $waLink = static fn (string $msg): string =>
             </p>
             <ul class="cta__contacts">
                 <li><a href="https://wa.me/<?= e($whats) ?>" target="_blank" rel="noopener"><strong>WhatsApp:</strong> <?= e($phone) ?></a></li>
-                <li><a href="https://instagram.com/<?= e(ltrim((string) setting('instagram','dmrassessoriaoficial'),'@')) ?>" target="_blank" rel="noopener"><strong>Instagram:</strong> @<?= e(ltrim((string) setting('instagram','dmrassessoriaoficial'),'@')) ?></a></li>
+                <li><a href="https://instagram.com/<?= e(ltrim((string) setting('instagram','dmrassessoria'),'@')) ?>" target="_blank" rel="noopener"><strong>Instagram:</strong> @<?= e(ltrim((string) setting('instagram','dmrassessoria'),'@')) ?></a></li>
             </ul>
         </div>
 
