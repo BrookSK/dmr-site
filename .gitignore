@@ -1,5 +1,5 @@
 # Configuração local de conexão com o banco (copie de config/config.example.php)
-/config/config.php
+# /config/config.php
 
 # Dependências
 /vendor/
