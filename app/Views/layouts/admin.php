@@ -27,24 +27,24 @@ $isActive = static fn (string $prefix): string =>
         </div>
         <nav class="admin-nav" aria-label="Navegação principal">
             <a class="admin-nav__link<?= $isActive('/admin') === ' is-active' && ($current === 'admin') ? ' is-active' : '' ?>" href="<?= e(base_url('admin')) ?>">
-                <span class="admin-nav__ico">▦</span> Dashboard
+                <span class="admin-nav__ico"><?= icon('dashboard', 20) ?></span> Dashboard
             </a>
             <?php if (AuthService::can('users.manage')): ?>
             <a class="admin-nav__link<?= $isActive('/admin/usuarios') ?>" href="<?= e(base_url('admin/usuarios')) ?>">
-                <span class="admin-nav__ico">◍</span> Usuários
+                <span class="admin-nav__ico"><?= icon('usuarios', 20) ?></span> Usuários
             </a>
             <?php endif; ?>
             <?php if (AuthService::can('settings.manage')): ?>
             <a class="admin-nav__link<?= $isActive('/admin/configuracoes') ?>" href="<?= e(base_url('admin/configuracoes')) ?>">
-                <span class="admin-nav__ico">⚙</span> Configurações
+                <span class="admin-nav__ico"><?= icon('config', 20) ?></span> Configurações
             </a>
             <?php endif; ?>
             <a class="admin-nav__link<?= $isActive('/admin/perfil') ?>" href="<?= e(base_url('admin/perfil')) ?>">
-                <span class="admin-nav__ico">◉</span> Minha conta
+                <span class="admin-nav__ico"><?= icon('perfil', 20) ?></span> Minha conta
             </a>
         </nav>
         <div class="admin-sidebar__foot">
-            <a class="admin-nav__link" href="<?= e(base_url('')) ?>" target="_blank" rel="noopener">↗ Ver o site</a>
+            <a class="admin-nav__link" href="<?= e(base_url('')) ?>" target="_blank" rel="noopener"><span class="admin-nav__ico"><?= icon('externo', 20) ?></span> Ver o site</a>
         </div>
     </aside>
 

@@ -64,10 +64,13 @@ $waLink = static fn (string $msg): string =>
             <span class="stat__num">100 mil+</span>
             <span class="stat__label">unidades viabilizadas em repasses</span>
         </div>
-        <!-- Placeholder: valor em negócios gerados ainda não fornecido oficialmente. -->
-        <div class="stat stat--placeholder reveal" data-placeholder="valor-negocios">
-            <span class="stat__num">—</span>
-            <span class="stat__label">em negócios viabilizados <small>(dado a confirmar)</small></span>
+        <div class="stat reveal">
+            <span class="stat__num">6</span>
+            <span class="stat__label">bancos parceiros, públicos e privados</span>
+        </div>
+        <div class="stat reveal">
+            <span class="stat__num">100%</span>
+            <span class="stat__label">do processo acompanhado, do início à entrega das chaves</span>
         </div>
     </div>
 </section>
@@ -214,32 +217,32 @@ $waLink = static fn (string $msg): string =>
 
         <div class="services-grid reveal">
             <article class="service">
-                <span class="service__ico" aria-hidden="true">◈</span>
+                <span class="service__ico"><?= icon('credito') ?></span>
                 <h3>Crédito Imobiliário</h3>
                 <p>Estruturação e acompanhamento do financiamento, da simulação à contratação.</p>
             </article>
             <article class="service">
-                <span class="service__ico" aria-hidden="true">◷</span>
+                <span class="service__ico"><?= icon('analise') ?></span>
                 <h3>Análise de Crédito e Risco</h3>
                 <p>Avaliação do perfil do comprador para entender a capacidade de financiamento e a probabilidade de aprovação.</p>
             </article>
             <article class="service">
-                <span class="service__ico" aria-hidden="true">§</span>
+                <span class="service__ico"><?= icon('juridico') ?></span>
                 <h3>Análise Jurídica</h3>
                 <p>Conferência da documentação e das condições jurídicas que envolvem a operação.</p>
             </article>
             <article class="service">
-                <span class="service__ico" aria-hidden="true">⌂</span>
+                <span class="service__ico"><?= icon('assessoria') ?></span>
                 <h3>Assessoria Imobiliária</h3>
                 <p>Suporte às partes envolvidas na negociação e condução do processo até a conclusão.</p>
             </article>
             <article class="service">
-                <span class="service__ico" aria-hidden="true">₣</span>
+                <span class="service__ico"><?= icon('fgts') ?></span>
                 <h3>Saque de FGTS</h3>
                 <p>Apoio na utilização do FGTS dentro das regras aplicáveis à aquisição do imóvel.</p>
             </article>
             <article class="service">
-                <span class="service__ico" aria-hidden="true">▦</span>
+                <span class="service__ico"><?= icon('repasse') ?></span>
                 <h3>Secretaria de Vendas e Repasse</h3>
                 <p>Organização do fluxo de repasse entre cliente, banco e construtora, incluindo certidões necessárias.</p>
             </article>
@@ -440,12 +443,12 @@ $waLink = static fn (string $msg): string =>
                 <p>Um histórico de repasses conduzidos até a entrega das chaves.</p>
             </article>
             <article class="trust-card">
-                <span class="trust-card__num" aria-hidden="true">◷</span>
+                <span class="trust-card__ico"><?= icon('acompanhamento', 30) ?></span>
                 <h3>Acompanhamento de ponta a ponta</h3>
                 <p>Da análise inicial ao registro, sem deixar o cliente sozinho na burocracia.</p>
             </article>
             <article class="trust-card">
-                <span class="trust-card__num" aria-hidden="true">⌂</span>
+                <span class="trust-card__ico"><?= icon('bancos', 30) ?></span>
                 <h3>Parcerias com grandes bancos</h3>
                 <p>Correspondente bancário e parceiro de instituições públicas e privadas.</p>
             </article>

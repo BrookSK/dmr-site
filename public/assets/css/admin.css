@@ -68,7 +68,8 @@ a { color: var(--brown); }
 }
 .admin-nav__link:hover { background: rgba(255,255,255,.06); }
 .admin-nav__link.is-active { background: var(--brown); color: #fff; }
-.admin-nav__ico { width: 18px; text-align: center; opacity: .85; }
+.admin-nav__ico { width: 20px; height: 20px; display: inline-grid; place-items: center; opacity: .9; }
+.admin-nav__ico .ico { width: 18px; height: 18px; display: block; }
 
 .admin-sidebar__foot { padding: 14px 10px; border-top: 1px solid rgba(255,255,255,.08); }
 
@@ -179,7 +180,8 @@ a { color: var(--brown); }
 .shortcuts { display: grid; gap: 10px; }
 .shortcut { display: flex; align-items: center; gap: 12px; padding: 13px 15px; border: 1px solid var(--line); border-radius: 10px; text-decoration: none; color: var(--ink); transition: all .18s; }
 .shortcut:hover { border-color: var(--brown); background: #fdfcfa; }
-.shortcut__ico { width: 26px; height: 26px; display: grid; place-items: center; background: var(--cream); color: var(--brown); border-radius: 7px; }
+.shortcut__ico { width: 34px; height: 34px; display: grid; place-items: center; background: var(--cream); color: var(--brown); border-radius: 8px; flex: 0 0 auto; }
+.shortcut__ico .ico { width: 19px; height: 19px; display: block; }
 
 /* --- Tabs ----------------------------------------------------------------- */
 .tabs__nav { display: flex; gap: 4px; border-bottom: 1px solid var(--line); margin-bottom: 22px; }

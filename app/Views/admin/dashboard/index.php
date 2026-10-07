@@ -73,22 +73,22 @@
         <div class="shortcuts">
             <?php if ($canManageUsers): ?>
                 <a class="shortcut" href="<?= e(base_url('admin/usuarios')) ?>">
-                    <span class="shortcut__ico">◍</span>
+                    <span class="shortcut__ico"><?= icon('usuarios', 20) ?></span>
                     <span>Gerenciar usuários</span>
                 </a>
             <?php endif; ?>
             <?php if ($canManageSettings): ?>
                 <a class="shortcut" href="<?= e(base_url('admin/configuracoes')) ?>">
-                    <span class="shortcut__ico">⚙</span>
+                    <span class="shortcut__ico"><?= icon('config', 20) ?></span>
                     <span>Configurações e SMTP</span>
                 </a>
             <?php endif; ?>
             <a class="shortcut" href="<?= e(base_url('admin/perfil')) ?>">
-                <span class="shortcut__ico">◉</span>
+                <span class="shortcut__ico"><?= icon('perfil', 20) ?></span>
                 <span>Alterar minha senha</span>
             </a>
             <a class="shortcut" href="<?= e(base_url('')) ?>" target="_blank" rel="noopener">
-                <span class="shortcut__ico">↗</span>
+                <span class="shortcut__ico"><?= icon('externo', 20) ?></span>
                 <span>Visualizar o site</span>
             </a>
         </div>

@@ -139,12 +139,11 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 
 /* --- Stats ---------------------------------------------------------------- */
 .stats { background: var(--black); color: #fff; padding: 54px 0; }
-.stats__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; text-align: center; }
+.stats__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; text-align: center; }
 .stat { display: flex; flex-direction: column; gap: 8px; }
 .stat__num { font-family: 'Fraunces', serif; font-size: clamp(2.2rem, 1.4rem + 2.6vw, 3.4rem); color: var(--gold); }
 .stat__label { color: rgba(255,255,255,.7); font-size: 15px; }
 .stat__label small { display: block; color: rgba(255,255,255,.4); font-size: 12px; margin-top: 2px; }
-.stat--placeholder .stat__num { color: rgba(255,255,255,.3); }
 
 /* --- About / split -------------------------------------------------------- */
 .about { display: grid; grid-template-columns: 1.3fr 1fr; gap: 60px; align-items: center; }
@@ -176,7 +175,10 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 22px; }
 .service { padding: 30px; border: 1px solid var(--line); border-radius: var(--radius); background: #fff; transition: transform .3s var(--ease), border-color .3s, box-shadow .3s; }
 .service:hover { transform: translateY(-4px); border-color: var(--gold); box-shadow: 0 16px 40px rgba(33,29,25,.07); }
-.service__ico { display: inline-grid; place-items: center; width: 46px; height: 46px; border-radius: 12px; background: var(--cream); color: var(--brown); font-size: 1.4rem; margin-bottom: 14px; }
+.service__ico { display: inline-grid; place-items: center; width: 52px; height: 52px; border-radius: 14px; background: var(--cream); color: var(--brown); margin-bottom: 16px; }
+.service__ico .ico { width: 26px; height: 26px; }
+/* Ícone SVG padrão: herda a cor do container (currentColor) */
+.ico { display: block; }
 .service h3 { font-size: 1.25rem; margin: 0 0 8px; }
 .service p { color: var(--muted); margin: 0; font-size: .98rem; }
 
@@ -236,6 +238,9 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .trust-card { padding: 32px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius); transition: transform .3s var(--ease), border-color .3s; }
 .trust-card:hover { transform: translateY(-4px); border-color: var(--gold); }
 .trust-card__num { display: block; font-family: 'Fraunces', serif; font-size: 2.4rem; color: var(--gold); line-height: 1; margin-bottom: 14px; }
+/* Para os cards com ícone (em vez de número), um badge alinhado à mesma altura */
+.trust-card__ico { display: inline-grid; place-items: center; width: 52px; height: 52px; border-radius: 14px; background: rgba(203,174,108,.14); color: var(--gold-deep); margin-bottom: 14px; }
+.trust-card__ico .ico { width: 28px; height: 28px; }
 .trust-card h3 { font-size: 1.2rem; margin: 0 0 8px; }
 .trust-card p { color: var(--muted); margin: 0; font-size: .96rem; }
 
@@ -339,6 +344,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
     .value-grid { grid-template-columns: repeat(2, 1fr); }
     .services-grid { grid-template-columns: repeat(2, 1fr); }
     .trust-grid { grid-template-columns: repeat(2, 1fr); }
+    .stats__grid { grid-template-columns: repeat(2, 1fr); gap: 28px; }
     .mvv__grid { grid-template-columns: 1fr; }
     .compare { grid-template-columns: 1fr; }
 }
@@ -419,7 +425,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
     .journey { grid-template-columns: 1fr; }
     .trust-grid { grid-template-columns: 1fr; }
     .banks { grid-template-columns: 1fr 1fr; }
-    .stats__grid { grid-template-columns: 1fr; gap: 24px; }
+    .stats__grid { grid-template-columns: repeat(2, 1fr); gap: 28px 18px; }
     .site-footer__grid { grid-template-columns: 1fr 1fr; }
     .cta__form { padding: 28px 22px; }
     .hero__inner { padding: 120px 24px 90px; }
