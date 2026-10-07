@@ -20,37 +20,39 @@
 
     // Menu mobile.
     if (toggle && nav) {
+        function openMenu() {
+            nav.classList.add('is-open');
+            toggle.classList.add('is-active');
+            toggle.setAttribute('aria-expanded', 'true');
+            document.body.classList.add('nav-open');
+        }
+        function closeMenu() {
+            nav.classList.remove('is-open');
+            toggle.classList.remove('is-active');
+            toggle.setAttribute('aria-expanded', 'false');
+            document.body.classList.remove('nav-open');
+        }
+
         toggle.addEventListener('click', function () {
-            var open = nav.classList.toggle('is-open');
-            toggle.classList.toggle('is-active', open);
-            toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-            document.body.style.overflow = open ? 'hidden' : '';
+            if (nav.classList.contains('is-open')) { closeMenu(); } else { openMenu(); }
         });
         nav.querySelectorAll('a').forEach(function (link) {
-            link.addEventListener('click', function () {
-                nav.classList.remove('is-open');
-                toggle.classList.remove('is-active');
-                toggle.setAttribute('aria-expanded', 'false');
-                document.body.style.overflow = '';
-            });
+            link.addEventListener('click', closeMenu);
         });
-        // Fecha o menu com a tecla Esc.
+        // Fecha com Esc.
         document.addEventListener('keydown', function (e) {
-            if (e.key === 'Escape' && nav.classList.contains('is-open')) {
-                nav.classList.remove('is-open');
-                toggle.classList.remove('is-active');
-                toggle.setAttribute('aria-expanded', 'false');
-                document.body.style.overflow = '';
+            if (e.key === 'Escape' && nav.classList.contains('is-open')) { closeMenu(); }
+        });
+        // Clique no overlay (fora do drawer) fecha o menu.
+        document.addEventListener('click', function (e) {
+            if (nav.classList.contains('is-open') &&
+                !nav.contains(e.target) && e.target !== toggle && !toggle.contains(e.target)) {
+                closeMenu();
             }
         });
         // Garante estado limpo ao voltar para desktop.
         window.addEventListener('resize', function () {
-            if (window.innerWidth > 720 && nav.classList.contains('is-open')) {
-                nav.classList.remove('is-open');
-                toggle.classList.remove('is-active');
-                toggle.setAttribute('aria-expanded', 'false');
-                document.body.style.overflow = '';
-            }
+            if (window.innerWidth > 720 && nav.classList.contains('is-open')) { closeMenu(); }
         });
     }
 
