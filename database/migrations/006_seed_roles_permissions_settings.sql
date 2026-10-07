@@ -1,6 +1,6 @@
 -- Migration 006 — Seed inicial de perfis, permissões, vínculos e configurações.
--- Observação: o usuário SUPERADMIN é criado pelo runner de migrations (PHP),
--- pois sua senha precisa ser gerada com password_hash() de forma segura.
+-- Observação: o usuário SUPERADMIN é criado na migration 008 (via SQL), de forma
+-- que a instalação possa ser feita apenas importando arquivos .sql, sem terminal.
 
 -- Perfis base ---------------------------------------------------------------
 INSERT INTO `roles` (`slug`, `name`, `description`, `is_system`) VALUES

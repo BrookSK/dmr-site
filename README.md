@@ -38,9 +38,10 @@ dmr-site/
 ├── routes/
 │   └── web.php               # Definição de todas as rotas
 ├── database/
-│   ├── migrate.php           # Runner de migrations (CLI)
-│   ├── seed_superadmin.php   # Criação do SUPERADMIN
-│   └── migrations/           # 001_*.sql, 002_*.sql, ...
+│   ├── install.sql           # Instalação completa em arquivo único (sem terminal)
+│   ├── migrate.php           # Runner de migrations (CLI, opcional)
+│   ├── seed_superadmin.php   # Criação do SUPERADMIN (usado pelo runner)
+│   └── migrations/           # 001_*.sql ... 008_*.sql
 ├── public/
 │   ├── index.php             # Front controller
 │   ├── favicon.ico
@@ -96,62 +97,59 @@ dmr-site/
 
 ---
 
-## 5. Banco de dados e migrations
+## 5. Banco de dados
 
-O banco é criado e evoluído exclusivamente por **arquivos `.sql` versionados** em `database/migrations/`.
+O banco pode ser instalado de **duas formas**. Escolha a que preferir — ambas chegam ao mesmo resultado.
 
-### Executar as migrations
+### Opção A — Importar um único arquivo `.sql` (recomendada, sem terminal)
+
+Importe o arquivo **`database/install.sql`** usando sua ferramenta de banco preferida (phpMyAdmin, MySQL Workbench, Adminer, HeidiSQL). Ele:
+
+- cria o banco `dmr_site` e todas as tabelas;
+- insere perfis, permissões e as configurações padrão;
+- **cria o usuário SUPERADMIN já pronto** (ver seção 6).
+
+É **idempotente**: pode ser reimportado sem duplicar dados.
+
+> No phpMyAdmin: aba **Importar** → selecione `database/install.sql` → **Executar**.
+
+### Opção B — Runner de migrations (opcional, via terminal)
+
+Para quem preferir aplicar as migrations incrementais pela linha de comando:
 
 ```bash
-php database/migrate.php
+php database/migrate.php            # aplica as migrations pendentes
+php database/migrate.php --fresh    # recria o banco do zero (CUIDADO: apaga tudo)
 ```
 
-O runner:
-- cria o banco (se não existir) e a tabela de controle `migrations`;
-- aplica, em ordem, apenas os `.sql` ainda não aplicados;
-- cria o usuário SUPERADMIN (se ainda não existir).
+### Arquivos `.sql`
 
-### Recriar o banco do zero (CUIDADO — apaga tudo)
-
-```bash
-php database/migrate.php --fresh
-```
+As migrations versionadas ficam em `database/migrations/` (`001_*.sql` … `008_*.sql`).
+O `database/install.sql` é a consolidação de todas elas em um único arquivo.
 
 ### Regra obrigatória das migrations
 
 **Nunca edite uma migration já criada/aplicada.** Para qualquer alteração de schema, crie um **novo** arquivo com o próximo número:
 
-- ✅ Correto: criar `007_add_coluna_x.sql`
+- ✅ Correto: criar `009_add_coluna_x.sql`
 - ❌ Errado: editar `001_create_users_table.sql`
 
-As migrations são incrementais e versionadas. Isso garante histórico consistente entre ambientes.
+Ao criar uma nova migration, lembre-se de também acrescentá-la ao `database/install.sql` para manter a instalação de arquivo único em dia.
 
 ---
 
 ## 6. SUPERADMIN e acesso ao painel
 
-O superadmin é criado automaticamente ao rodar as migrations.
+O superadmin já é criado pela instalação do banco (tanto pelo `install.sql` quanto pelas migrations).
 
-- **E-mail padrão:** `admin@dmrassessoria.com.br`
-- **Senha:** definida pela variável de ambiente `DMR_SUPERADMIN_PASSWORD` (mínimo 8 caracteres) ou, se não informada, **gerada aleatoriamente e exibida uma única vez no terminal** durante a execução das migrations. Anote-a.
+- **E-mail:** `admin@dmrassessoria.com.br`
+- **Senha inicial:** `   `
 
-Exemplos:
-
-```bash
-# Definindo e-mail e senha explicitamente (Linux/macOS)
-DMR_SUPERADMIN_EMAIL="voce@dmrassessoria.com.br" DMR_SUPERADMIN_PASSWORD="UmaSenhaForte123" php database/migrate.php
-```
-
-```cmd
-:: Windows (cmd)
-set DMR_SUPERADMIN_EMAIL=voce@dmrassessoria.com.br
-set DMR_SUPERADMIN_PASSWORD=UmaSenhaForte123
-php database/migrate.php
-```
+> ⚠️ **Troque a senha imediatamente no primeiro acesso**, em **Minha conta** (`/admin/perfil`). Em produção, recomenda-se também alterar o e-mail do superadmin.
 
 Acesse o painel em: **`/admin/login`** (também acessível pelo link discreto **"Área Restrita"** no rodapé do site).
 
-Após o primeiro acesso, **troque a senha** em **Minha conta** (`/admin/perfil`).
+> **Opcional:** se usar o runner (Opção B), é possível definir a senha inicial por variável de ambiente `DMR_SUPERADMIN_PASSWORD` e o e-mail por `DMR_SUPERADMIN_EMAIL` antes de rodar `php database/migrate.php`. Sem essas variáveis, o runner gera uma senha aleatória e a exibe no terminal.
 
 ---
 
