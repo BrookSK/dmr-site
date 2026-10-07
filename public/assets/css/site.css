@@ -78,34 +78,40 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .section--alt { background: var(--off); }
 .section--dark { background: var(--dark); color: #fff; }
 
-/* --- Header --------------------------------------------------------------- */
+/* --- Header ---------------------------------------------------------------
+   O header mantém SEMPRE um visual claro sobre fundo escuro, para não "piscar"
+   de cor conforme as dobras (preto/dourado/branco) passam por baixo dele.
+   - No topo do hero: transparente.
+   - Ao rolar (.is-scrolled) ou em páginas internas (--solid): preto translúcido.
+   -------------------------------------------------------------------------- */
 .site-header {
     position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    background: rgba(255,255,255,0); transition: background .3s, box-shadow .3s, backdrop-filter .3s;
+    background: transparent;
+    transition: background .3s, box-shadow .3s, backdrop-filter .3s, padding .3s;
     padding: 18px 0;
 }
-.site-header.is-scrolled { background: rgba(255,255,255,.95); backdrop-filter: blur(10px); box-shadow: 0 1px 0 var(--line); padding: 12px 0; }
+.site-header.is-scrolled,
+.site-header--solid {
+    background: rgba(14, 12, 10, .92);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 1px 0 rgba(203, 174, 108, .18);
+    padding: 12px 0;
+}
 .site-header__inner { display: flex; align-items: center; justify-content: space-between; }
 
 .brand { text-decoration: none; display: flex; flex-direction: column; line-height: 1; }
-.brand__mark { font-family: 'Fraunces', serif; font-size: 26px; font-weight: 600; letter-spacing: 3px; color: var(--black); }
-.brand__sub { font-size: 10.5px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--brown); margin-top: 3px; }
-.is-scrolled .brand__mark { color: var(--black); }
-
-/* No topo (hero escuro) o header é claro */
-.site-header:not(.is-scrolled) .brand__mark { color: #fff; }
-.site-header:not(.is-scrolled) .site-nav a { color: rgba(255,255,255,.9); }
-.site-header:not(.is-scrolled) .nav-toggle span { background: #fff; }
+/* Texto da marca sempre claro (header é sempre escuro ou transparente sobre hero escuro) */
+.brand__mark { font-family: 'Fraunces', serif; font-size: 26px; font-weight: 600; letter-spacing: 3px; color: #fff; }
+.brand__sub { font-size: 10.5px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--gold); margin-top: 3px; }
 
 .site-nav { display: flex; align-items: center; gap: 30px; }
-.site-nav a { color: var(--ink); text-decoration: none; font-size: 15px; font-weight: 500; transition: color .2s; }
-.site-nav a:hover { color: var(--brown); }
-.site-nav__cta { background: var(--brown); color: #fff !important; padding: 10px 20px; border-radius: 999px; }
-.site-nav__cta:hover { background: var(--gold-deep); }
-.site-header:not(.is-scrolled) .site-nav__cta { background: var(--gold); color: #241c08 !important; }
+.site-nav a { color: rgba(255,255,255,.9); text-decoration: none; font-size: 15px; font-weight: 500; transition: color .2s; }
+.site-nav a:hover { color: var(--gold); }
+.site-nav__cta { background: var(--gold); color: #241c08 !important; padding: 10px 20px; border-radius: 999px; }
+.site-nav__cta:hover { background: var(--gold-deep); color: #fff !important; }
 
 .nav-toggle { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 8px; }
-.nav-toggle span { width: 24px; height: 2px; background: var(--ink); transition: .25s; }
+.nav-toggle span { width: 24px; height: 2px; background: #fff; transition: .25s; }
 
 /* --- Hero ----------------------------------------------------------------- */
 .hero { position: relative; min-height: 100vh; display: flex; align-items: center; background: var(--dark); color: #fff; overflow: hidden; }
@@ -152,8 +158,8 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .pillar__body h3 { font-size: 1.6rem; margin: 0 0 10px; }
 .pillar__body p { color: var(--muted); margin: 0; }
 
-/* --- Value cards ---------------------------------------------------------- */
-.value-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 22px; }
+/* --- Value cards (6 itens = 3 colunas x 2 linhas, sem sobras) -------------- */
+.value-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
 .value-card { padding: 32px; border: 1px solid var(--line); border-radius: var(--radius); background: #fff; transition: transform .3s var(--ease), border-color .3s; }
 .value-card:hover { transform: translateY(-4px); border-color: var(--gold); }
 .value-card h3 { font-size: 1.3rem; margin: 0 0 8px; }
@@ -194,7 +200,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .equity-card p { color: rgba(255,255,255,.85); font-family: 'Fraunces', serif; font-size: 1.4rem; margin: 0; }
 
 /* --- Bancos --------------------------------------------------------------- */
-.banks { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(5, 1fr); gap: 18px; }
+.banks { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px; }
 .bank { display: grid; place-items: center; text-align: center; padding: 30px 16px; background: #fff; border: 1px solid var(--line); border-radius: 12px; font-weight: 600; color: var(--muted); min-height: 90px; transition: all .25s; }
 .bank:hover { color: var(--brown); border-color: var(--gold); }
 
@@ -215,12 +221,21 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .platform-badges { display: grid; gap: 14px; }
 .badge { background: #fff; border: 1px solid var(--line); border-left: 3px solid var(--gold); padding: 18px 22px; border-radius: 10px; font-weight: 600; color: var(--ink); }
 
-/* --- Depoimentos ---------------------------------------------------------- */
-.testimonials { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 22px; }
-.testimonial { padding: 32px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius); }
-.testimonial--placeholder { border-style: dashed; color: var(--muted); }
-.testimonial__text { font-family: 'Fraunces', serif; font-size: 1.15rem; margin: 0 0 18px; }
-.testimonial__author { color: var(--brown); font-weight: 600; font-size: .95rem; }
+/* --- Prova social / confiança --------------------------------------------- */
+.trust-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; }
+.trust-card { padding: 32px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius); transition: transform .3s var(--ease), border-color .3s; }
+.trust-card:hover { transform: translateY(-4px); border-color: var(--gold); }
+.trust-card__num { display: block; font-family: 'Fraunces', serif; font-size: 2.4rem; color: var(--gold); line-height: 1; margin-bottom: 14px; }
+.trust-card h3 { font-size: 1.2rem; margin: 0 0 8px; }
+.trust-card p { color: var(--muted); margin: 0; font-size: .96rem; }
+
+.testimonials-cta {
+    margin-top: 32px; padding: 30px; text-align: center;
+    background: linear-gradient(160deg, var(--cream), #fff);
+    border: 1px dashed var(--gold); border-radius: var(--radius);
+    display: flex; flex-direction: column; align-items: center; gap: 16px;
+}
+.testimonials-cta p { margin: 0; font-size: 1.1rem; color: var(--ink); font-family: 'Fraunces', serif; }
 
 /* --- MVV ------------------------------------------------------------------ */
 .mvv__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
@@ -264,6 +279,9 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .site-footer__col a:hover { color: var(--gold); }
 .site-footer__bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 24px; flex-wrap: wrap; gap: 10px; }
 .site-footer__bottom p { margin: 0; font-size: .85rem; color: rgba(255,255,255,.45); }
+.site-footer__meta { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+.site-footer__credit { color: rgba(255,255,255,.5); text-decoration: none; font-size: .82rem; transition: color .2s; }
+.site-footer__credit:hover { color: var(--gold); }
 .site-footer__restricted { color: rgba(255,255,255,.28); text-decoration: none; font-size: .78rem; letter-spacing: .3px; transition: color .2s; }
 .site-footer__restricted:hover { color: rgba(255,255,255,.6); }
 
@@ -303,30 +321,74 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
     .pillar__num { font-size: 2.6rem; }
     .journey { grid-template-columns: 1fr 1fr; }
     .banks { grid-template-columns: repeat(3, 1fr); }
+    .value-grid { grid-template-columns: repeat(2, 1fr); }
+    .services-grid { grid-template-columns: repeat(2, 1fr); }
+    .trust-grid { grid-template-columns: repeat(2, 1fr); }
     .mvv__grid { grid-template-columns: 1fr; }
     .compare { grid-template-columns: 1fr; }
 }
 @media (max-width: 720px) {
-    body { font-size: 16px; }
-    .section { padding: 72px 0; }
-    .section__head { margin-bottom: 36px; }
+    body { font-size: 15.5px; }
+    .section { padding: 56px 0; }
+    .section__head { margin-bottom: 28px; }
+
+    /* Tipografia mais contida no mobile (evita "parede de texto") */
+    .hero__title { font-size: 2rem; line-height: 1.15; }
+    .hero__text { font-size: 1rem; line-height: 1.55; margin-bottom: 28px; }
+    .section__title { font-size: 1.6rem; }
+    .section__lead { font-size: 1rem; }
+    .about__text p, .audience p, .value-card p, .service p, .trust-card p,
+    .mvv__card p, .legal__content p { font-size: .95rem; line-height: 1.55; }
+    .pull-quote p { font-size: 1.2rem; }
+    .audience h3 { font-size: 1.35rem; }
+    .pillar__body h3 { font-size: 1.35rem; }
+
+    /* Hero: eyebrow e conteúdo centralizados no mobile */
+    .hero__content { text-align: center; }
+    .hero__eyebrow { margin-left: auto; margin-right: auto; }
+    .hero__actions { justify-content: center; }
+    /* Faixa de confiança em linha única (sem empilhar), com fonte menor */
+    .hero__trust {
+        justify-content: flex-start; flex-wrap: nowrap; gap: 10px;
+        font-size: 12px; overflow-x: auto; -webkit-overflow-scrolling: touch;
+        white-space: nowrap; padding-bottom: 4px; scrollbar-width: none;
+    }
+    .hero__trust::-webkit-scrollbar { display: none; }
+    .hero__trust span { flex: 0 0 auto; }
+
+    /* Pilares: número em cima do texto no mobile (melhor leitura) */
+    .pillar { grid-template-columns: 1fr; gap: 10px; text-align: left; }
+    .pillar__num { font-size: 2.2rem; }
+
     .nav-toggle { display: flex; }
+    /* Drawer lateral: fundo escuro sólido SEMPRE (independente da dobra atrás) */
     .site-nav {
-        position: fixed; inset: 0 0 0 auto; width: min(80vw, 320px);
-        background: var(--dark); flex-direction: column; align-items: flex-start;
-        padding: 100px 32px 32px; gap: 20px; transform: translateX(100%);
-        transition: transform .3s var(--ease); box-shadow: -20px 0 60px rgba(0,0,0,.4);
+        position: fixed; inset: 0 0 0 auto; width: min(82vw, 320px);
+        background: #0e0c0a !important;
+        flex-direction: column; align-items: stretch;
+        padding: 96px 24px 32px; gap: 6px; transform: translateX(100%);
+        transition: transform .3s var(--ease); box-shadow: -20px 0 60px rgba(0,0,0,.5);
+        overflow-y: auto;
     }
     .site-nav.is-open { transform: translateX(0); }
-    .site-nav a { color: #fff !important; font-size: 18px; }
-    .site-nav__cta { background: var(--gold) !important; color: #241c08 !important; }
+    .site-nav a {
+        color: #fff !important; font-size: 17px; width: 100%;
+        padding: 14px 18px; border-radius: 10px; box-sizing: border-box;
+    }
+    .site-nav a:not(.site-nav__cta):hover { background: rgba(255,255,255,.06); }
+    /* CTA com margem lateral própria dentro do drawer, sem colar nas bordas */
+    .site-nav__cta {
+        background: var(--gold) !important; color: #241c08 !important;
+        text-align: center; margin-top: 12px; padding: 15px 18px;
+    }
     .nav-toggle.is-active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
     .nav-toggle.is-active span:nth-child(2) { opacity: 0; }
     .nav-toggle.is-active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-    .site-header:not(.is-scrolled) .nav-toggle.is-active span { background: #fff; }
+    .nav-toggle span { background: #fff; }
     .field-row { grid-template-columns: 1fr; }
     .checklist--two { grid-template-columns: 1fr; }
     .journey { grid-template-columns: 1fr; }
+    .trust-grid { grid-template-columns: 1fr; }
     .banks { grid-template-columns: 1fr 1fr; }
     .stats__grid { grid-template-columns: 1fr; gap: 24px; }
     .site-footer__grid { grid-template-columns: 1fr 1fr; }
@@ -340,9 +402,13 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
     /* Serviços em coluna única no celular */
     .services-grid { grid-template-columns: 1fr; }
     .value-grid { grid-template-columns: 1fr; }
-    /* Alvos de toque confortáveis */
-    .site-nav a { padding: 6px 0; }
     .wa-float { right: 16px; bottom: 16px; }
+
+    /* Botões: não esticam demais, texto não quebra feio, padding menor */
+    .btn { padding: 13px 20px; font-size: 14.5px; width: 100%; }
+    .audience { padding: 28px 22px; }
+    .audience .btn, .home-equity .btn { width: 100%; }
+    .audience__text { text-align: left; }
 }
 @media (max-width: 460px) {
     .site-footer__grid { grid-template-columns: 1fr; }

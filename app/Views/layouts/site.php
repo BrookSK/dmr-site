@@ -88,7 +88,12 @@ $whats = preg_replace('/\D+/', '', (string) setting('whatsapp_number', '55119822
 <body>
 <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
 
-<?= \App\Core\View::renderPartial('site/partials/header') ?>
+<?php
+// Páginas sem hero escuro no topo (legais, erros) usam o header já sólido,
+// para o menu não ficar invisível sobre o fundo claro.
+$solidHeader = $solidHeader ?? false;
+?>
+<?= \App\Core\View::renderPartial('site/partials/header', ['solidHeader' => $solidHeader]) ?>
 
 <main id="conteudo">
     <?= $content ?>

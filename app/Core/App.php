@@ -72,7 +72,7 @@ final class App
         error_log('[DMR] ' . $e->getMessage() . ' em ' . $e->getFile() . ':' . $e->getLine());
         http_response_code(500);
         if (is_file(APP_PATH . '/Views/errors/500.php')) {
-            echo View::render('errors/500', [], 'layouts/site');
+            echo View::render('errors/500', ['solidHeader' => true], 'layouts/site');
         } else {
             echo 'Ocorreu um erro inesperado. Tente novamente mais tarde.';
         }

@@ -1,7 +1,8 @@
 <?php
 $whats = preg_replace('/\D+/', '', (string) setting('whatsapp_number', '5511982231363'));
 ?>
-<header class="site-header" id="siteHeader">
+<?php $solidHeader = $solidHeader ?? false; ?>
+<header class="site-header<?= $solidHeader ? ' site-header--solid' : '' ?>" id="siteHeader"<?= $solidHeader ? ' data-solid="1"' : '' ?>>
     <div class="container site-header__inner">
         <a class="brand" href="<?= e(base_url('')) ?>" aria-label="DMR Assessoria Imobiliária — página inicial">
             <span class="brand__mark">DMR</span>

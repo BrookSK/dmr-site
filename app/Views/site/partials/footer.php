@@ -39,6 +39,9 @@ $year = date('Y');
 
     <div class="container site-footer__bottom">
         <p>&copy; <?= e($year) ?> DMR Assessoria Imobiliária. Todos os direitos reservados.</p>
-        <a class="site-footer__restricted" href="<?= e(base_url('admin/login')) ?>">Área Restrita</a>
+        <div class="site-footer__meta">
+            <a class="site-footer__credit" href="https://lrvweb.com.br" target="_blank" rel="noopener">Desenvolvido por LRV Web</a>
+            <a class="site-footer__restricted" href="<?= e(base_url('admin/login')) ?>">Área Restrita</a>
+        </div>
     </div>
 </footer>

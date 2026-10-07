@@ -166,6 +166,11 @@ $waLink = static fn (string $msg): string =>
                 <p class="value-card__lead">Do primeiro passo até a conclusão.</p>
                 <p>Acompanhamos o processo até a sua finalização e a liberação das chaves.</p>
             </article>
+            <article class="value-card reveal">
+                <h3>Acompanhamento próximo</h3>
+                <p class="value-card__lead">Alguém que conhece o seu processo.</p>
+                <p>Em cada etapa, você fala com quem acompanha o seu caso de perto — sem recomeçar a conversa a cada contato.</p>
+            </article>
         </div>
     </div>
 </section>
@@ -399,28 +404,43 @@ $waLink = static fn (string $msg): string =>
     </div>
 </section>
 
-<!-- ============================ CASES / DEPOIMENTOS ============================ -->
+<!-- ============================ PROVA SOCIAL / CONFIANÇA ============================ -->
 <section class="section section--alt" id="depoimentos">
     <div class="container">
         <div class="section__head reveal">
-            <span class="eyebrow">Prova social</span>
-            <h2 class="section__title">Quem acompanha de perto, recomenda.</h2>
-            <p class="section__lead">Depoimentos de parceiros e clientes serão publicados aqui.</p>
+            <span class="eyebrow">Por que confiar na DMR</span>
+            <h2 class="section__title">Reputação construída processo após processo.</h2>
+            <p class="section__lead">Mais de três décadas acompanhando financiamentos ao lado de construtoras, imobiliárias, corretores e clientes.</p>
         </div>
-        <!-- Placeholders: inserir depoimentos reais posteriormente. Não publicar conteúdo fictício. -->
-        <div class="testimonials reveal">
-            <article class="testimonial testimonial--placeholder">
-                <p class="testimonial__text">[Depoimento de incorporadora — inserir posteriormente]</p>
-                <footer class="testimonial__author">Incorporadora parceira</footer>
+
+        <!-- Motivos de confiança (conteúdo institucional, não depoimentos atribuídos). -->
+        <div class="trust-grid reveal">
+            <article class="trust-card">
+                <span class="trust-card__num">30+</span>
+                <h3>Anos de estrada</h3>
+                <p>Experiência acumulada em diferentes cenários de mercado, taxas e perfis de crédito.</p>
             </article>
-            <article class="testimonial testimonial--placeholder">
-                <p class="testimonial__text">[Depoimento de imobiliária/corretor — inserir posteriormente]</p>
-                <footer class="testimonial__author">Imobiliária parceira</footer>
+            <article class="trust-card">
+                <span class="trust-card__num">100 mil+</span>
+                <h3>Unidades viabilizadas</h3>
+                <p>Um histórico de repasses conduzidos até a entrega das chaves.</p>
             </article>
-            <article class="testimonial testimonial--placeholder">
-                <p class="testimonial__text">[Depoimento de cliente — inserir posteriormente]</p>
-                <footer class="testimonial__author">Cliente DMR</footer>
+            <article class="trust-card">
+                <span class="trust-card__num" aria-hidden="true">◷</span>
+                <h3>Acompanhamento de ponta a ponta</h3>
+                <p>Da análise inicial ao registro, sem deixar o cliente sozinho na burocracia.</p>
             </article>
+            <article class="trust-card">
+                <span class="trust-card__num" aria-hidden="true">⌂</span>
+                <h3>Parcerias com grandes bancos</h3>
+                <p>Correspondente bancário e parceiro de instituições públicas e privadas.</p>
+            </article>
+        </div>
+
+        <!-- Espaço preparado para depoimentos reais (a inserir após coleta/autorização). -->
+        <div class="testimonials-cta reveal">
+            <p>É cliente ou parceiro da DMR? Sua experiência pode aparecer aqui.</p>
+            <a class="btn btn--primary" href="<?= e($waLink('Olá, gostaria de deixar um depoimento sobre a minha experiência com a DMR.')) ?>" target="_blank" rel="noopener">Deixar um depoimento</a>
         </div>
     </div>
 </section>

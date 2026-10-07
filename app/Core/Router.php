@@ -129,7 +129,7 @@ final class Router
     {
         http_response_code(404);
         if (is_file(APP_PATH . '/Views/errors/404.php')) {
-            echo View::render('errors/404', [], 'layouts/site');
+            echo View::render('errors/404', ['solidHeader' => true], 'layouts/site');
         } else {
             echo '404 — Página não encontrada.';
         }
