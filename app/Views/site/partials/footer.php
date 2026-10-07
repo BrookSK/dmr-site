@@ -16,7 +16,7 @@ $year = date('Y');
         <nav class="site-footer__col" aria-label="Links do site">
             <h3>Navegação</h3>
             <a href="<?= e(base_url('#sobre')) ?>">A DMR</a>
-            <a href="<?= e(base_url('#pilares')) ?>">Diferenciais</a>
+            <a href="<?= e(base_url('#servicos')) ?>">Serviços</a>
             <a href="<?= e(base_url('#jornada')) ?>">A jornada</a>
             <a href="<?= e(base_url('#solucoes')) ?>">Soluções</a>
             <a href="<?= e(base_url('#home-equity')) ?>">Home Equity</a>

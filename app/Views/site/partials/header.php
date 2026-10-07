@@ -10,7 +10,7 @@ $whats = preg_replace('/\D+/', '', (string) setting('whatsapp_number', '55119822
 
         <nav class="site-nav" id="siteNav" aria-label="Navegação principal">
             <a href="<?= e(base_url('#sobre')) ?>">A DMR</a>
-            <a href="<?= e(base_url('#pilares')) ?>">Diferenciais</a>
+            <a href="<?= e(base_url('#servicos')) ?>">Serviços</a>
             <a href="<?= e(base_url('#jornada')) ?>">A jornada</a>
             <a href="<?= e(base_url('#solucoes')) ?>">Soluções</a>
             <a href="<?= e(base_url('#home-equity')) ?>">Home Equity</a>

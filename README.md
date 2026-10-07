@@ -233,7 +233,9 @@ Conforme o briefing, **nenhum dado foi inventado**. Os pontos abaixo foram deixa
 
 - **Valor em negócios viabilizados:** card de estatística na home (`data-placeholder="valor-negocios"`) exibe "—" até que o número oficial seja fornecido.
 - **Depoimentos / cases:** a seção de prova social contém três placeholders (`[Depoimento ... — inserir posteriormente]`). Não publicar conteúdo fictício como se fosse real.
-- **Logos de bancos:** a seção de parcerias lista os nomes (Santander, Bradesco, Itaú, BRB, Caixa) com `data-logo` preparado para receber os logos oficiais, desde que licenciados.
+- **Logos de bancos:** a seção de parcerias lista os nomes (Caixa, Banco do Brasil, Santander, Bradesco, Itaú, BRB) com `data-logo` preparado para receber os logos oficiais, desde que licenciados. Caixa e Banco do Brasil foram confirmados via site oficial arquivado (correspondente bancário); **a lista final de instituições deve ser confirmada pela DMR**.
+- **Serviços:** a seção "Serviços" reflete os serviços levantados no site oficial arquivado (Crédito Imobiliário, Análise de Crédito e Risco, Análise Jurídica, Assessoria Imobiliária, Saque de FGTS, Secretaria de Vendas e Repasse). Confirme se a lista está atualizada.
+- **Endereço e CNPJ:** não foram incluídos por não terem sido confirmados com segurança na pesquisa. Forneça os dados oficiais para habilitar SEO local (schema `LocalBusiness` com endereço).
 - **Política de Privacidade e Termos de Uso:** textos realistas e profissionais já redigidos, mas que **devem ser revisados juridicamente** antes da publicação definitiva (há aviso visível em ambas as páginas).
 - **Imagens de pessoas/atendimento:** o design está preparado para receber fotografias (hero, seções) que reforcem o conceito de acompanhamento e proximidade.
 

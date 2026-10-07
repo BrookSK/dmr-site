@@ -73,3 +73,23 @@ if (!function_exists('setting')) {
         return Setting::get($key, $default);
     }
 }
+
+if (!function_exists('lazy_img')) {
+    /**
+     * Gera uma tag <img> otimizada (lazy loading + decoding assíncrono).
+     * Use para fotos/ilustrações adicionadas futuramente (atendimento, imóveis, equipe).
+     *
+     * @param string $src   caminho relativo dentro de assets/ (ex.: 'img/equipe.jpg')
+     * @param string $alt   texto alternativo (obrigatório para acessibilidade/SEO)
+     * @param array<string,string|int> $attrs atributos extras (width, height, class...)
+     */
+    function lazy_img(string $src, string $alt, array $attrs = []): string
+    {
+        $url = asset($src);
+        $out = '<img src="' . e($url) . '" alt="' . e($alt) . '" loading="lazy" decoding="async"';
+        foreach ($attrs as $key => $value) {
+            $out .= ' ' . e($key) . '="' . e((string) $value) . '"';
+        }
+        return $out . '>';
+    }
+}

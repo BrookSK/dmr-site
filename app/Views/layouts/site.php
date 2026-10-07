@@ -19,33 +19,69 @@ $whats = preg_replace('/\D+/', '', (string) setting('whatsapp_number', '55119822
     <title><?= e($title) ?></title>
     <meta name="description" content="<?= e($description) ?>">
     <link rel="canonical" href="<?= e($canonical) ?>">
+    <meta name="robots" content="index, follow, max-image-preview:large">
     <meta name="theme-color" content="#000000">
+    <meta name="author" content="<?= e(setting('site_name', 'DMR Assessoria Imobiliária')) ?>">
 
     <!-- Open Graph -->
     <meta property="og:type" content="website">
+    <meta property="og:locale" content="pt_BR">
     <meta property="og:site_name" content="<?= e(setting('site_name', 'DMR Assessoria Imobiliária')) ?>">
     <meta property="og:title" content="<?= e($title) ?>">
     <meta property="og:description" content="<?= e($description) ?>">
     <meta property="og:url" content="<?= e($canonical) ?>">
     <meta property="og:image" content="<?= e($ogImage) ?>">
+    <meta property="og:image:alt" content="DMR Assessoria Imobiliária — crédito imobiliário com acompanhamento do início ao fim">
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="<?= e($title) ?>">
+    <meta name="twitter:description" content="<?= e($description) ?>">
+    <meta name="twitter:image" content="<?= e($ogImage) ?>">
 
     <link rel="icon" href="<?= e(asset('img/favicon.svg')) ?>" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="<?= e(asset('img/favicon.svg')) ?>">
+
+    <!-- CSS crítico do site, com preload para renderização mais rápida -->
+    <link rel="preload" as="style" href="<?= e(asset('css/site.css')) ?>">
+    <link rel="stylesheet" href="<?= e(asset('css/site.css')) ?>">
+
+    <!-- Fontes carregadas de forma não bloqueante (não travam o first paint) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="<?= e(asset('css/site.css')) ?>">
+    <link rel="preload" as="style"
+          href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap"
+          onload="this.onload=null;this.rel='stylesheet'">
+    <noscript>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap">
+    </noscript>
 
     <script type="application/ld+json">
     <?= json_encode([
         '@context' => 'https://schema.org',
         '@type' => 'FinancialService',
+        '@id' => base_url('') . '#organization',
         'name' => setting('site_name', 'DMR Assessoria Imobiliária'),
+        'alternateName' => 'DMR',
         'description' => $description,
         'url' => base_url(''),
+        'logo' => asset('img/favicon.svg'),
+        'image' => $ogImage,
         'telephone' => setting('contact_phone', '(11) 98223-1363'),
-        'areaServed' => 'BR',
-        'serviceType' => 'Crédito imobiliário e financiamento',
+        'email' => setting('contact_email', 'contato@dmrassessoria.com.br'),
+        'areaServed' => ['@type' => 'Country', 'name' => 'Brasil'],
+        'knowsAbout' => [
+            'Crédito imobiliário', 'Financiamento imobiliário', 'Repasse de financiamento',
+            'Análise de crédito e risco', 'Análise jurídica', 'Saque de FGTS', 'Home Equity',
+        ],
+        'sameAs' => array_values(array_filter([
+            setting('instagram') ? 'https://instagram.com/' . ltrim((string) setting('instagram'), '@') : null,
+        ])),
+        'makesOffer' => [
+            ['@type' => 'Offer', 'itemOffered' => ['@type' => 'Service', 'name' => 'Crédito Imobiliário']],
+            ['@type' => 'Offer', 'itemOffered' => ['@type' => 'Service', 'name' => 'Análise de Crédito e Risco']],
+            ['@type' => 'Offer', 'itemOffered' => ['@type' => 'Service', 'name' => 'Análise Jurídica']],
+            ['@type' => 'Offer', 'itemOffered' => ['@type' => 'Service', 'name' => 'Saque de FGTS']],
+            ['@type' => 'Offer', 'itemOffered' => ['@type' => 'Service', 'name' => 'Home Equity']],
+        ],
     ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) ?>
     </script>
 </head>

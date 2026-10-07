@@ -189,6 +189,50 @@ $waLink = static fn (string $msg): string =>
     </div>
 </section>
 
+<!-- ============================ SERVIÇOS ============================ -->
+<section class="section" id="servicos">
+    <div class="container">
+        <div class="section__head reveal">
+            <span class="eyebrow">Serviços</span>
+            <h2 class="section__title">Um pacote completo para cada etapa do processo.</h2>
+            <p class="section__lead">Da análise inicial ao registro, a DMR cuida das frentes que fazem o financiamento acontecer com segurança.</p>
+        </div>
+
+        <div class="services-grid reveal">
+            <article class="service">
+                <span class="service__ico" aria-hidden="true">◈</span>
+                <h3>Crédito Imobiliário</h3>
+                <p>Estruturação e acompanhamento do financiamento, da simulação à contratação.</p>
+            </article>
+            <article class="service">
+                <span class="service__ico" aria-hidden="true">◷</span>
+                <h3>Análise de Crédito e Risco</h3>
+                <p>Avaliação do perfil do comprador para entender a capacidade de financiamento e a probabilidade de aprovação.</p>
+            </article>
+            <article class="service">
+                <span class="service__ico" aria-hidden="true">§</span>
+                <h3>Análise Jurídica</h3>
+                <p>Conferência da documentação e das condições jurídicas que envolvem a operação.</p>
+            </article>
+            <article class="service">
+                <span class="service__ico" aria-hidden="true">⌂</span>
+                <h3>Assessoria Imobiliária</h3>
+                <p>Suporte às partes envolvidas na negociação e condução do processo até a conclusão.</p>
+            </article>
+            <article class="service">
+                <span class="service__ico" aria-hidden="true">₣</span>
+                <h3>Saque de FGTS</h3>
+                <p>Apoio na utilização do FGTS dentro das regras aplicáveis à aquisição do imóvel.</p>
+            </article>
+            <article class="service">
+                <span class="service__ico" aria-hidden="true">▦</span>
+                <h3>Secretaria de Vendas e Repasse</h3>
+                <p>Organização do fluxo de repasse entre cliente, banco e construtora, incluindo certidões necessárias.</p>
+            </article>
+        </div>
+    </div>
+</section>
+
 <!-- ============================ SOLUÇÕES ============================ -->
 <section class="section section--alt" id="solucoes">
     <div class="container">
@@ -289,13 +333,14 @@ $waLink = static fn (string $msg): string =>
         </div>
         <!-- Logos oficiais devem ser inseridos posteriormente (arquivos licenciados). -->
         <ul class="banks reveal">
+            <li class="bank" data-logo="caixa">Caixa Econômica Federal</li>
+            <li class="bank" data-logo="bb">Banco do Brasil</li>
             <li class="bank" data-logo="santander">Santander</li>
             <li class="bank" data-logo="bradesco">Bradesco</li>
             <li class="bank" data-logo="itau">Itaú</li>
             <li class="bank" data-logo="brb">BRB</li>
-            <li class="bank" data-logo="caixa">Caixa Econômica Federal</li>
         </ul>
-        <p class="section__note">A disponibilidade de condições varia conforme o perfil do cliente e as políticas de cada instituição.</p>
+        <p class="section__note">A DMR atua como correspondente bancário e mantém parcerias com instituições públicas e privadas. A disponibilidade de condições varia conforme o perfil do cliente e as políticas de cada instituição.</p>
     </div>
 </section>
 

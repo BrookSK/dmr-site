@@ -34,6 +34,24 @@
                 document.body.style.overflow = '';
             });
         });
+        // Fecha o menu com a tecla Esc.
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && nav.classList.contains('is-open')) {
+                nav.classList.remove('is-open');
+                toggle.classList.remove('is-active');
+                toggle.setAttribute('aria-expanded', 'false');
+                document.body.style.overflow = '';
+            }
+        });
+        // Garante estado limpo ao voltar para desktop.
+        window.addEventListener('resize', function () {
+            if (window.innerWidth > 720 && nav.classList.contains('is-open')) {
+                nav.classList.remove('is-open');
+                toggle.classList.remove('is-active');
+                toggle.setAttribute('aria-expanded', 'false');
+                document.body.style.overflow = '';
+            }
+        });
     }
 
     // Animações de entrada ao aparecer no viewport.
