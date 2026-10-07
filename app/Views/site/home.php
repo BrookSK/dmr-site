@@ -28,12 +28,21 @@ $waLink = static fn (string $msg): string =>
                 <a class="btn btn--gold" href="#contato">Fale com a DMR</a>
                 <a class="btn btn--outline-light" href="#solucoes">Conheça nossas soluções</a>
             </div>
-            <div class="hero__trust">
-                <span>Atendimento humano</span>
-                <span>•</span>
-                <span>Acompanhamento ponta a ponta</span>
-                <span>•</span>
-                <span>Transparência</span>
+            <div class="hero__trust" aria-label="Diferenciais da DMR">
+                <div class="hero__trust__track">
+                    <!-- Grupo 1 -->
+                    <span>Atendimento humano</span><span class="dot">•</span>
+                    <span>Acompanhamento ponta a ponta</span><span class="dot">•</span>
+                    <span>Transparência</span><span class="dot">•</span>
+                    <span>Mais de 30 anos de experiência</span><span class="dot">•</span>
+                    <span>100 mil+ unidades viabilizadas</span><span class="dot">•</span>
+                    <!-- Grupo 2 (duplicado para loop contínuo) -->
+                    <span aria-hidden="true">Atendimento humano</span><span class="dot" aria-hidden="true">•</span>
+                    <span aria-hidden="true">Acompanhamento ponta a ponta</span><span class="dot" aria-hidden="true">•</span>
+                    <span aria-hidden="true">Transparência</span><span class="dot" aria-hidden="true">•</span>
+                    <span aria-hidden="true">Mais de 30 anos de experiência</span><span class="dot" aria-hidden="true">•</span>
+                    <span aria-hidden="true">100 mil+ unidades viabilizadas</span><span class="dot" aria-hidden="true">•</span>
+                </div>
             </div>
         </div>
     </div>
@@ -320,9 +329,14 @@ $waLink = static fn (string $msg): string =>
             <p class="fineprint">As condições (crédito, taxas e prazos) dependem de análise e das políticas de cada instituição. Nenhuma aprovação ou taxa é garantida previamente.</p>
         </div>
         <div class="about__aside reveal">
-            <div class="equity-card">
-                <span class="equity-card__ico" aria-hidden="true">⌂</span>
-                <p>Crédito com garantia de imóvel</p>
+            <div class="equity-uses">
+                <span class="equity-uses__label">Quando faz sentido</span>
+                <ul>
+                    <li><strong>Expandir um negócio</strong><span>Capital de giro ou investimento com custo menor que linhas comuns.</span></li>
+                    <li><strong>Reformar ou construir</strong><span>Transformar o imóvel atual em recursos para novas obras.</span></li>
+                    <li><strong>Organizar as finanças</strong><span>Trocar dívidas caras por uma condição mais equilibrada.</span></li>
+                    <li><strong>Realizar um projeto</strong><span>Estudos, saúde ou planos pessoais de maior valor.</span></li>
+                </ul>
             </div>
         </div>
     </div>
@@ -461,7 +475,7 @@ $waLink = static fn (string $msg): string =>
                 <h3>Visão</h3>
                 <p>Ser referência em crédito imobiliário e impacto social.</p>
             </div>
-            <div class="mvv__card reveal">
+            <div class="mvv__card mvv__card--full reveal">
                 <h3>Valores</h3>
                 <ul class="mvv__values">
                     <li>Ética</li><li>Respeito</li><li>Evolução</li><li>Empreendedorismo</li><li>Relações humanas</li>
