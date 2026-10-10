@@ -103,8 +103,8 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .brand--logo { flex-direction: row; align-items: center; }
 .brand__logo { display: block; height: 42px; width: auto; max-width: 220px; object-fit: contain; }
 .site-header.is-scrolled .brand__logo,
-.site-header--solid .brand__logo { height: 36px; }
-.brand__logo--footer { height: 48px; max-width: 240px; margin-bottom: 16px; }
+.site-header--solid .brand__logo { height: 49px; }
+.brand__logo--footer { height: 88px; max-width: 240px; margin-bottom: 16px; }
 /* Texto da marca sempre claro (header é sempre escuro ou transparente sobre hero escuro) */
 .brand__mark { font-family: 'Fraunces', serif; font-size: 26px; font-weight: 600; letter-spacing: 3px; color: #fff; }
 .brand__sub { font-size: 10.5px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--gold); margin-top: 3px; }
