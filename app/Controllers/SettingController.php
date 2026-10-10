@@ -9,7 +9,9 @@ use App\Core\Request;
 use App\Core\Session;
 use App\Models\Setting;
 use App\Services\AuthService;
+use App\Services\BrandLogoService;
 use App\Services\MailService;
+use RuntimeException;
 use Throwable;
 
 /**
@@ -47,6 +49,15 @@ final class SettingController extends Controller
 
         if ($values['contact_email'] !== '' && !filter_var($values['contact_email'], FILTER_VALIDATE_EMAIL)) {
             Session::flash('error', 'Informe um e-mail de contato válido.');
+            Session::flash('active_tab', 'general');
+            $this->redirect('/admin/configuracoes');
+        }
+
+        try {
+            $this->syncLogo($request, 'site_logo', 'dark', (bool) $request->input('remove_site_logo'));
+            $this->syncLogo($request, 'site_logo_on_light', 'light', (bool) $request->input('remove_site_logo_on_light'));
+        } catch (RuntimeException $e) {
+            Session::flash('error', $e->getMessage());
             Session::flash('active_tab', 'general');
             $this->redirect('/admin/configuracoes');
         }
@@ -115,6 +126,32 @@ final class SettingController extends Controller
 
         Session::flash('active_tab', 'smtp');
         $this->redirect('/admin/configuracoes');
+    }
+
+    /**
+     * @param 'dark'|'light' $slot
+     */
+    private function syncLogo(Request $request, string $settingKey, string $slot, bool $remove): void
+    {
+        $current = Setting::get($settingKey);
+        $current = is_string($current) ? $current : null;
+        $file = $request->file($settingKey);
+
+        if ($remove && $file === null) {
+            BrandLogoService::delete($current);
+            Setting::set($settingKey, '');
+            return;
+        }
+
+        if ($file === null) {
+            return;
+        }
+
+        $stored = BrandLogoService::store($file, $slot);
+        if ($current && $current !== $stored) {
+            BrandLogoService::delete($current);
+        }
+        Setting::set($settingKey, $stored);
     }
 
     private function testEmailHtml(string $name): string

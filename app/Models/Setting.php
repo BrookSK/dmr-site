@@ -63,17 +63,29 @@ final class Setting
         return $out;
     }
 
-    public static function set(string $key, ?string $value, bool $isSecret = false): void
+    public static function set(string $key, ?string $value, bool $isSecret = false, string $group = 'general'): void
     {
         $stored = $value;
         if ($isSecret && $value !== null && $value !== '') {
             $stored = self::encrypt($value);
         }
 
-        Database::instance()->run(
-            "UPDATE settings SET value = :v, is_secret = :s WHERE key_name = :k",
-            [':v' => $stored, ':s' => $isSecret ? 1 : 0, ':k' => $key]
+        $existing = Database::instance()->fetch(
+            "SELECT id FROM settings WHERE key_name = :k",
+            [':k' => $key]
         );
+
+        if ($existing) {
+            Database::instance()->run(
+                "UPDATE settings SET value = :v, is_secret = :s WHERE key_name = :k",
+                [':v' => $stored, ':s' => $isSecret ? 1 : 0, ':k' => $key]
+            );
+        } else {
+            Database::instance()->run(
+                "INSERT INTO settings (group_name, key_name, value, is_secret) VALUES (:g, :k, :v, :s)",
+                [':g' => $group, ':k' => $key, ':v' => $stored, ':s' => $isSecret ? 1 : 0]
+            );
+        }
 
         self::$cache = null; // invalida cache
     }

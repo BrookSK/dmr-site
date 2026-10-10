@@ -4,12 +4,18 @@ $whats = preg_replace('/\D+/', '', (string) setting('whatsapp_number', '55119822
 $instagram = ltrim((string) setting('instagram', 'dmrassessoria'), '@');
 $email = (string) setting('contact_email', 'contato@dmrassessoria.com.br');
 $year = date('Y');
+$siteName = (string) setting('site_name', 'DMR Assessoria Imobiliária');
+$footerLogo = brand_logo_url('dark');
 ?>
 <footer class="site-footer">
     <div class="container site-footer__grid">
         <div class="site-footer__brand">
-            <span class="brand__mark brand__mark--light">DMR</span>
-            <p class="site-footer__tagline">Assessoria Imobiliária</p>
+            <?php if ($footerLogo): ?>
+                <img class="brand__logo brand__logo--footer" src="<?= e($footerLogo) ?>" alt="<?= e($siteName) ?>">
+            <?php else: ?>
+                <span class="brand__mark brand__mark--light">DMR</span>
+                <p class="site-footer__tagline">Assessoria Imobiliária</p>
+            <?php endif; ?>
             <p class="site-footer__desc">Crédito imobiliário com acompanhamento próximo, do primeiro passo até a entrega das chaves.</p>
         </div>
 
@@ -38,7 +44,7 @@ $year = date('Y');
     </div>
 
     <div class="container site-footer__bottom">
-        <p>&copy; <?= e($year) ?> DMR Assessoria Imobiliária. Todos os direitos reservados.</p>
+        <p>&copy; <?= e($year) ?> <?= e($siteName) ?>. Todos os direitos reservados.</p>
         <div class="site-footer__meta">
             <a class="site-footer__credit" href="https://lrvweb.com.br" target="_blank" rel="noopener">Desenvolvido por LRV Web</a>
             <a class="site-footer__restricted" href="<?= e(base_url('admin/login')) ?>">Área Restrita</a>

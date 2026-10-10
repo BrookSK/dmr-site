@@ -1,12 +1,17 @@
 <?php
-$whats = preg_replace('/\D+/', '', (string) setting('whatsapp_number', '5511982231363'));
+$siteName = (string) setting('site_name', 'DMR Assessoria Imobiliária');
+$headerLogo = brand_logo_url('dark');
 ?>
 <?php $solidHeader = $solidHeader ?? false; ?>
 <header class="site-header<?= $solidHeader ? ' site-header--solid' : '' ?>" id="siteHeader"<?= $solidHeader ? ' data-solid="1"' : '' ?>>
     <div class="container site-header__inner">
-        <a class="brand" href="<?= e(base_url('')) ?>" aria-label="DMR Assessoria Imobiliária — página inicial">
-            <span class="brand__mark">DMR</span>
-            <span class="brand__sub">Assessoria Imobiliária</span>
+        <a class="brand<?= $headerLogo ? ' brand--logo' : '' ?>" href="<?= e(base_url('')) ?>" aria-label="<?= e($siteName) ?> — página inicial">
+            <?php if ($headerLogo): ?>
+                <img class="brand__logo" src="<?= e($headerLogo) ?>" alt="<?= e($siteName) ?>">
+            <?php else: ?>
+                <span class="brand__mark">DMR</span>
+                <span class="brand__sub">Assessoria Imobiliária</span>
+            <?php endif; ?>
         </a>
 
         <nav class="site-nav" id="siteNav" aria-label="Navegação principal">

@@ -21,8 +21,13 @@ $isActive = static fn (string $prefix): string =>
 <body class="admin">
 <div class="admin-shell">
     <aside class="admin-sidebar" id="adminSidebar">
-        <div class="admin-brand">
-            <span class="admin-brand__mark">DMR</span>
+        <?php $adminLogo = brand_logo_url('dark'); ?>
+        <div class="admin-brand<?= $adminLogo ? ' admin-brand--logo' : '' ?>">
+            <?php if ($adminLogo): ?>
+                <img class="admin-brand__logo" src="<?= e($adminLogo) ?>" alt="<?= e(setting('site_name', 'DMR Assessoria Imobiliária')) ?>">
+            <?php else: ?>
+                <span class="admin-brand__mark">DMR</span>
+            <?php endif; ?>
             <span class="admin-brand__text">Painel</span>
         </div>
         <nav class="admin-nav" aria-label="Navegação principal">

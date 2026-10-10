@@ -85,4 +85,28 @@ final class Request
     {
         return (string) ($_SERVER['HTTP_USER_AGENT'] ?? '');
     }
+
+    /**
+     * Arquivo enviado via multipart. Null quando o campo não veio ou está vazio.
+     *
+     * @return array{name:string,type:string,tmp_name:string,error:int,size:int}|null
+     */
+    public function file(string $key): ?array
+    {
+        $file = $_FILES[$key] ?? null;
+        if (!is_array($file) || !isset($file['error'], $file['tmp_name'])) {
+            return null;
+        }
+        if ((int) $file['error'] === UPLOAD_ERR_NO_FILE) {
+            return null;
+        }
+
+        return [
+            'name'     => (string) ($file['name'] ?? ''),
+            'type'     => (string) ($file['type'] ?? ''),
+            'tmp_name' => (string) $file['tmp_name'],
+            'error'    => (int) $file['error'],
+            'size'     => (int) ($file['size'] ?? 0),
+        ];
+    }
 }

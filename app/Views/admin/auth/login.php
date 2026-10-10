@@ -16,9 +16,14 @@ use App\Core\Csrf;
 <body class="admin admin--auth">
 <div class="login-wrap">
     <div class="login-card">
-        <div class="login-brand">
-            <span class="login-brand__mark">DMR</span>
-            <span class="login-brand__sub">Assessoria Imobiliária</span>
+        <?php $loginLogo = brand_logo_url('light'); ?>
+        <div class="login-brand<?= $loginLogo ? ' login-brand--logo' : '' ?>">
+            <?php if ($loginLogo): ?>
+                <img class="login-brand__logo" src="<?= e($loginLogo) ?>" alt="<?= e(setting('site_name', 'DMR Assessoria Imobiliária')) ?>">
+            <?php else: ?>
+                <span class="login-brand__mark">DMR</span>
+                <span class="login-brand__sub">Assessoria Imobiliária</span>
+            <?php endif; ?>
         </div>
         <h1 class="login-title">Acesso ao painel</h1>
         <p class="login-desc">Entre com suas credenciais para continuar.</p>

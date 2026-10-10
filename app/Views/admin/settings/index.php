@@ -5,6 +5,7 @@
 /** @var string|null $error */
 /** @var string $activeTab */
 use App\Core\Csrf;
+use App\Services\BrandLogoService;
 
 $g = static fn (string $k): string => e($general[$k] ?? '');
 $s = static fn (string $k): string => e($smtp[$k] ?? '');
@@ -23,11 +24,49 @@ $hasPassword = !empty($smtp['smtp_password']);
     <!-- Aba Geral -->
     <div class="tabs__panel<?= $activeTab === 'general' ? ' is-active' : '' ?>" data-panel="general">
         <section class="panel panel--form">
-            <form action="<?= e(base_url('admin/configuracoes/geral')) ?>" method="post" class="form">
+            <form action="<?= e(base_url('admin/configuracoes/geral')) ?>" method="post" class="form" enctype="multipart/form-data">
                 <?= Csrf::field() ?>
                 <div class="form-group">
                     <label for="site_name">Nome do site</label>
                     <input type="text" id="site_name" name="site_name" value="<?= $g('site_name') ?>">
+                </div>
+                <div class="form-group">
+                    <span class="form-label">Logos da marca</span>
+                    <small class="muted">Quando cadastradas, substituem o texto “DMR Assessoria Imobiliária” no header, no footer e na área restrita.</small>
+                </div>
+                <div class="logo-fields">
+                    <?php
+                    $logoDark = BrandLogoService::url($general['site_logo'] ?? null);
+                    $logoLight = BrandLogoService::url($general['site_logo_on_light'] ?? null);
+                    ?>
+                    <div class="logo-field">
+                        <label for="site_logo">Logo para fundo escuro</label>
+                        <small class="muted">Header, footer do site e menu do painel.</small>
+                        <?php if ($logoDark): ?>
+                            <div class="logo-preview logo-preview--dark">
+                                <img src="<?= e($logoDark) ?>" alt="Logo atual (fundo escuro)">
+                            </div>
+                            <label class="checkbox checkbox--inline">
+                                <input type="checkbox" name="remove_site_logo" value="1">
+                                <span>Remover esta logo</span>
+                            </label>
+                        <?php endif; ?>
+                        <input type="file" id="site_logo" name="site_logo" accept="image/png,image/jpeg,image/webp,image/svg+xml">
+                    </div>
+                    <div class="logo-field">
+                        <label for="site_logo_on_light">Logo para fundo claro</label>
+                        <small class="muted">Tela de login. Se vazia, usa a logo de fundo escuro.</small>
+                        <?php if ($logoLight): ?>
+                            <div class="logo-preview logo-preview--light">
+                                <img src="<?= e($logoLight) ?>" alt="Logo atual (fundo claro)">
+                            </div>
+                            <label class="checkbox checkbox--inline">
+                                <input type="checkbox" name="remove_site_logo_on_light" value="1">
+                                <span>Remover esta logo</span>
+                            </label>
+                        <?php endif; ?>
+                        <input type="file" id="site_logo_on_light" name="site_logo_on_light" accept="image/png,image/jpeg,image/webp,image/svg+xml">
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="site_url">URL base</label>

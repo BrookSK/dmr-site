@@ -74,6 +74,18 @@ if (!function_exists('setting')) {
     }
 }
 
+if (!function_exists('brand_logo_url')) {
+    /**
+     * URL da logo cadastrada. Use 'dark' no header/footer/painel e 'light' no login.
+     *
+     * @param 'dark'|'light' $surface
+     */
+    function brand_logo_url(string $surface = 'dark'): ?string
+    {
+        return \App\Services\BrandLogoService::urlFor($surface);
+    }
+}
+
 if (!function_exists('lazy_img')) {
     /**
      * Gera uma tag <img> otimizada (lazy loading + decoding assíncrono).
