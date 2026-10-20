@@ -15,7 +15,10 @@ $waLink = static fn (string $msg): string => 'https://wa.me/' . $whats . '?text=
 
 <!-- ============================ HERO ============================ -->
 <section class="hero">
-    <img class="hero__img" src="<?= e(asset('img/hero.jpg')) ?>" alt="" width="1920" height="1280" fetchpriority="high" decoding="async">
+    <picture>
+        <source media="(max-width: 760px)" srcset="<?= e(asset('img/hero-mobile.jpg')) ?>">
+        <img class="hero__img" src="<?= e(asset('img/hero.jpg')) ?>" alt="" width="2400" height="1632" fetchpriority="high" decoding="async">
+    </picture>
     <div class="hero__shade" aria-hidden="true"></div>
     <div class="container hero__inner">
         <div class="hero__content reveal">
@@ -33,11 +36,11 @@ $waLink = static fn (string $msg): string => 'https://wa.me/' . $whats . '?text=
 <!-- ============================ NÚMEROS ============================ -->
 <section class="stats" aria-label="Números da DMR">
     <div class="container">
-        <ul class="stats__grid">
+        <ul class="stats__grid reveal">
             <li class="stat"><strong>30+</strong><span>anos no mercado imobiliário</span></li>
             <li class="stat"><strong>100 mil+</strong><span>unidades financiadas</span></li>
             <li class="stat"><strong>5</strong><span>grandes bancos parceiros</span></li>
-            <li class="stat"><strong>Ponta a ponta</strong><span>da análise à entrega das chaves</span></li>
+            <li class="stat"><strong>100%</strong><span>do processo acompanhado, até as chaves</span></li>
         </ul>
     </div>
 </section>
@@ -46,7 +49,7 @@ $waLink = static fn (string $msg): string => 'https://wa.me/' . $whats . '?text=
 <section class="section" id="sobre">
     <div class="container about">
         <figure class="about__photo reveal">
-            <img src="<?= e(asset('img/proprietaria.jpg')) ?>" alt="Fundadora da DMR Assessoria Imobiliária" width="900" height="1100" loading="lazy" decoding="async">
+            <img src="<?= e(asset('img/proprietaria.jpg')) ?>" alt="Fundadora da DMR Assessoria Imobiliária" width="800" height="1000" loading="lazy" decoding="async">
         </figure>
         <div class="about__text reveal">
             <span class="eyebrow">Quem é a DMR</span>
