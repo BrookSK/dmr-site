@@ -52,7 +52,7 @@
         });
         // Garante estado limpo ao voltar para desktop.
         window.addEventListener('resize', function () {
-            if (window.innerWidth > 720 && nav.classList.contains('is-open')) { closeMenu(); }
+            if (window.innerWidth > 760 && nav.classList.contains('is-open')) { closeMenu(); }
         });
     }
 

@@ -8,67 +8,56 @@ use App\Core\Csrf;
 
 $whats = preg_replace('/\D+/', '', (string) setting('whatsapp_number', '5511982231363'));
 $phone = (string) setting('contact_phone', '(11) 98223-1363');
+$insta = ltrim((string) setting('instagram', 'dmrassessoria'), '@');
 $old = is_array($contactOld ?? null) ? $contactOld : [];
-$waLink = static fn (string $msg): string =>
-    'https://wa.me/' . $whats . '?text=' . rawurlencode($msg);
+$waLink = static fn (string $msg): string => 'https://wa.me/' . $whats . '?text=' . rawurlencode($msg);
 ?>
 
 <!-- ============================ HERO ============================ -->
 <section class="hero">
-    <div class="container hero__grid">
+    <img class="hero__img" src="<?= e(asset('img/hero.jpg')) ?>" alt="" width="1920" height="1280" fetchpriority="high" decoding="async">
+    <div class="hero__shade" aria-hidden="true"></div>
+    <div class="container hero__inner">
         <div class="hero__content reveal">
-            <span class="hero__eyebrow">Assessoria em crédito imobiliário</span>
-            <h1 class="hero__title">Entre o sonho e as chaves, existe a DMR para te acompanhar.</h1>
-            <p class="hero__text">
-                Mais de 30 anos realizando o sonho da casa própria. Cuidamos de todo o financiamento
-                para você — com atendimento próximo, do início até a entrega das chaves.
-            </p>
+            <span class="eyebrow eyebrow--light">Assessoria em crédito imobiliário</span>
+            <h1 class="hero__title">Seu financiamento conduzido por quem tem <em>30 anos</em> de experiência.</h1>
+            <p class="hero__text">Análise, documentação, aprovação no banco e registro. A DMR cuida de cada etapa até você receber as chaves.</p>
             <div class="hero__actions">
-                <a class="btn btn--gold" href="<?= e($waLink('Olá! Quero realizar o sonho da casa própria com a DMR.')) ?>" target="_blank" rel="noopener">Quero meu financiamento</a>
-                <a class="btn btn--outline" href="#servicos">Como funciona</a>
-            </div>
-        </div>
-        <div class="hero__media reveal">
-            <img src="<?= e(asset('img/hero-casa.svg')) ?>" alt="Casal recebendo as chaves da casa própria" width="520" height="560" loading="eager" decoding="async">
-            <div class="hero__badge">
-                <strong>+100 mil</strong>
-                <span>unidades financiadas</span>
+                <a class="btn btn--gold" href="<?= e($waLink('Olá! Quero financiar meu imóvel com a DMR.')) ?>" target="_blank" rel="noopener">Simular meu financiamento</a>
+                <a class="btn btn--ghost-light" href="#servicos">Conheça os serviços</a>
             </div>
         </div>
     </div>
 </section>
 
-<!-- ====================== NÚMEROS / EXPERTISE ====================== -->
-<section class="stats" aria-label="Expertise da DMR">
-    <div class="container stats__grid">
-        <div class="stat reveal"><span class="stat__num">30+</span><span class="stat__label">anos de experiência</span></div>
-        <div class="stat reveal"><span class="stat__num">100 mil+</span><span class="stat__label">unidades financiadas</span></div>
-        <div class="stat reveal"><span class="stat__num">5</span><span class="stat__label">grandes bancos parceiros</span></div>
-        <div class="stat reveal"><span class="stat__num">100%</span><span class="stat__label">acompanhamento do processo</span></div>
+<!-- ============================ NÚMEROS ============================ -->
+<section class="stats" aria-label="Números da DMR">
+    <div class="container">
+        <ul class="stats__grid">
+            <li class="stat"><strong>30+</strong><span>anos no mercado imobiliário</span></li>
+            <li class="stat"><strong>100 mil+</strong><span>unidades financiadas</span></li>
+            <li class="stat"><strong>5</strong><span>grandes bancos parceiros</span></li>
+            <li class="stat"><strong>Ponta a ponta</strong><span>da análise à entrega das chaves</span></li>
+        </ul>
     </div>
 </section>
 
 <!-- ============================ QUEM SOMOS ============================ -->
-<section class="section about" id="sobre">
-    <div class="container about__grid">
-        <div class="about__photo reveal">
-            <!-- FOTO DE EXEMPLO (placeholder de pessoa real). Substituir pela foto
-                 oficial da proprietária: troque a URL por asset('img/proprietaria.jpg'). -->
-            <img src="https://randomuser.me/api/portraits/women/42.jpg"
-                 alt="Fundadora da DMR Assessoria Imobiliária (foto ilustrativa)"
-                 width="480" height="600" loading="lazy" decoding="async">
-            <span class="about__photo-note">Foto ilustrativa — substituir pela foto da proprietária</span>
-        </div>
+<section class="section" id="sobre">
+    <div class="container about">
+        <figure class="about__photo reveal">
+            <img src="<?= e(asset('img/proprietaria.jpg')) ?>" alt="Fundadora da DMR Assessoria Imobiliária" width="900" height="1100" loading="lazy" decoding="async">
+        </figure>
         <div class="about__text reveal">
             <span class="eyebrow">Quem é a DMR</span>
-            <h2 class="section__title">Experiência que faz o financiamento acontecer.</h2>
-            <p>
-                São mais de 30 anos de mercado e mais de 100 mil unidades financiadas. A DMR nasceu para
-                simplificar o caminho até a casa própria, cuidando da parte burocrática para que o cliente
-                não precise enfrentá-la sozinho.
-            </p>
-            <p class="about__quote">“Não entregamos só um financiamento. Acompanhamos você até a entrega das chaves.”</p>
-            <a class="btn btn--primary" href="<?= e($waLink('Olá! Gostaria de falar com a DMR sobre crédito imobiliário.')) ?>" target="_blank" rel="noopener">Fale com a nossa equipe</a>
+            <h2 class="section__title">Experiência que encurta o caminho até a casa própria.</h2>
+            <p>Há mais de três décadas a DMR assessora compradores, corretores, imobiliárias e construtoras em todas as etapas do crédito imobiliário. Mais de 100 mil unidades já passaram pelas nossas mãos.</p>
+            <p>Somos correspondentes bancários e trabalhamos com os maiores bancos do país para encontrar a condição certa para cada perfil — com atendimento próximo e alguém que conhece o seu processo do início ao fim.</p>
+            <ul class="about__list">
+                <li><?= icon('check', 18) ?> Atendimento direto, sem intermediários</li>
+                <li><?= icon('check', 18) ?> Acompanhamento em tempo real</li>
+                <li><?= icon('check', 18) ?> Equipe com mais de 20 anos de mercado</li>
+            </ul>
         </div>
     </div>
 </section>
@@ -76,30 +65,30 @@ $waLink = static fn (string $msg): string =>
 <!-- ============================ SERVIÇOS ============================ -->
 <section class="section section--soft" id="servicos">
     <div class="container">
-        <div class="section__head section__head--center reveal">
-            <span class="eyebrow">O que fazemos por você</span>
-            <h2 class="section__title">Tudo o que o seu financiamento precisa.</h2>
+        <div class="section__head reveal">
+            <span class="eyebrow">Serviços</span>
+            <h2 class="section__title">Tudo o que o seu financiamento precisa, em um só lugar.</h2>
         </div>
-        <div class="services-grid reveal">
+        <div class="services reveal">
             <article class="service">
                 <span class="service__ico"><?= icon('credito') ?></span>
-                <h3>Crédito imobiliário</h3>
-                <p>Encontramos a melhor condição de financiamento para o seu perfil.</p>
+                <h3>Financiamento imobiliário</h3>
+                <p>Comparamos as condições dos bancos e conduzimos a contratação.</p>
             </article>
             <article class="service">
                 <span class="service__ico"><?= icon('analise') ?></span>
                 <h3>Análise de crédito</h3>
-                <p>Avaliamos sua capacidade e as chances de aprovação antes de avançar.</p>
+                <p>Avaliamos renda e perfil antes de avançar, para aprovar com segurança.</p>
             </article>
             <article class="service">
                 <span class="service__ico"><?= icon('juridico') ?></span>
-                <h3>Análise jurídica</h3>
-                <p>Conferência completa da documentação para um processo seguro.</p>
+                <h3>Análise jurídica e registro</h3>
+                <p>Documentação, certidões, ITBI e cartório sem você correr atrás.</p>
             </article>
             <article class="service">
                 <span class="service__ico"><?= icon('fgts') ?></span>
-                <h3>Saque de FGTS</h3>
-                <p>Apoio no uso do FGTS dentro das regras do financiamento.</p>
+                <h3>Uso do FGTS e Home Equity</h3>
+                <p>FGTS na compra e crédito com garantia de imóvel quitado.</p>
             </article>
         </div>
     </div>
@@ -108,76 +97,82 @@ $waLink = static fn (string $msg): string =>
 <!-- ============================ COMO FUNCIONA ============================ -->
 <section class="section" id="como-funciona">
     <div class="container">
-        <div class="section__head section__head--center reveal">
-            <span class="eyebrow">Simples do começo ao fim</span>
-            <h2 class="section__title">Seu caminho até a casa própria.</h2>
+        <div class="section__head reveal">
+            <span class="eyebrow">Como funciona</span>
+            <h2 class="section__title">Quatro etapas. Uma equipe com você em todas.</h2>
         </div>
         <ol class="steps reveal">
-            <li class="step"><span class="step__n">1</span><h3>Análise</h3><p>Entendemos seu perfil e as possibilidades de crédito.</p></li>
-            <li class="step"><span class="step__n">2</span><h3>Documentação</h3><p>Organizamos tudo para o banco, sem dor de cabeça.</p></li>
-            <li class="step"><span class="step__n">3</span><h3>Aprovação</h3><p>Acompanhamos a análise junto às instituições.</p></li>
-            <li class="step"><span class="step__n">4</span><h3>Chaves</h3><p>Assinatura, registro e o seu imóvel na sua mão.</p></li>
+            <li class="step"><span class="step__n">01</span><h3>Análise</h3><p>Entendemos seu perfil e as melhores opções de crédito.</p></li>
+            <li class="step"><span class="step__n">02</span><h3>Documentação</h3><p>Organizamos e enviamos tudo o que o banco pede.</p></li>
+            <li class="step"><span class="step__n">03</span><h3>Aprovação</h3><p>Acompanhamos a análise junto à instituição.</p></li>
+            <li class="step"><span class="step__n">04</span><h3>Chaves na mão</h3><p>Contrato, registro e liberação do seu imóvel.</p></li>
         </ol>
     </div>
 </section>
 
 <!-- ============================ BANCOS ============================ -->
-<section class="section section--soft" id="bancos">
+<section class="section section--soft section--tight" id="bancos">
     <div class="container">
         <div class="section__head section__head--center reveal">
-            <span class="eyebrow">Parceiros</span>
+            <span class="eyebrow">Bancos parceiros</span>
             <h2 class="section__title">Trabalhamos com os maiores bancos do país.</h2>
-            <p class="section__lead">Buscamos a condição mais adequada para cada perfil, em diferentes instituições.</p>
         </div>
-        <div class="banks reveal">
+        <ul class="banks reveal">
             <?= \App\Core\View::renderPartial('site/partials/banks') ?>
-        </div>
+        </ul>
     </div>
 </section>
 
-<!-- ============================ CTA / CONTATO ============================ -->
-<section class="section section--cta" id="contato">
+<!-- ============================ CONTATO ============================ -->
+<section class="section section--dark" id="contato">
     <div class="container cta">
         <div class="cta__intro reveal">
-            <h2 class="section__title">Pronto para realizar o sonho da casa própria?</h2>
-            <p class="cta__text">Fale agora com a DMR. A gente cuida do financiamento e acompanha você em cada etapa.</p>
+            <span class="eyebrow eyebrow--light">Fale com a DMR</span>
+            <h2 class="section__title section__title--light">Vamos tirar o seu imóvel do papel?</h2>
+            <p class="cta__text">Conte o seu momento e um especialista entra em contato para orientar o melhor caminho.</p>
             <ul class="cta__contacts">
-                <li><a href="https://wa.me/<?= e($whats) ?>" target="_blank" rel="noopener"><?= icon('check', 20) ?> WhatsApp: <?= e($phone) ?></a></li>
-                <li><a href="https://instagram.com/<?= e(ltrim((string) setting('instagram','dmrassessoria'),'@')) ?>" target="_blank" rel="noopener"><?= icon('check', 20) ?> @<?= e(ltrim((string) setting('instagram','dmrassessoria'),'@')) ?></a></li>
+                <li><a href="https://wa.me/<?= e($whats) ?>" target="_blank" rel="noopener"><span><?= icon('externo', 18) ?></span><?= e($phone) ?> · WhatsApp</a></li>
+                <li><a href="https://instagram.com/<?= e($insta) ?>" target="_blank" rel="noopener"><span><?= icon('externo', 18) ?></span>@<?= e($insta) ?></a></li>
             </ul>
         </div>
 
         <div class="cta__form reveal">
-            <?php if (!empty($contactSuccess)): ?>
-                <div class="form-alert form-alert--ok"><?= e($contactSuccess) ?></div>
-            <?php endif; ?>
-            <?php if (!empty($contactError)): ?>
-                <div class="form-alert form-alert--error"><?= e($contactError) ?></div>
-            <?php endif; ?>
+            <?php if (!empty($contactSuccess)): ?><div class="form-alert form-alert--ok"><?= e($contactSuccess) ?></div><?php endif; ?>
+            <?php if (!empty($contactError)): ?><div class="form-alert form-alert--error"><?= e($contactError) ?></div><?php endif; ?>
 
             <form action="<?= e(base_url('contato')) ?>" method="post" class="contact-form" novalidate>
                 <?= Csrf::field() ?>
                 <input type="text" name="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
                 <div class="field">
                     <label for="name">Nome</label>
-                    <input type="text" id="name" name="name" required value="<?= old('name', $old) ?>">
+                    <input type="text" id="name" name="name" required autocomplete="name" value="<?= old('name', $old) ?>">
                 </div>
                 <div class="field-row">
                     <div class="field">
-                        <label for="email">E-mail</label>
-                        <input type="email" id="email" name="email" required value="<?= old('email', $old) ?>">
+                        <label for="phone">WhatsApp</label>
+                        <input type="tel" id="phone" name="phone" required autocomplete="tel" value="<?= old('phone', $old) ?>">
                     </div>
                     <div class="field">
-                        <label for="phone">WhatsApp</label>
-                        <input type="text" id="phone" name="phone" required value="<?= old('phone', $old) ?>">
+                        <label for="email">E-mail</label>
+                        <input type="email" id="email" name="email" required autocomplete="email" value="<?= old('email', $old) ?>">
                     </div>
                 </div>
                 <div class="field">
-                    <label for="message">Como podemos ajudar?</label>
-                    <textarea id="message" name="message" rows="3"><?= old('message', $old) ?></textarea>
-                    <input type="hidden" name="audience" value="cliente">
+                    <label for="audience">Você é</label>
+                    <select id="audience" name="audience">
+                        <?php
+                        $opts = ['cliente' => 'Comprador de imóvel', 'corretor' => 'Corretor', 'imobiliaria' => 'Imobiliária', 'construtora' => 'Construtora / Incorporadora', 'home-equity' => 'Interessado em Home Equity', 'outro' => 'Outro'];
+                        $sel = $old['audience'] ?? 'cliente';
+                        foreach ($opts as $v => $l): ?>
+                            <option value="<?= e($v) ?>" <?= $sel === $v ? 'selected' : '' ?>><?= e($l) ?></option>
+                        <?php endforeach; ?>
+                    </select>
                 </div>
-                <button type="submit" class="btn btn--gold btn--block">Quero falar com a DMR</button>
+                <div class="field">
+                    <label for="message">Mensagem <small>(opcional)</small></label>
+                    <textarea id="message" name="message" rows="3"><?= old('message', $old) ?></textarea>
+                </div>
+                <button type="submit" class="btn btn--gold btn--block">Quero ser atendido</button>
                 <p class="form-privacy">Ao enviar, você concorda com a <a href="<?= e(base_url('politica-de-privacidade')) ?>">Política de Privacidade</a>.</p>
             </form>
         </div>
