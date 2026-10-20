@@ -17,9 +17,8 @@ $headerLogo = brand_logo_url('dark');
         <nav class="site-nav" id="siteNav" aria-label="Navegação principal">
             <a href="<?= e(base_url('#sobre')) ?>">A DMR</a>
             <a href="<?= e(base_url('#servicos')) ?>">Serviços</a>
-            <a href="<?= e(base_url('#jornada')) ?>">A jornada</a>
-            <a href="<?= e(base_url('#solucoes')) ?>">Soluções</a>
-            <a href="<?= e(base_url('#home-equity')) ?>">Home Equity</a>
+            <a href="<?= e(base_url('#como-funciona')) ?>">Como funciona</a>
+            <a href="<?= e(base_url('#bancos')) ?>">Bancos</a>
             <a href="<?= e(base_url('#contato')) ?>" class="site-nav__cta">Fale com a DMR</a>
         </nav>
 

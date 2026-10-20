@@ -23,9 +23,8 @@ $footerLogo = brand_logo_url('dark');
             <h3>Navegação</h3>
             <a href="<?= e(base_url('#sobre')) ?>">A DMR</a>
             <a href="<?= e(base_url('#servicos')) ?>">Serviços</a>
-            <a href="<?= e(base_url('#jornada')) ?>">A jornada</a>
-            <a href="<?= e(base_url('#solucoes')) ?>">Soluções</a>
-            <a href="<?= e(base_url('#home-equity')) ?>">Home Equity</a>
+            <a href="<?= e(base_url('#como-funciona')) ?>">Como funciona</a>
+            <a href="<?= e(base_url('#bancos')) ?>">Bancos</a>
             <a href="<?= e(base_url('#contato')) ?>">Contato</a>
         </nav>
 

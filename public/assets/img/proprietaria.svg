@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 800" width="640" height="800" role="img" aria-label="Foto da proprietária (placeholder)">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#EAE6DF"/>
+      <stop offset="1" stop-color="#d9d1c4"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="800" fill="url(#bg)"/>
+  <!-- Silhueta de retrato profissional -->
+  <g fill="#b9ad9a">
+    <circle cx="320" cy="300" r="120"/>
+    <path d="M140 800c0-120 80-210 180-210s180 90 180 210z"/>
+  </g>
+  <g fill="#9c8f78" opacity=".5">
+    <circle cx="320" cy="300" r="120"/>
+  </g>
+  <text x="320" y="470" text-anchor="middle" font-family="Arial, sans-serif" font-size="26" fill="#8a7d68" letter-spacing="1">Foto da proprietária</text>
+  <text x="320" y="505" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" fill="#a2957f">(imagem ilustrativa — substituir)</text>
+</svg>
