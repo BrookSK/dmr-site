@@ -218,7 +218,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 
 /* --- Footer --------------------------------------------------------------- */
 .site-footer { background: #151310; color: rgba(255,255,255,.7); padding: 64px 0 26px; }
-.site-footer__grid { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; gap: 40px; padding-bottom: 40px; border-bottom: 1px solid rgba(255,255,255,.08); }
+.site-footer__grid { display: grid; grid-template-columns: 1.5fr 1fr 1.35fr 1fr; gap: 40px; padding-bottom: 40px; border-bottom: 1px solid rgba(255,255,255,.08); }
 .brand__mark--light { color: #fff; font-size: 26px; font-family: 'Fraunces', serif; font-weight: 600; letter-spacing: 4px; display: block; }
 .brand__logo--footer { height: 48px; width: auto; margin-bottom: 16px; }
 .site-footer__tagline { font-size: 10px; letter-spacing: 2.6px; text-transform: uppercase; color: var(--gold); margin: 6px 0 16px; }
@@ -226,6 +226,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .site-footer__col h3 { color: #fff; font-family: 'Inter', sans-serif; font-size: 12px; text-transform: uppercase; letter-spacing: 1.6px; margin: 0 0 16px; font-weight: 600; }
 .site-footer__col a { display: block; color: rgba(255,255,255,.62); text-decoration: none; margin-bottom: 10px; font-size: .92rem; transition: color .2s; overflow-wrap: anywhere; }
 .site-footer__col a:hover { color: var(--gold); }
+.site-footer__col .site-footer__email { white-space: nowrap; overflow-wrap: normal; }
 .site-footer__bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 22px; flex-wrap: wrap; gap: 12px; }
 .site-footer__bottom p { margin: 0; font-size: .82rem; color: rgba(255,255,255,.45); }
 .site-footer__meta { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }

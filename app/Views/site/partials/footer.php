@@ -32,7 +32,7 @@ $footerLogo = brand_logo_url('dark');
         <div class="site-footer__col">
             <h3>Contato</h3>
             <a href="https://wa.me/<?= e($whats) ?>" target="_blank" rel="noopener"><?= e($phone) ?></a>
-            <a href="mailto:<?= e($email) ?>"><?= e($email) ?></a>
+            <a class="site-footer__email" href="mailto:<?= e($email) ?>"><?= e($email) ?></a>
             <a href="https://instagram.com/<?= e($instagram) ?>" target="_blank" rel="noopener">@<?= e($instagram) ?></a>
         </div>
 
