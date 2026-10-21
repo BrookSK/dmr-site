@@ -1,7 +1,7 @@
 <?php
 $phone = (string) setting('contact_phone', '(11) 98223-1363');
 $whats = preg_replace('/\D+/', '', (string) setting('whatsapp_number', '5511982231363'));
-$instagram = ltrim((string) setting('instagram', 'dmrassessoria'), '@');
+$instagram = ltrim((string) setting('instagram', 'dmrassessoriaoficial'), '@');
 $email = (string) setting('contact_email', 'contato@dmrassessoria.com.br');
 $year = date('Y');
 $siteName = (string) setting('site_name', 'DMR Assessoria Imobiliária');
@@ -24,7 +24,8 @@ $footerLogo = brand_logo_url('dark');
             <a href="<?= e(base_url('#sobre')) ?>">A DMR</a>
             <a href="<?= e(base_url('#servicos')) ?>">Serviços</a>
             <a href="<?= e(base_url('#como-funciona')) ?>">Como funciona</a>
-            <a href="<?= e(base_url('#bancos')) ?>">Bancos</a>
+            <a href="<?= e(base_url('#valores')) ?>">Missão e valores</a>
+            <a href="<?= e(base_url('#bancos')) ?>">Parceiros</a>
             <a href="<?= e(base_url('#contato')) ?>">Contato</a>
         </nav>
 

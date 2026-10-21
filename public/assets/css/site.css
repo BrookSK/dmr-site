@@ -118,12 +118,19 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .hero__text { color: #fff; font-size: 1.15rem; max-width: 520px; margin-bottom: 36px; text-shadow: 0 1px 12px rgba(0,0,0,.45); }
 .hero .eyebrow--light { color: #e2c98d; }
 .hero__actions { display: flex; gap: 14px; flex-wrap: wrap; }
-.hero .btn--ghost-light { background: rgba(14,12,10,.35); border-color: rgba(255,255,255,.75); backdrop-filter: blur(4px); }
+.hero .btn--ghost-light { background: rgba(14,12,10,.35); border-color: rgba(255,255,255,.75); color: #fff; backdrop-filter: blur(4px); }
+.hero .btn--ghost-light:hover, .hero .btn--ghost-light:focus-visible { background: #fff; border-color: #fff; color: var(--dark); }
 
 /* Menu legível sobre a foto (apenas desktop; no mobile o menu abre na gaveta escura) */
 @media (min-width: 761px) {
     .site-header:not(.is-scrolled):not(.site-header--solid) .site-nav a { color: #fff; text-shadow: 0 1px 10px rgba(0,0,0,.5); }
-    .site-header:not(.is-scrolled):not(.site-header--solid) .site-nav__cta { background: rgba(14,12,10,.35); text-shadow: none; }
+    .site-header:not(.is-scrolled):not(.site-header--solid) .site-nav__cta { background: rgba(14,12,10,.35); color: var(--gold) !important; text-shadow: none; }
+    .site-header .site-nav__cta:hover,
+    .site-header .site-nav__cta:focus-visible,
+    .site-header:not(.is-scrolled):not(.site-header--solid) .site-nav__cta:hover,
+    .site-header:not(.is-scrolled):not(.site-header--solid) .site-nav__cta:focus-visible {
+        background: var(--gold); border-color: var(--gold); color: var(--dark) !important;
+    }
 }
 
 /* --- Números (cartão sobreposto ao fim do hero) -------------------------- */
@@ -166,11 +173,21 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .step p { color: var(--muted); margin: 0; font-size: .95rem; }
 
 /* --- Bancos --------------------------------------------------------------- */
-.banks { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; }
-.bank { background: #fff; border: 1px solid var(--line); height: 96px; display: grid; place-items: center; padding: 18px 22px; }
-.bank img { max-height: 30px; max-width: 100%; width: auto; filter: grayscale(1); opacity: .75; transition: filter .25s, opacity .25s; }
-.bank--square img { max-height: 48px; }
+.banks { display: grid; grid-template-columns: repeat(6, 1fr); gap: 14px; }
+.bank { background: #fff; border: 1px solid var(--line); border-radius: 10px; height: 92px; display: grid; place-items: center; padding: 18px 20px; transition: border-color .25s, box-shadow .25s; }
+.bank img { max-height: 28px; max-width: 100%; width: auto; filter: grayscale(1); opacity: .7; transition: filter .25s, opacity .25s; }
+.bank--square img { max-height: 46px; }
+.bank:hover { border-color: var(--gold); box-shadow: 0 10px 26px rgba(28,26,23,.07); }
 .bank:hover img { filter: none; opacity: 1; }
+
+/* --- Missão, visão e valores ---------------------------------------------- */
+.mvv { display: grid; grid-template-columns: 1fr 1fr 1.4fr; border-top: 1px solid rgba(255,255,255,.14); }
+.mvv__item { padding: 34px 36px 6px 0; }
+.mvv__item + .mvv__item { padding-left: 36px; border-left: 1px solid rgba(255,255,255,.14); }
+.mvv__label { display: block; font-size: 12px; letter-spacing: 2.4px; text-transform: uppercase; color: var(--gold); font-weight: 600; margin-bottom: 14px; }
+.mvv__item p { font-family: 'Fraunces', serif; font-size: 1.45rem; line-height: 1.35; color: #fff; margin: 0; }
+.mvv__values { display: flex; flex-wrap: wrap; gap: 10px; }
+.mvv__values li { white-space: nowrap; color: #fff; font-size: .95rem; padding: 8px 16px; border: 1px solid rgba(203,174,108,.45); border-radius: 999px; }
 
 /* --- Contato -------------------------------------------------------------- */
 .cta { display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: center; }
@@ -248,6 +265,8 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
     .services { grid-template-columns: repeat(2, 1fr); }
     .steps { grid-template-columns: repeat(2, 1fr); gap: 36px 28px; }
     .banks { grid-template-columns: repeat(3, 1fr); }
+    .mvv { grid-template-columns: 1fr 1fr; }
+    .mvv__item--values { grid-column: 1 / -1; padding-left: 0 !important; border-left: 0 !important; border-top: 1px solid rgba(255,255,255,.14); margin-top: 28px; }
     .about { gap: 56px; }
     .cta { gap: 48px; }
 }
@@ -327,7 +346,13 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
     .bank { height: 80px; padding: 14px; }
     .bank img { max-height: 24px; }
     .bank--square img { max-height: 40px; }
-    .bank:last-child { grid-column: 1 / -1; }
+
+    .mvv { grid-template-columns: 1fr; }
+    .mvv__item, .mvv__item + .mvv__item { padding: 24px 0; border-left: 0; border-top: 1px solid rgba(255,255,255,.14); }
+    .mvv__item:first-child { border-top: 0; }
+    .mvv__item--values { margin-top: 0; }
+    .mvv__item p { font-size: 1.25rem; }
+    .mvv__values li { font-size: .9rem; padding: 7px 14px; }
 
     .cta__form { padding: 26px 20px; }
     .field-row { grid-template-columns: 1fr; }

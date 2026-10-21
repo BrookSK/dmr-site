@@ -9,6 +9,7 @@ $banks = [
     ['file' => 'santander.svg', 'name' => 'Santander'],
     ['file' => 'bradesco.svg',  'name' => 'Bradesco'],
     ['file' => 'itau.svg',      'name' => 'Itaú', 'square' => true],
+    ['file' => 'credihome.svg', 'name' => 'Credihome'],
 ];
 ?>
 <?php foreach ($banks as $b): ?>

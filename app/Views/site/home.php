@@ -8,7 +8,7 @@ use App\Core\Csrf;
 
 $whats = preg_replace('/\D+/', '', (string) setting('whatsapp_number', '5511982231363'));
 $phone = (string) setting('contact_phone', '(11) 98223-1363');
-$insta = ltrim((string) setting('instagram', 'dmrassessoria'), '@');
+$insta = ltrim((string) setting('instagram', 'dmrassessoriaoficial'), '@');
 $old = is_array($contactOld ?? null) ? $contactOld : [];
 $waLink = static fn (string $msg): string => 'https://wa.me/' . $whats . '?text=' . rawurlencode($msg);
 ?>
@@ -39,7 +39,7 @@ $waLink = static fn (string $msg): string => 'https://wa.me/' . $whats . '?text=
         <ul class="stats__grid reveal">
             <li class="stat"><strong>30+</strong><span>anos no mercado imobiliário</span></li>
             <li class="stat"><strong>100 mil+</strong><span>unidades financiadas</span></li>
-            <li class="stat"><strong>5</strong><span>grandes bancos parceiros</span></li>
+            <li class="stat"><strong>6</strong><span>bancos e plataformas parceiros</span></li>
             <li class="stat"><strong>100%</strong><span>do processo acompanhado, até as chaves</span></li>
         </ul>
     </div>
@@ -113,12 +113,42 @@ $waLink = static fn (string $msg): string => 'https://wa.me/' . $whats . '?text=
     </div>
 </section>
 
+<!-- ===================== MISSÃO, VISÃO E VALORES ===================== -->
+<section class="section section--dark mvv-section" id="valores">
+    <div class="container">
+        <div class="section__head reveal">
+            <span class="eyebrow eyebrow--light">Missão, visão e valores</span>
+            <h2 class="section__title section__title--light">O que nos orienta.</h2>
+        </div>
+        <div class="mvv reveal">
+            <article class="mvv__item">
+                <span class="mvv__label">Missão</span>
+                <p>Realizar sonhos com inovação e responsabilidade.</p>
+            </article>
+            <article class="mvv__item">
+                <span class="mvv__label">Visão</span>
+                <p>Ser referência em crédito imobiliário e impacto social.</p>
+            </article>
+            <article class="mvv__item mvv__item--values">
+                <span class="mvv__label">Valores</span>
+                <ul class="mvv__values">
+                    <li>Ética</li>
+                    <li>Respeito</li>
+                    <li>Evolução</li>
+                    <li>Empreendedorismo</li>
+                    <li>Relações humanas</li>
+                </ul>
+            </article>
+        </div>
+    </div>
+</section>
+
 <!-- ============================ BANCOS ============================ -->
 <section class="section section--soft section--tight" id="bancos">
     <div class="container">
         <div class="section__head section__head--center reveal">
-            <span class="eyebrow">Bancos parceiros</span>
-            <h2 class="section__title">Trabalhamos com os maiores bancos do país.</h2>
+            <span class="eyebrow">Parceiros</span>
+            <h2 class="section__title">Trabalhamos com os maiores bancos e plataformas do país.</h2>
         </div>
         <ul class="banks reveal">
             <?= \App\Core\View::renderPartial('site/partials/banks') ?>

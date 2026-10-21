@@ -187,7 +187,9 @@ INSERT INTO `settings` (`group_name`, `key_name`, `value`, `is_secret`) VALUES
     ('general', 'contact_email',   'contato@dmrassessoria.com.br', 0),
     ('general', 'contact_phone',   '(11) 98223-1363', 0),
     ('general', 'whatsapp_number', '5511982231363', 0),
-    ('general', 'instagram',       'dmrassessoria', 0),
+    ('general', 'instagram',       'dmrassessoriaoficial', 0),
+    ('general', 'site_logo',       '', 0),
+    ('general', 'site_logo_on_light', '', 0),
     ('smtp',    'smtp_host',       '', 0),
     ('smtp',    'smtp_port',       '587', 0),
     ('smtp',    'smtp_username',   '', 0),
@@ -227,5 +229,7 @@ INSERT INTO `migrations` (`filename`) VALUES
     ('005_create_password_resets_table.sql'),
     ('006_seed_roles_permissions_settings.sql'),
     ('007_update_instagram_handle.sql'),
-    ('008_seed_superadmin.sql')
+    ('008_seed_superadmin.sql'),
+    ('009_add_site_logo_settings.sql'),
+    ('010_fix_instagram_handle.sql')
 ON DUPLICATE KEY UPDATE `filename` = VALUES(`filename`);

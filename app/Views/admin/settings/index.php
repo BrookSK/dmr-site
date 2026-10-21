@@ -90,7 +90,7 @@ $hasPassword = !empty($smtp['smtp_password']);
                     </div>
                     <div class="form-group">
                         <label for="instagram">Instagram (sem @)</label>
-                        <input type="text" id="instagram" name="instagram" value="<?= $g('instagram') ?>" placeholder="dmrassessoria">
+                        <input type="text" id="instagram" name="instagram" value="<?= $g('instagram') ?>" placeholder="dmrassessoriaoficial">
                     </div>
                 </div>
                 <button type="submit" class="btn btn--primary">Salvar configurações gerais</button>
