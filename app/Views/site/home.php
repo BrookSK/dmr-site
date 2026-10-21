@@ -114,11 +114,11 @@ $waLink = static fn (string $msg): string => 'https://wa.me/' . $whats . '?text=
 </section>
 
 <!-- ===================== MISSÃO, VISÃO E VALORES ===================== -->
-<section class="section section--dark mvv-section" id="valores">
+<section class="section section--soft mvv-section" id="valores">
     <div class="container">
         <div class="section__head reveal">
-            <span class="eyebrow eyebrow--light">Missão, visão e valores</span>
-            <h2 class="section__title section__title--light">O que nos orienta.</h2>
+            <span class="eyebrow">Missão, visão e valores</span>
+            <h2 class="section__title">O que nos orienta.</h2>
         </div>
         <div class="mvv reveal">
             <article class="mvv__item">
@@ -144,7 +144,7 @@ $waLink = static fn (string $msg): string => 'https://wa.me/' . $whats . '?text=
 </section>
 
 <!-- ============================ BANCOS ============================ -->
-<section class="section section--soft section--tight" id="bancos">
+<section class="section section--tight" id="bancos">
     <div class="container">
         <div class="section__head section__head--center reveal">
             <span class="eyebrow">Parceiros</span>
