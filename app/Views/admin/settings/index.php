@@ -86,12 +86,17 @@ $hasPassword = !empty($smtp['smtp_password']);
                 <div class="form-row">
                     <div class="form-group">
                         <label for="whatsapp_number">WhatsApp (somente números)</label>
-                        <input type="text" id="whatsapp_number" name="whatsapp_number" value="<?= $g('whatsapp_number') ?>" placeholder="5511982231363">
+                        <input type="text" id="whatsapp_number" name="whatsapp_number" value="<?= $g('whatsapp_number') ?>" placeholder="5517996394104">
                     </div>
                     <div class="form-group">
                         <label for="instagram">Instagram (sem @)</label>
                         <input type="text" id="instagram" name="instagram" value="<?= $g('instagram') ?>" placeholder="dmrassessoriaoficial">
                     </div>
+                </div>
+                <div class="form-group">
+                    <label for="contact_address">Endereço comercial</label>
+                    <input type="text" id="contact_address" name="contact_address" value="<?= $g('contact_address') ?>" maxlength="255" placeholder="Rua, número – sala, bairro, cidade/UF – CEP">
+                    <small class="muted">Exibido na seção de contato e no rodapé do site.</small>
                 </div>
                 <button type="submit" class="btn btn--primary">Salvar configurações gerais</button>
             </form>

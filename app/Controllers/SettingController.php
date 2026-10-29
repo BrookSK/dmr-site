@@ -44,6 +44,7 @@ final class SettingController extends Controller
             'contact_email'   => $request->string('contact_email'),
             'contact_phone'   => $request->string('contact_phone'),
             'whatsapp_number' => preg_replace('/\D+/', '', $request->string('whatsapp_number')),
+            'contact_address' => mb_substr($request->string('contact_address'), 0, 255),
             'instagram'       => ltrim($request->string('instagram'), '@'),
         ];
 

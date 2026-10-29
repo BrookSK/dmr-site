@@ -112,7 +112,8 @@ if (!function_exists('icon')) {
      * Herda a cor via currentColor e o tamanho via font-size/width do container.
      *
      * Ícones disponíveis: credito, analise, juridico, assessoria, fgts, repasse,
-     * acompanhamento, bancos, cuidado, transparencia, agilidade, check.
+     * acompanhamento, bancos, cuidado, transparencia, agilidade, check,
+     * consorcio, predio, local, whatsapp, instagram, alvo, visao.
      */
     function icon(string $name, int $size = 24): string
     {
@@ -141,6 +142,20 @@ if (!function_exists('icon')) {
             'agilidade'     => '<path d="M13 2 4 14h7l-1 8 9-12h-7l1-8Z"/>',
             // Check genérico
             'check'         => '<path d="M20 6 9 17l-5-5"/>',
+            // Consórcio — grupo de moedas
+            'consorcio'     => '<ellipse cx="9" cy="7" rx="6" ry="2.5"/><path d="M3 7v4c0 1.4 2.7 2.5 6 2.5s6-1.1 6-2.5V7"/><path d="M9 17.5c-3.3 0-6-1.1-6-2.5v-4"/><path d="M15 11.3c3.3 0 6 1.1 6 2.5v3.7c0 1.4-2.7 2.5-6 2.5s-6-1.1-6-2.5v-3.7"/><path d="M9 13.8c0 1.4 2.7 2.5 6 2.5s6-1.1 6-2.5"/>',
+            // Prédio — empresas/construtoras
+            'predio'        => '<path d="M4 21V5a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v16"/><path d="M14 9h5a1 1 0 0 1 1 1v11"/><path d="M2 21h20"/><path d="M8 8h2M8 12h2M8 16h2M17 13h0M17 17h0"/>',
+            // Localização — pino
+            'local'         => '<path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/>',
+            // Telefone / WhatsApp — balão
+            'whatsapp'      => '<path d="M3.5 20.5 5 16a8.5 8.5 0 1 1 3 3l-4.5 1.5Z"/><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5l1-1.5-2-1-1 .8a3.6 3.6 0 0 1-1.8-1.8l.8-1-1-2L9 9.5Z"/>',
+            // Instagram
+            'instagram'     => '<rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h0"/>',
+            // Missão — alvo
+            'alvo'          => '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/>',
+            // Visão — estrela/brilho
+            'visao'         => '<path d="M12 3v4M12 17v4M3 12h4M17 12h4"/><path d="m12 8 1.2 2.8L16 12l-2.8 1.2L12 16l-1.2-2.8L8 12l2.8-1.2L12 8Z"/>',
 
             // --- Painel administrativo ---
             'dashboard'     => '<rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/>',

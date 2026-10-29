@@ -185,8 +185,9 @@ INSERT INTO `settings` (`group_name`, `key_name`, `value`, `is_secret`) VALUES
     ('general', 'site_name',       'DMR Assessoria Imobiliária', 0),
     ('general', 'site_url',        '', 0),
     ('general', 'contact_email',   'contato@dmrassessoria.com.br', 0),
-    ('general', 'contact_phone',   '(11) 98223-1363', 0),
-    ('general', 'whatsapp_number', '5511982231363', 0),
+    ('general', 'contact_phone',   '(17) 99639-4104', 0),
+    ('general', 'whatsapp_number', '5517996394104', 0),
+    ('general', 'contact_address', 'Rua Romeu Strazzi, 325 – Sala 415, Vila Sinibaldi, São José do Rio Preto/SP – CEP 15084-010', 0),
     ('general', 'instagram',       'dmrassessoriaoficial', 0),
     ('general', 'site_logo',       '', 0),
     ('general', 'site_logo_on_light', '', 0),
@@ -231,5 +232,6 @@ INSERT INTO `migrations` (`filename`) VALUES
     ('007_update_instagram_handle.sql'),
     ('008_seed_superadmin.sql'),
     ('009_add_site_logo_settings.sql'),
-    ('010_fix_instagram_handle.sql')
+    ('010_fix_instagram_handle.sql'),
+    ('011_update_contact_rio_preto.sql')
 ON DUPLICATE KEY UPDATE `filename` = VALUES(`filename`);

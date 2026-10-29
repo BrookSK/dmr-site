@@ -251,7 +251,8 @@ Conforme o briefing, **nenhum dado foi inventado**. Os pontos abaixo foram deixa
 
 ## 14. Credenciais e dados de contato padrão (ajustáveis no painel)
 
-- **WhatsApp / Telefone:** (11) 98223-1363 — `5511982231363`
+- **WhatsApp / Telefone:** (17) 99639-4104 — `5517996394104`
+- **Endereço:** Rua Romeu Strazzi, 325 – Sala 415, Vila Sinibaldi, São José do Rio Preto/SP – CEP 15084-010
 - **Instagram:** @dmrassessoriaoficial
 - **Website:** www.dmrassessoria.com.br
 

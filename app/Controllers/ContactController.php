@@ -31,6 +31,16 @@ final class ContactController extends Controller
         'outro'         => 'Outro',
     ];
 
+    /** Interesses do formulário "Quero financiar" (canal B2C). */
+    public const INTERESTS = [
+        'financiamento' => 'Financiamento de imóvel',
+        'analise'       => 'Análise de crédito',
+        'fgts'          => 'Uso do FGTS',
+        'home-equity'   => 'Home Equity',
+        'consorcio'     => 'Consórcio',
+        'outro'         => 'Outra orientação',
+    ];
+
     public function submit(Request $request): void
     {
         $this->requireCsrf($request);
@@ -48,18 +58,36 @@ final class ContactController extends Controller
         $phone     = $request->string('phone');
         $audience  = $request->string('audience', 'outro');
         $message   = $request->string('message');
+        // Campos complementares dos canais "Quero financiar" e "Sou parceiro".
+        $interest  = $request->string('interest');
+        $company   = mb_substr($request->string('company'), 0, 120);
+        $city      = mb_substr($request->string('city'), 0, 120);
 
         $errors = $this->validate($name, $email, $phone);
         if ($errors !== null) {
-            $this->fail($errors, compact('name', 'email', 'phone', 'audience', 'message'));
+            $this->fail($errors, compact('name', 'email', 'phone', 'audience', 'message', 'interest', 'company', 'city'));
         }
 
         if (!array_key_exists($audience, self::AUDIENCES)) {
             $audience = 'outro';
         }
+        if (!array_key_exists($interest, self::INTERESTS)) {
+            $interest = '';
+        }
 
         // Limita tamanho da mensagem para evitar abuso.
         $message = mb_substr($message, 0, 3000);
+
+        // A tabela de contatos não tem colunas próprias para esses campos;
+        // eles entram como cabeçalho da mensagem (visível no painel e no e-mail).
+        $details = array_filter([
+            $interest !== '' ? 'Interesse: ' . self::INTERESTS[$interest] : null,
+            $company !== '' ? 'Empresa: ' . $company : null,
+            $city !== '' ? 'Cidade/UF: ' . $city : null,
+        ]);
+        if ($details !== []) {
+            $message = implode("\n", $details) . ($message !== '' ? "\n\n" . $message : '');
+        }
 
         $contact = new Contact();
         $sent = false;

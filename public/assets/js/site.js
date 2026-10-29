@@ -56,6 +56,45 @@
         });
     }
 
+    // Abas do formulário de contato: "Quero financiar" (b2c) e "Sou parceiro" (b2b).
+    var tabs = Array.prototype.slice.call(document.querySelectorAll('[data-tab]'));
+    function setChannel(channel, focus) {
+        tabs.forEach(function (tab) {
+            var active = tab.getAttribute('data-tab') === channel;
+            tab.setAttribute('aria-selected', active ? 'true' : 'false');
+            tab.tabIndex = active ? 0 : -1;
+            var panel = document.getElementById(tab.getAttribute('aria-controls'));
+            if (panel) { panel.hidden = !active; }
+            if (active && focus) { tab.focus(); }
+        });
+    }
+    if (tabs.length) {
+        tabs.forEach(function (tab, i) {
+            tab.addEventListener('click', function () { setChannel(tab.getAttribute('data-tab')); });
+            // Navegação por teclado entre as abas (padrão WAI-ARIA).
+            tab.addEventListener('keydown', function (e) {
+                var next = null;
+                if (e.key === 'ArrowRight') { next = (i + 1) % tabs.length; }
+                else if (e.key === 'ArrowLeft') { next = (i - 1 + tabs.length) % tabs.length; }
+                else if (e.key === 'Home') { next = 0; }
+                else if (e.key === 'End') { next = tabs.length - 1; }
+                if (next !== null) {
+                    e.preventDefault();
+                    setChannel(tabs[next].getAttribute('data-tab'), true);
+                }
+            });
+        });
+        // Links que levam ao contato já com o canal (e o perfil) certo selecionado.
+        document.querySelectorAll('[data-channel]').forEach(function (link) {
+            link.addEventListener('click', function () {
+                setChannel(link.getAttribute('data-channel'));
+                var profile = link.getAttribute('data-profile');
+                var select = document.getElementById('p-audience');
+                if (profile && select) { select.value = profile; }
+            });
+        });
+    }
+
     // Animações de entrada ao aparecer no viewport.
     var reveals = document.querySelectorAll('.reveal');
     if ('IntersectionObserver' in window && reveals.length) {

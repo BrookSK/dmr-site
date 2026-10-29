@@ -15,10 +15,10 @@ $headerLogo = brand_logo_url('dark');
         </a>
 
         <nav class="site-nav" id="siteNav" aria-label="Navegação principal">
-            <a href="<?= e(base_url('#sobre')) ?>">A DMR</a>
-            <a href="<?= e(base_url('#servicos')) ?>">Serviços</a>
+            <a href="<?= e(base_url('#para-voce')) ?>">Para você</a>
+            <a href="<?= e(base_url('#para-parceiros')) ?>">Para parceiros</a>
             <a href="<?= e(base_url('#como-funciona')) ?>">Como funciona</a>
-            <a href="<?= e(base_url('#bancos')) ?>">Parceiros</a>
+            <a href="<?= e(base_url('#sobre')) ?>">Sobre a DMR</a>
             <a href="<?= e(base_url('#contato')) ?>" class="site-nav__cta">Fale com a DMR</a>
         </nav>
 

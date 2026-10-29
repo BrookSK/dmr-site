@@ -9,7 +9,7 @@ $title = $title ?? 'DMR Assessoria Imobiliária';
 $description = $description ?? 'Crédito imobiliário com acompanhamento do início ao fim.';
 $canonical = $canonical ?? base_url('');
 $ogImage = $ogImage ?? asset('img/og-image.svg');
-$whats = preg_replace('/\D+/', '', (string) setting('whatsapp_number', '5511982231363'));
+$whats = preg_replace('/\D+/', '', (string) setting('whatsapp_number', '5517996394104'));
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -65,12 +65,22 @@ $whats = preg_replace('/\D+/', '', (string) setting('whatsapp_number', '55119822
         'url' => base_url(''),
         'logo' => brand_logo_url('dark') ?? asset('img/favicon.svg'),
         'image' => $ogImage,
-        'telephone' => setting('contact_phone', '(11) 98223-1363'),
+        'telephone' => setting('contact_phone', '(17) 99639-4104'),
         'email' => setting('contact_email', 'contato@dmrassessoria.com.br'),
+        // Endereço estruturado para SEO local. Se o endereço mudar no painel
+        // (contact_address), atualize também este bloco.
+        'address' => [
+            '@type' => 'PostalAddress',
+            'streetAddress' => 'Rua Romeu Strazzi, 325 – Sala 415, Vila Sinibaldi',
+            'addressLocality' => 'São José do Rio Preto',
+            'addressRegion' => 'SP',
+            'postalCode' => '15084-010',
+            'addressCountry' => 'BR',
+        ],
         'areaServed' => ['@type' => 'Country', 'name' => 'Brasil'],
         'knowsAbout' => [
             'Crédito imobiliário', 'Financiamento imobiliário', 'Repasse de financiamento',
-            'Análise de crédito e risco', 'Análise jurídica', 'Saque de FGTS', 'Home Equity',
+            'Análise de crédito e risco', 'Análise jurídica', 'Saque de FGTS', 'Home Equity', 'Consórcios',
         ],
         'sameAs' => array_values(array_filter([
             setting('instagram') ? 'https://instagram.com/' . ltrim((string) setting('instagram'), '@') : null,
@@ -81,6 +91,7 @@ $whats = preg_replace('/\D+/', '', (string) setting('whatsapp_number', '55119822
             ['@type' => 'Offer', 'itemOffered' => ['@type' => 'Service', 'name' => 'Análise Jurídica']],
             ['@type' => 'Offer', 'itemOffered' => ['@type' => 'Service', 'name' => 'Saque de FGTS']],
             ['@type' => 'Offer', 'itemOffered' => ['@type' => 'Service', 'name' => 'Home Equity']],
+            ['@type' => 'Offer', 'itemOffered' => ['@type' => 'Service', 'name' => 'Consórcios']],
         ],
     ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) ?>
     </script>

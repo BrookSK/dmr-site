@@ -1,6 +1,6 @@
 <?php
 $email = (string) setting('contact_email', 'contato@dmrassessoria.com.br');
-$phone = (string) setting('contact_phone', '(11) 98223-1363');
+$phone = (string) setting('contact_phone', '(17) 99639-4104');
 $siteName = (string) setting('site_name', 'DMR Assessoria Imobiliária');
 ?>
 <article class="legal">
