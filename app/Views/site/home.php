@@ -252,8 +252,55 @@ $oldP = $channel === 'b2b' ? $old : [];
     </div>
 </section>
 
+<!-- ============================ DEPOIMENTOS ============================ -->
+<?php
+// ATENÇÃO: depoimentos provisórios, criados para a cliente visualizar o layout.
+// Substituir por relatos reais e autorizados antes de publicar (CDC art. 37 /
+// Código do CONAR vedam depoimentos fictícios em publicidade).
+$testimonials = [
+    [
+        'text'   => 'Achei que financiar o primeiro apartamento seria uma dor de cabeça. A equipe da DMR explicou cada etapa, organizou a documentação com a gente e acompanhou tudo até a assinatura no banco.',
+        'name'   => 'Mariana S.',
+        'role'   => 'Compradora · São José do Rio Preto/SP',
+    ],
+    [
+        'text'   => 'Encaminho meus clientes para a DMR há anos. O retorno é rápido, o processo é transparente e eu consigo focar na negociação sabendo que o crédito está em boas mãos.',
+        'name'   => 'Ricardo A.',
+        'role'   => 'Corretor de imóveis',
+    ],
+    [
+        'text'   => 'Usamos o FGTS na compra da casa e tínhamos muitas dúvidas. Fomos atendidos com paciência e clareza do começo ao fim. Recomendamos para toda a família.',
+        'name'   => 'Juliana e Fernando P.',
+        'role'   => 'Compradores · Mirassol/SP',
+    ],
+];
+?>
+<section class="section section--soft" id="depoimentos">
+    <div class="container">
+        <div class="section__head reveal">
+            <span class="eyebrow">Histórias e confiança</span>
+            <h2 class="section__title">Relacionamentos que fazem a diferença.</h2>
+            <p class="section__lead">A experiência de quem já contou com a DMR ajuda novos compradores e parceiros a conhecer nosso trabalho.</p>
+        </div>
+        <ul class="testimonials reveal">
+            <?php foreach ($testimonials as $t): ?>
+                <li class="testimonial">
+                    <figure>
+                        <span class="testimonial__stars" role="img" aria-label="Avaliação 5 de 5">★★★★★</span>
+                        <blockquote><p><?= e($t['text']) ?></p></blockquote>
+                        <figcaption>
+                            <span class="testimonial__avatar" aria-hidden="true"><?= e(mb_substr($t['name'], 0, 1)) ?></span>
+                            <span><strong><?= e($t['name']) ?></strong><small><?= e($t['role']) ?></small></span>
+                        </figcaption>
+                    </figure>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+</section>
+
 <!-- ============================ PERGUNTAS FREQUENTES ============================ -->
-<section class="section section--soft" id="perguntas">
+<section class="section" id="perguntas">
     <div class="container faq">
         <div class="section__head reveal">
             <span class="eyebrow">Dúvidas frequentes</span>
