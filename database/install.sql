@@ -233,5 +233,6 @@ INSERT INTO `migrations` (`filename`) VALUES
     ('008_seed_superadmin.sql'),
     ('009_add_site_logo_settings.sql'),
     ('010_fix_instagram_handle.sql'),
-    ('011_update_contact_rio_preto.sql')
+    ('011_update_contact_rio_preto.sql'),
+    ('012_force_contact_phone_rio_preto.sql')
 ON DUPLICATE KEY UPDATE `filename` = VALUES(`filename`);
