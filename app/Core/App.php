@@ -44,6 +44,9 @@ final class App
         header('Referrer-Policy: strict-origin-when-cross-origin');
         header('X-XSS-Protection: 1; mode=block');
         header('Permissions-Policy: geolocation=(), microphone=(), camera=()');
+        // Páginas geradas pelo PHP não ficam guardadas no navegador: sempre
+        // revalida, para alterações de texto aparecerem na hora.
+        header('Cache-Control: no-cache, private');
         header_remove('X-Powered-By');
     }
 

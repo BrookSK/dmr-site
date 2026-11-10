@@ -165,3 +165,13 @@ $hasPassword = !empty($smtp['smtp_password']);
         </section>
     </div>
 </div>
+
+<!-- Manutenção: limpar cache -->
+<section class="panel panel--form">
+    <h2 class="panel-sub">Limpar cache do site</h2>
+    <p class="muted">Use depois de atualizar textos, imagens ou o visual do site. Faz os navegadores dos visitantes baixarem a versão mais recente de CSS, scripts e imagens. Não apaga dados, contatos nem configurações.</p>
+    <form action="<?= e(base_url('admin/configuracoes/limpar-cache')) ?>" method="post" class="form form--inline">
+        <?= Csrf::field() ?>
+        <button type="submit" class="btn btn--ghost">Limpar cache</button>
+    </form>
+</section>

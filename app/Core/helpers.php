@@ -42,6 +42,8 @@ if (!function_exists('asset')) {
      * Acrescenta ?v=<data de modificação> para "quebrar" o cache: o .htaccess
      * manda o navegador guardar assets por 1 ano (immutable), então sem isso
      * um CSS/JS/imagem atualizado continuaria aparecendo na versão antiga.
+     * A configuração "cache_version" (botão "Limpar cache" no painel) entra na
+     * versão e força todos os navegadores a baixarem tudo de novo.
      */
     function asset(string $path): string
     {
@@ -50,8 +52,10 @@ if (!function_exists('asset')) {
 
         $file = (defined('PUBLIC_PATH') ? PUBLIC_PATH : dirname(__DIR__, 2) . '/public') . '/assets/' . $path;
         $mtime = is_file($file) ? @filemtime($file) : false;
+        $global = (string) Setting::get('cache_version', '');
 
-        return $mtime ? $url . '?v=' . $mtime : $url;
+        $version = implode('-', array_filter([$mtime ? (string) $mtime : '', $global]));
+        return $version !== '' ? $url . '?v=' . rawurlencode($version) : $url;
     }
 }
 

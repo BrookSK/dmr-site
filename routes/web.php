@@ -55,3 +55,4 @@ $router->get('/admin/configuracoes', [SettingController::class, 'index'], ['Auth
 $router->post('/admin/configuracoes/geral', [SettingController::class, 'saveGeneral'], ['Auth', 'CanManageSettings']);
 $router->post('/admin/configuracoes/smtp', [SettingController::class, 'saveSmtp'], ['Auth', 'CanManageSettings']);
 $router->post('/admin/configuracoes/smtp/teste', [SettingController::class, 'testSmtp'], ['Auth', 'CanManageSettings']);
+$router->post('/admin/configuracoes/limpar-cache', [SettingController::class, 'clearCache'], ['Auth', 'CanManageSettings']);

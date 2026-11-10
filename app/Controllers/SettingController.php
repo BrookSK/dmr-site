@@ -130,6 +130,30 @@ final class SettingController extends Controller
     }
 
     /**
+     * "Limpa o cache" do site:
+     *  - troca a versão global dos assets (?v=), então os navegadores dos
+     *    visitantes baixam CSS, JS e imagens de novo na próxima visita;
+     *  - zera o OPcache do PHP, se ativo, para arquivos .php recém-enviados
+     *    entrarem em vigor imediatamente.
+     */
+    public function clearCache(Request $request): void
+    {
+        $this->requireCsrf($request);
+
+        Setting::set('cache_version', (string) time(), false, 'system');
+
+        $opcache = false;
+        if (function_exists('opcache_reset')) {
+            $opcache = @opcache_reset();
+        }
+
+        Session::flash('success', 'Cache limpo. Os visitantes verão a versão mais recente do site'
+            . ($opcache ? ' (OPcache do PHP também foi reiniciado).' : '.'));
+        Session::flash('active_tab', 'general');
+        $this->redirect('/admin/configuracoes');
+    }
+
+    /**
      * @param 'dark'|'light' $slot
      */
     private function syncLogo(Request $request, string $settingKey, string $slot, bool $remove): void
