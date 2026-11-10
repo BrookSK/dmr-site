@@ -38,10 +38,20 @@ if (!function_exists('base_url')) {
 if (!function_exists('asset')) {
     /**
      * URL de um asset público. O .htaccess roteia /assets para /public/assets.
+     *
+     * Acrescenta ?v=<data de modificação> para "quebrar" o cache: o .htaccess
+     * manda o navegador guardar assets por 1 ano (immutable), então sem isso
+     * um CSS/JS/imagem atualizado continuaria aparecendo na versão antiga.
      */
     function asset(string $path): string
     {
-        return base_url('assets/' . ltrim($path, '/'));
+        $path = ltrim($path, '/');
+        $url = base_url('assets/' . $path);
+
+        $file = (defined('PUBLIC_PATH') ? PUBLIC_PATH : dirname(__DIR__, 2) . '/public') . '/assets/' . $path;
+        $mtime = is_file($file) ? @filemtime($file) : false;
+
+        return $mtime ? $url . '?v=' . $mtime : $url;
     }
 }
 

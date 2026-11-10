@@ -65,7 +65,7 @@ $oldP = $channel === 'b2b' ? $old : [];
                 <div class="channel__body">
                     <span class="eyebrow">Para você</span>
                     <h2 class="channel__title">Quero financiar um imóvel</h2>
-                    <p>Entenda suas opções e avance com orientação e acompanhamento especializado.</p>
+                    <p>Entenda suas opções e avance com orientação e acompanhamento especializados.</p>
                     <a class="btn btn--dark btn--block" href="#para-voce">Conhecer soluções para você</a>
                 </div>
             </article>
@@ -89,14 +89,14 @@ $oldP = $channel === 'b2b' ? $old : [];
     <div class="container split">
         <div class="reveal">
             <span class="eyebrow">Para você · Compradores</span>
-            <h2 class="section__title">O caminho para seu imóvel começa com uma boa orientação.</h2>
+            <h2 class="section__title">O caminho até o seu imóvel começa com uma boa orientação.</h2>
             <p class="section__lead">A DMR ajuda você a compreender as alternativas de financiamento, organizar a documentação e acompanhar cada etapa do processo com mais clareza.</p>
             <a class="btn btn--gold" href="#contato" data-channel="b2c">Quero analisar meu financiamento</a>
         </div>
         <div class="panel reveal">
             <h3 class="panel__title">Como podemos ajudar</h3>
             <ul class="check-list">
-                <li><?= icon('check', 18) ?> Financiamento imobiliário</li>
+                <li><?= icon('check', 18) ?> Financiamento residencial e comercial</li>
                 <li><?= icon('check', 18) ?> Análise de crédito</li>
                 <li><?= icon('check', 18) ?> Orientação documental e registro</li>
                 <li><?= icon('check', 18) ?> Uso do FGTS, quando aplicável</li>
@@ -120,7 +120,7 @@ $oldP = $channel === 'b2b' ? $old : [];
             <article class="partner">
                 <span class="partner__ico"><?= icon('perfil') ?></span>
                 <h3>Corretores</h3>
-                <p>Você cuida da negociação. A DMR apoia a jornada de financiamento dos seus clientes.</p>
+                <p>Você cuida da negociação. A DMR acompanha todo o financiamento dos seus clientes.</p>
                 <a class="partner__link" href="#contato" data-channel="b2b" data-profile="corretor">Conhecer a parceria <span aria-hidden="true">→</span></a>
             </article>
             <article class="partner">
@@ -132,7 +132,7 @@ $oldP = $channel === 'b2b' ? $old : [];
             <article class="partner">
                 <span class="partner__ico"><?= icon('predio') ?></span>
                 <h3>Construtoras e incorporadoras</h3>
-                <p>Experiência em crédito para apoiar operações imobiliárias e o atendimento aos compradores.</p>
+                <p>Expertise na operação de crédito, com profissionalismo e agilidade para manter em dia o fluxo de caixa do seu empreendimento.</p>
                 <a class="partner__link" href="#contato" data-channel="b2b" data-profile="construtora">Conversar com a DMR <span aria-hidden="true">→</span></a>
             </article>
         </div>
@@ -163,10 +163,11 @@ $oldP = $channel === 'b2b' ? $old : [];
             <img src="<?= e(asset('img/fundadora.jpg')) ?>" alt="Fundadora da DMR Assessoria Imobiliária" width="1086" height="1448" loading="lazy" decoding="async">
         </figure>
         <div class="about__text reveal">
-            <span class="eyebrow">Sobre a DMR</span>
-            <h2 class="section__title">Experiência construída com pessoas, confiança e resultados.</h2>
-            <p>Há mais de três décadas, a DMR atua no crédito imobiliário, apoiando compradores e profissionais do setor com conhecimento técnico e relacionamento próximo.</p>
-            <p>Uma marca, duas jornadas de atendimento e o mesmo compromisso com clareza e acompanhamento.</p>
+            <span class="eyebrow">Nossa história</span>
+            <h2 class="section__title">Uma trajetória construída junto com o mercado imobiliário.</h2>
+            <p>A DMR nasceu da trajetória da sua fundadora, que dedicou mais de 30 anos ao crédito imobiliário. Nesse tempo, ela acompanhou de perto as mudanças do mercado e aprendeu que, por trás de cada contrato, existe a conquista de uma família ou um negócio importante.</p>
+            <p>Dessa experiência surgiu a DMR: uma assessoria criada para tornar o financiamento mais simples, com atendimento próximo e alguém que conhece o processo do início ao fim. Ao longo do caminho, foram mais de 100 mil unidades financiadas.</p>
+            <p>Hoje, a partir de São José do Rio Preto, a DMR atende quem quer comprar o seu imóvel e também corretores, imobiliárias e construtoras que confiam no nosso trabalho.</p>
             <a class="btn btn--dark" href="#contato">Fale com nossa equipe</a>
         </div>
     </div>
@@ -375,7 +376,7 @@ $testimonials = [
                     <div class="field">
                         <label for="c-interest">O que você procura?</label>
                         <select id="c-interest" name="interest">
-                            <?php $selI = $oldC['interest'] ?? 'financiamento'; foreach (ContactController::INTERESTS as $v => $l): ?>
+                            <?php $selI = $oldC['interest'] ?? 'residencial'; foreach (ContactController::INTERESTS as $v => $l): ?>
                                 <option value="<?= e($v) ?>" <?= $selI === $v ? 'selected' : '' ?>><?= e($l) ?></option>
                             <?php endforeach; ?>
                         </select>

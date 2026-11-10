@@ -33,8 +33,8 @@ final class ContactController extends Controller
 
     /** Interesses do formulário "Quero financiar" (canal B2C). */
     public const INTERESTS = [
-        'financiamento' => 'Financiamento de imóvel',
-        'analise'       => 'Análise de crédito',
+        'residencial'   => 'Financiamento residencial',
+        'comercial'     => 'Financiamento comercial',
         'fgts'          => 'Uso do FGTS',
         'home-equity'   => 'Home Equity',
         'consorcio'     => 'Consórcio',
