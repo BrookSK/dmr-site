@@ -7,6 +7,7 @@
 /** @var string $siteName */
 /** @var bool $canManageUsers */
 /** @var bool $canManageSettings */
+/** @var bool $canViewContacts */
 ?>
 <div class="cards">
     <div class="card card--stat">
@@ -41,6 +42,7 @@
     <section class="panel">
         <div class="panel__head">
             <h2>Contatos recentes</h2>
+            <?php if ($canViewContacts): ?><a class="btn btn--ghost btn--sm" href="<?= e(base_url('admin/contatos')) ?>">Ver todos</a><?php endif; ?>
         </div>
         <?php if (empty($recentContacts)): ?>
             <p class="muted">Nenhum contato recebido ainda.</p>
@@ -52,8 +54,8 @@
                 <tbody>
                 <?php foreach ($recentContacts as $c): ?>
                     <tr>
-                        <td><?= e($c['name']) ?></td>
-                        <td><span class="tag"><?= e(ucfirst($c['audience'])) ?></span></td>
+                        <td><?php if ($canViewContacts): ?><a href="<?= e(base_url('admin/contatos/' . $c['id'])) ?>"><?= e($c['name']) ?></a><?php else: ?><?= e($c['name']) ?><?php endif; ?></td>
+                        <td><span class="tag"><?= e(\App\Models\Contact::audienceLabel((string) $c['audience'])) ?></span></td>
                         <td>
                             <div><?= e($c['email']) ?></div>
                             <div class="muted"><?= e($c['phone']) ?></div>

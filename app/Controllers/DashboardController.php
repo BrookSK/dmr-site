@@ -34,6 +34,7 @@ final class DashboardController extends Controller
             'siteName'        => Setting::get('site_name', 'DMR Assessoria Imobiliária'),
             'canManageUsers'  => AuthService::can('users.manage'),
             'canManageSettings' => AuthService::can('settings.manage'),
+            'canViewContacts' => AuthService::can('contacts.view'),
         ]);
     }
 }

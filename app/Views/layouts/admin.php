@@ -34,6 +34,11 @@ $isActive = static fn (string $prefix): string =>
             <a class="admin-nav__link<?= $isActive('/admin') === ' is-active' && ($current === 'admin') ? ' is-active' : '' ?>" href="<?= e(base_url('admin')) ?>">
                 <span class="admin-nav__ico"><?= icon('dashboard', 20) ?></span> Dashboard
             </a>
+            <?php if (AuthService::can('contacts.view')): ?>
+            <a class="admin-nav__link<?= $isActive('/admin/contatos') ?>" href="<?= e(base_url('admin/contatos')) ?>">
+                <span class="admin-nav__ico"><?= icon('assessoria', 20) ?></span> Contatos recebidos
+            </a>
+            <?php endif; ?>
             <?php if (AuthService::can('users.manage')): ?>
             <a class="admin-nav__link<?= $isActive('/admin/usuarios') ?>" href="<?= e(base_url('admin/usuarios')) ?>">
                 <span class="admin-nav__ico"><?= icon('usuarios', 20) ?></span> Usuários

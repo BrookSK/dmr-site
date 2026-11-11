@@ -347,7 +347,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .legal__updated { color: var(--muted); font-size: .9rem; }
 .legal__notice { background: var(--soft); border-left: 3px solid var(--gold); padding: 18px 22px; margin-bottom: 36px; color: var(--ink); }
 .legal__notice p:last-child { margin-bottom: 0; }
-.legal__content a, .about__text a { color: var(--gold-text); }
+.legal__content a:not(.btn), .about__text a:not(.btn) { color: var(--gold-text); }
 .legal__content { max-width: 820px; }
 .legal__content h2 { font-size: 1.4rem; margin: 36px 0 12px; }
 .legal__content p, .legal__content li { color: var(--body); }

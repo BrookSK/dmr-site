@@ -17,6 +17,7 @@ use App\Controllers\DashboardController;
 use App\Controllers\UserController;
 use App\Controllers\SettingController;
 use App\Controllers\ContentController;
+use App\Controllers\LeadController;
 
 // --- Site público ----------------------------------------------------------
 $router->get('/', [HomeController::class, 'index']);
@@ -58,6 +59,11 @@ $router->post('/admin/configuracoes/smtp', [SettingController::class, 'saveSmtp'
 $router->post('/admin/configuracoes/smtp/teste', [SettingController::class, 'testSmtp'], ['Auth', 'CanManageSettings']);
 $router->post('/admin/configuracoes/limpar-cache', [SettingController::class, 'clearCache'], ['Auth', 'CanManageSettings']);
 $router->get('/admin/configuracoes/email-preview', [SettingController::class, 'emailPreview'], ['Auth', 'CanManageSettings']);
+
+// Contatos recebidos pelo formulário do site (exige contacts.view)
+$router->get('/admin/contatos', [LeadController::class, 'index'], ['Auth', 'CanViewContacts']);
+$router->get('/admin/contatos/{id}', [LeadController::class, 'show'], ['Auth', 'CanViewContacts']);
+$router->post('/admin/contatos/{id}/status', [LeadController::class, 'updateStatus'], ['Auth', 'CanViewContacts']);
 
 // Conteúdo do site: textos e imagens de todas as páginas (exige settings.manage)
 $router->get('/admin/conteudo', [ContentController::class, 'index'], ['Auth', 'CanManageSettings']);
