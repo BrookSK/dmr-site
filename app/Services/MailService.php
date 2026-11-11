@@ -32,8 +32,18 @@ final class MailService
     /**
      * Envia um e-mail HTML. Lança RuntimeException em caso de falha.
      */
-    public function send(string $toEmail, string $toName, string $subject, string $htmlBody, ?string $replyTo = null, ?string $replyToName = null): void
+    /**
+     * @param string|null $textBody versão em texto puro; se vazia, é gerada a partir do HTML
+     */
+    public function send(string $toEmail, string $toName, string $subject, string $htmlBody, ?string $replyTo = null, ?string $replyToName = null, ?string $textBody = null): void
     {
+        // Bloqueia quebra de linha em endereços (injeção de cabeçalho SMTP).
+        foreach ([$toEmail, (string) $replyTo] as $addr) {
+            if (preg_match('/[\r\n<>]/', $addr)) {
+                throw new RuntimeException('Endereço de e-mail inválido.');
+            }
+        }
+
         if (!$this->isConfigured()) {
             throw new RuntimeException('SMTP não configurado. Preencha as configurações no painel.');
         }
@@ -87,7 +97,7 @@ final class MailService
             $this->command($socket, "RCPT TO:<{$toEmail}>", [250, 251]);
             $this->command($socket, 'DATA', 354);
 
-            $message = $this->buildMessage($fromEmail, $fromName, $toEmail, $toName, $subject, $htmlBody, $replyTo, $replyToName);
+            $message = $this->buildMessage($fromEmail, $fromName, $toEmail, $toName, $subject, $htmlBody, $replyTo, $replyToName, $textBody);
             $this->write($socket, $message . "\r\n.");
             $this->expect($socket, 250);
 
@@ -99,7 +109,7 @@ final class MailService
         }
     }
 
-    private function buildMessage(string $fromEmail, string $fromName, string $toEmail, string $toName, string $subject, string $htmlBody, ?string $replyTo, ?string $replyToName): string
+    private function buildMessage(string $fromEmail, string $fromName, string $toEmail, string $toName, string $subject, string $htmlBody, ?string $replyTo, ?string $replyToName, ?string $textBody = null): string
     {
         $boundary = 'dmr_' . bin2hex(random_bytes(8));
         $date = date('r');
@@ -119,7 +129,13 @@ final class MailService
         $headers[] = "Message-ID: <" . bin2hex(random_bytes(12)) . "@" . $this->ehloName() . ">";
         $headers[] = "Content-Type: multipart/alternative; boundary=\"{$boundary}\"";
 
-        $plain = trim(strip_tags(preg_replace('/<br\s*\/?>/i', "\n", $htmlBody) ?? ''));
+        if ($textBody !== null && trim($textBody) !== '') {
+            $plain = str_replace(["\r\n", "\n"], ["\n", "\r\n"], trim($textBody));
+        } else {
+            // Gera o texto a partir do HTML, sem o conteúdo de <style>/<head>.
+            $stripped = (string) preg_replace('#<(head|style)\b[^>]*>.*?</\1>#is', '', $htmlBody);
+            $plain = trim(html_entity_decode(strip_tags((string) preg_replace('/<br\s*\/?>/i', "\n", $stripped)), ENT_QUOTES, 'UTF-8'));
+        }
 
         $body = "--{$boundary}\r\n";
         $body .= "Content-Type: text/plain; charset=UTF-8\r\n";

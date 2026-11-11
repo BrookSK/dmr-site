@@ -79,25 +79,45 @@ $hasPassword = !empty($smtp['smtp_password']);
                         <input type="email" id="contact_email" name="contact_email" value="<?= $g('contact_email') ?>">
                     </div>
                     <div class="form-group">
-                        <label for="contact_phone">Telefone</label>
-                        <input type="text" id="contact_phone" name="contact_phone" value="<?= $g('contact_phone') ?>">
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="whatsapp_number">WhatsApp (somente números)</label>
-                        <input type="text" id="whatsapp_number" name="whatsapp_number" value="<?= $g('whatsapp_number') ?>" placeholder="5517996394104">
-                    </div>
-                    <div class="form-group">
                         <label for="instagram">Instagram (sem @)</label>
                         <input type="text" id="instagram" name="instagram" value="<?= $g('instagram') ?>" placeholder="dmrassessoriaoficial">
                     </div>
                 </div>
+
+                <h2 class="panel-sub">Matriz — São José do Rio Preto</h2>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="contact_phone">Telefone da matriz</label>
+                        <input type="text" id="contact_phone" name="contact_phone" value="<?= $g('contact_phone') ?>" placeholder="(17) 99639-4104">
+                    </div>
+                    <div class="form-group">
+                        <label for="whatsapp_number">WhatsApp da matriz (somente números)</label>
+                        <input type="text" id="whatsapp_number" name="whatsapp_number" value="<?= $g('whatsapp_number') ?>" placeholder="5517996394104">
+                    </div>
+                </div>
                 <div class="form-group">
-                    <label for="contact_address">Endereço comercial</label>
+                    <label for="contact_address">Endereço da matriz</label>
                     <input type="text" id="contact_address" name="contact_address" value="<?= $g('contact_address') ?>" maxlength="255" placeholder="Rua, número – sala, bairro, cidade/UF – CEP">
                     <small class="muted">Exibido na seção de contato e no rodapé do site.</small>
                 </div>
+
+                <h2 class="panel-sub">Filial</h2>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="branch_city">Cidade da filial</label>
+                        <input type="text" id="branch_city" name="branch_city" value="<?= $g('branch_city') ?>" placeholder="São Paulo/SP">
+                    </div>
+                    <div class="form-group">
+                        <label for="branch_phone">Telefone da filial</label>
+                        <input type="text" id="branch_phone" name="branch_phone" value="<?= $g('branch_phone') ?>" placeholder="(11) 98223-1363">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="branch_whatsapp">WhatsApp da filial (somente números)</label>
+                    <input type="text" id="branch_whatsapp" name="branch_whatsapp" value="<?= $g('branch_whatsapp') ?>" placeholder="5511982231363">
+                </div>
+
+                <p class="muted">Textos, fotos e o propósito da DMR são editados em <a href="<?= e(base_url('admin/conteudo')) ?>">Conteúdo do site</a>.</p>
                 <button type="submit" class="btn btn--primary">Salvar configurações gerais</button>
             </form>
         </section>
@@ -147,13 +167,19 @@ $hasPassword = !empty($smtp['smtp_password']);
                         <input type="email" id="smtp_from_email" name="smtp_from_email" value="<?= $s('smtp_from_email') ?>">
                     </div>
                 </div>
+                <div class="form-group">
+                    <label for="notify_email">E-mail(s) que recebem os contatos do site</label>
+                    <input type="text" id="notify_email" name="notify_email" value="<?= e((string) setting('notify_email', '')) ?>" placeholder="atendimento@dmrassessoria.com.br, denise@dmrassessoria.com.br">
+                    <small class="muted">Para mais de um, separe por vírgula. Vazio = usa o "E-mail de contato" da aba Geral.</small>
+                </div>
                 <button type="submit" class="btn btn--primary">Salvar SMTP</button>
             </form>
         </section>
 
         <section class="panel panel--form">
             <h2 class="panel-sub">Enviar e-mail de teste</h2>
-            <p class="muted">Salve as configurações acima antes de testar. O teste usa as credenciais já salvas.</p>
+            <p class="muted">Salve as configurações acima antes de testar. O teste chega com o mesmo layout dos contatos reais, com dados de exemplo.
+                <a href="<?= e(base_url('admin/configuracoes/email-preview')) ?>" target="_blank" rel="noopener">Ver como o e-mail chega</a>.</p>
             <form action="<?= e(base_url('admin/configuracoes/smtp/teste')) ?>" method="post" class="form form--inline">
                 <?= Csrf::field() ?>
                 <div class="form-group">

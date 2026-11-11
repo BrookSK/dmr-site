@@ -40,6 +40,9 @@ $isActive = static fn (string $prefix): string =>
             </a>
             <?php endif; ?>
             <?php if (AuthService::can('settings.manage')): ?>
+            <a class="admin-nav__link<?= $isActive('/admin/conteudo') ?>" href="<?= e(base_url('admin/conteudo')) ?>">
+                <span class="admin-nav__ico"><?= icon('repasse', 20) ?></span> Conteúdo do site
+            </a>
             <a class="admin-nav__link<?= $isActive('/admin/configuracoes') ?>" href="<?= e(base_url('admin/configuracoes')) ?>">
                 <span class="admin-nav__ico"><?= icon('config', 20) ?></span> Configurações
             </a>

@@ -59,6 +59,113 @@ if (!function_exists('asset')) {
     }
 }
 
+if (!function_exists('offices')) {
+    /**
+     * Unidades da DMR (matriz e filial), lidas das configurações do painel.
+     * Fonte única para contato, rodapé, políticas e dados de SEO.
+     *
+     * @return array<string, array{label:string, city:string, phone:string, whatsapp:string, address:string}>
+     */
+    function offices(): array
+    {
+        $digits = static fn (mixed $v): string => (string) preg_replace('/\D+/', '', (string) $v);
+
+        $list = [
+            'matriz' => [
+                'label'    => 'Matriz',
+                'city'     => 'São José do Rio Preto/SP',
+                'phone'    => (string) setting('contact_phone', '(17) 99639-4104'),
+                'whatsapp' => $digits(setting('whatsapp_number', '5517996394104')),
+                'address'  => (string) setting('contact_address', 'Rua Romeu Strazzi, 325 – Sala 415, Vila Sinibaldi, São José do Rio Preto/SP – CEP 15084-010'),
+            ],
+            'filial' => [
+                'label'    => 'Filial',
+                'city'     => (string) setting('branch_city', 'São Paulo/SP'),
+                'phone'    => (string) setting('branch_phone', '(11) 98223-1363'),
+                'whatsapp' => $digits(setting('branch_whatsapp', '5511982231363')),
+                'address'  => '',
+            ],
+        ];
+
+        // Filial sem telefone configurado não é exibida.
+        if ($list['filial']['phone'] === '' && $list['filial']['whatsapp'] === '') {
+            unset($list['filial']);
+        }
+        return $list;
+    }
+}
+
+// --- Conteúdo editável pelo painel (ver App\Services\ContentRegistry) --------
+if (!function_exists('content')) {
+    /** Valor bruto do campo: string ou, para listas, array de itens. */
+    function content(string $key): mixed
+    {
+        return \App\Services\ContentRenderer::value($key);
+    }
+
+    /** Texto simples escapado (quebras de linha viram <br>). */
+    function ct(string $key): string
+    {
+        return nl2br(e(\App\Services\ContentRenderer::plain((string) content($key))), false);
+    }
+
+    /** Texto sem marcação, para atributos (alt, title, mensagens de WhatsApp...). */
+    function ct_plain(string $key): string
+    {
+        return \App\Services\ContentRenderer::plain((string) content($key));
+    }
+
+    /** Título/linha com *destaque* e **negrito**. */
+    function ct_rich(string $key): string
+    {
+        return \App\Services\ContentRenderer::rich((string) content($key));
+    }
+
+    /** Parágrafos (linha em branco separa), com negrito e links. */
+    function ct_paragraphs(string $key, string $class = ''): string
+    {
+        return \App\Services\ContentRenderer::paragraphs((string) content($key), $class);
+    }
+
+    /** Texto longo com títulos, listas e parágrafos. */
+    function ct_markup(string $key, string $headingTag = 'h2'): string
+    {
+        return \App\Services\ContentRenderer::markup((string) content($key), $headingTag);
+    }
+
+    /** Formatação em linha aplicada a um texto qualquer (ex.: item de lista). */
+    function ct_inline(string $text): string
+    {
+        return \App\Services\ContentRenderer::inline($text);
+    }
+
+    /** @return array<int,array<string,string>> itens de um campo do tipo lista */
+    function content_list(string $key): array
+    {
+        $v = content($key);
+        return is_array($v) ? $v : [];
+    }
+
+    /** URL de imagem (upload do painel ou padrão do site). */
+    function media_url(string $path): string
+    {
+        return \App\Services\ContentRenderer::mediaUrl($path);
+    }
+
+    /** URL da imagem de um campo do tipo imagem. */
+    function content_image(string $key): string
+    {
+        return media_url((string) content($key));
+    }
+
+    /** Atributos width/height reais da imagem do campo (vazio para SVG). */
+    function content_image_dims(string $key): string
+    {
+        $size = \App\Services\ContentRenderer::mediaSize((string) content($key));
+        return $size ? ' width="' . $size[0] . '" height="' . $size[1] . '"' : '';
+    }
+}
+
 if (!function_exists('old')) {
     /**
      * Recupera valor antigo de formulário (após erro de validação).

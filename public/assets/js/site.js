@@ -95,6 +95,17 @@
         });
     }
 
+    // Menu do WhatsApp flutuante (matriz/filial): fecha ao clicar fora ou com Esc.
+    var waFloat = document.getElementById('waFloat');
+    if (waFloat) {
+        document.addEventListener('click', function (e) {
+            if (waFloat.open && !waFloat.contains(e.target)) { waFloat.open = false; }
+        });
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && waFloat.open) { waFloat.open = false; }
+        });
+    }
+
     // Animações de entrada ao aparecer no viewport.
     var reveals = document.querySelectorAll('.reveal');
     if ('IntersectionObserver' in window && reveals.length) {

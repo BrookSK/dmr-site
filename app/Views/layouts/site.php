@@ -8,8 +8,9 @@
 $title = $title ?? 'DMR Assessoria Imobiliária';
 $description = $description ?? 'Crédito imobiliário com acompanhamento do início ao fim.';
 $canonical = $canonical ?? base_url('');
-$ogImage = $ogImage ?? asset('img/og-image.svg');
-$whats = preg_replace('/\D+/', '', (string) setting('whatsapp_number', '5517996394104'));
+$ogImage = $ogImage ?? content_image('seo.og_image');
+$officesSeo = offices();
+$whats = $officesSeo['matriz']['whatsapp'];
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -65,7 +66,7 @@ $whats = preg_replace('/\D+/', '', (string) setting('whatsapp_number', '55179963
         'url' => base_url(''),
         'logo' => brand_logo_url('dark') ?? asset('img/favicon.svg'),
         'image' => $ogImage,
-        'telephone' => setting('contact_phone', '(17) 99639-4104'),
+        'telephone' => $officesSeo['matriz']['phone'],
         'email' => setting('contact_email', 'contato@dmrassessoria.com.br'),
         // Endereço estruturado para SEO local. Se o endereço mudar no painel
         // (contact_address), atualize também este bloco.
@@ -77,6 +78,18 @@ $whats = preg_replace('/\D+/', '', (string) setting('whatsapp_number', '55179963
             'postalCode' => '15084-010',
             'addressCountry' => 'BR',
         ],
+        // Filial (sem endereço publicado): apenas cidade e telefone.
+        'department' => isset($officesSeo['filial']) ? [[
+            '@type' => 'FinancialService',
+            'name' => setting('site_name', 'DMR Assessoria Imobiliária') . ' — Filial ' . $officesSeo['filial']['city'],
+            'telephone' => $officesSeo['filial']['phone'],
+            'address' => [
+                '@type' => 'PostalAddress',
+                'addressLocality' => preg_replace('#/[A-Z]{2}$#', '', $officesSeo['filial']['city']),
+                'addressRegion' => 'SP',
+                'addressCountry' => 'BR',
+            ],
+        ]] : [],
         'areaServed' => ['@type' => 'Country', 'name' => 'Brasil'],
         'knowsAbout' => [
             'Crédito imobiliário', 'Financiamento imobiliário', 'Repasse de financiamento',
@@ -112,13 +125,29 @@ $solidHeader = $solidHeader ?? false;
 
 <?= \App\Core\View::renderPartial('site/partials/footer') ?>
 
-<!-- Botão flutuante de WhatsApp -->
-<a class="wa-float" href="https://wa.me/<?= e($whats) ?>?text=<?= rawurlencode('Olá, gostaria de falar com a DMR sobre crédito imobiliário.') ?>"
-   target="_blank" rel="noopener" aria-label="Falar no WhatsApp">
-    <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true" focusable="false">
-        <path fill="currentColor" d="M12.04 2c-5.46 0-9.9 4.44-9.9 9.9 0 1.75.46 3.45 1.32 4.95L2 22l5.3-1.38a9.9 9.9 0 0 0 4.73 1.2h.01c5.46 0 9.9-4.44 9.9-9.9 0-2.64-1.03-5.13-2.9-7A9.82 9.82 0 0 0 12.04 2Zm0 1.8c2.17 0 4.2.84 5.74 2.38a8.06 8.06 0 0 1 2.38 5.72c0 4.48-3.64 8.12-8.12 8.12a8.1 8.1 0 0 1-4.13-1.13l-.3-.18-3.07.8.82-3-.19-.31a8.07 8.07 0 0 1-1.24-4.3c0-4.48 3.64-8.12 8.11-8.12Zm-2.84 4.3c-.14 0-.37.05-.56.26-.19.21-.73.72-.73 1.74 0 1.03.75 2.02.86 2.16.1.14 1.46 2.33 3.6 3.17 1.78.7 2.14.56 2.53.53.39-.04 1.25-.51 1.43-1 .18-.5.18-.92.13-1.01-.05-.09-.19-.14-.4-.25-.21-.1-1.25-.62-1.44-.69-.19-.07-.33-.1-.47.11-.14.21-.54.68-.66.82-.12.14-.24.16-.45.05-.21-.1-.9-.33-1.72-1.06-.63-.57-1.06-1.26-1.18-1.47-.12-.21-.01-.33.09-.43.09-.09.21-.24.31-.36.1-.12.14-.21.21-.35.07-.14.03-.26-.02-.37-.05-.1-.46-1.14-.64-1.56-.17-.4-.34-.35-.47-.36h-.4Z"/>
-    </svg>
-</a>
+<!-- Botão flutuante de WhatsApp: com filial, abre a escolha entre matriz e filial -->
+<?php
+$waText = rawurlencode(ct_plain('layout.whatsapp.message'));
+$waIcon = '<svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true" focusable="false">'
+    . '<path fill="currentColor" d="M12.04 2c-5.46 0-9.9 4.44-9.9 9.9 0 1.75.46 3.45 1.32 4.95L2 22l5.3-1.38a9.9 9.9 0 0 0 4.73 1.2h.01c5.46 0 9.9-4.44 9.9-9.9 0-2.64-1.03-5.13-2.9-7A9.82 9.82 0 0 0 12.04 2Zm0 1.8c2.17 0 4.2.84 5.74 2.38a8.06 8.06 0 0 1 2.38 5.72c0 4.48-3.64 8.12-8.12 8.12a8.1 8.1 0 0 1-4.13-1.13l-.3-.18-3.07.8.82-3-.19-.31a8.07 8.07 0 0 1-1.24-4.3c0-4.48 3.64-8.12 8.11-8.12Zm-2.84 4.3c-.14 0-.37.05-.56.26-.19.21-.73.72-.73 1.74 0 1.03.75 2.02.86 2.16.1.14 1.46 2.33 3.6 3.17 1.78.7 2.14.56 2.53.53.39-.04 1.25-.51 1.43-1 .18-.5.18-.92.13-1.01-.05-.09-.19-.14-.4-.25-.21-.1-1.25-.62-1.44-.69-.19-.07-.33-.1-.47.11-.14.21-.54.68-.66.82-.12.14-.24.16-.45.05-.21-.1-.9-.33-1.72-1.06-.63-.57-1.06-1.26-1.18-1.47-.12-.21-.01-.33.09-.43.09-.09.21-.24.31-.36.1-.12.14-.21.21-.35.07-.14.03-.26-.02-.37-.05-.1-.46-1.14-.64-1.56-.17-.4-.34-.35-.47-.36h-.4Z"/></svg>';
+?>
+<?php if (count($officesSeo) > 1): ?>
+<details class="wa-float-wrap" id="waFloat">
+    <summary class="wa-float" aria-label="Falar no WhatsApp"><?= $waIcon ?></summary>
+    <div class="wa-menu" role="menu">
+        <p class="wa-menu__title"><?= ct('layout.whatsapp.title') ?></p>
+        <?php foreach ($officesSeo as $office): ?>
+            <a class="wa-menu__item" role="menuitem" href="https://wa.me/<?= e($office['whatsapp']) ?>?text=<?= $waText ?>" target="_blank" rel="noopener">
+                <strong><?= e($office['label']) ?> · <?= e($office['city']) ?></strong>
+                <span><?= e($office['phone']) ?></span>
+            </a>
+        <?php endforeach; ?>
+    </div>
+</details>
+<?php else: ?>
+<a class="wa-float" href="https://wa.me/<?= e($whats) ?>?text=<?= $waText ?>"
+   target="_blank" rel="noopener" aria-label="Falar no WhatsApp"><?= $waIcon ?></a>
+<?php endif; ?>
 
 <script src="<?= e(asset('js/site.js')) ?>" defer></script>
 </body>

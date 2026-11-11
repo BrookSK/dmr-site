@@ -4,55 +4,73 @@
 /** @var array|null $contactOld */
 /** @var bool $scrollToContact */
 
-use App\Controllers\ContactController;
+/*
+ * Página inicial. Todos os textos e imagens vêm de "Conteúdo do site" no painel
+ * (App\Services\ContentRegistry guarda os padrões). Telefones, endereço e
+ * Instagram vêm de Configurações → Geral.
+ */
+
 use App\Core\Csrf;
 
-$whats = preg_replace('/\D+/', '', (string) setting('whatsapp_number', '5517996394104'));
-$phone = (string) setting('contact_phone', '(17) 99639-4104');
+$offices = offices();
+$whats = $offices['matriz']['whatsapp'];
 $insta = ltrim((string) setting('instagram', 'dmrassessoriaoficial'), '@');
-$address = (string) setting('contact_address', 'Rua Romeu Strazzi, 325 – Sala 415, Vila Sinibaldi, São José do Rio Preto/SP – CEP 15084-010');
-$mapsLink = 'https://www.google.com/maps/search/?api=1&query=' . rawurlencode($address);
 $old = is_array($contactOld ?? null) ? $contactOld : [];
 $waLink = static fn (string $msg): string => 'https://wa.me/' . $whats . '?text=' . rawurlencode($msg);
 
+// Propósito: quando preenchido no painel, substitui Missão, Visão e Valores.
+$hasPurpose = trim((string) content('home.purpose.text')) !== '';
+
 // Canal de atendimento ativo no formulário (B2C = quero financiar, B2B = sou parceiro).
-$partnerProfiles = ['corretor' => 'Corretor autônomo', 'imobiliaria' => 'Imobiliária', 'construtora' => 'Construtora ou incorporadora'];
+$partnerProfiles = [
+    'corretor'    => ct_plain('home.contact.profile_corretor'),
+    'imobiliaria' => ct_plain('home.contact.profile_imobiliaria'),
+    'construtora' => ct_plain('home.contact.profile_construtora'),
+];
+$interests = array_values(array_filter(array_map(static fn (array $i): string => trim($i['label']), content_list('home.contact.interests'))));
 $channel = array_key_exists((string) ($old['audience'] ?? ''), $partnerProfiles) ? 'b2b' : 'b2c';
 $oldC = $channel === 'b2c' ? $old : [];
 $oldP = $channel === 'b2b' ? $old : [];
+$optional = ' <small>(opcional)</small>';
+
+$stats = content_list('home.stats.items');
+$steps = content_list('home.steps.items');
+$testimonials = array_values(array_filter(content_list('home.testimonials.items'), static fn (array $t): bool => trim($t['text']) !== ''));
+$faq = array_values(array_filter(content_list('home.faq.items'), static fn (array $f): bool => trim($f['q']) !== ''));
 ?>
 
 <!-- ============================ HERO ============================ -->
 <section class="hero">
     <picture>
-        <source media="(max-width: 760px)" srcset="<?= e(asset('img/hero-mobile.jpg')) ?>">
-        <img class="hero__img" src="<?= e(asset('img/hero.jpg')) ?>" alt="" width="2400" height="1632" fetchpriority="high" decoding="async">
+        <source media="(max-width: 760px)" srcset="<?= e(content_image('home.hero.image_mobile')) ?>">
+        <img class="hero__img" src="<?= e(content_image('home.hero.image')) ?>" alt=""<?= content_image_dims('home.hero.image') ?> fetchpriority="high" decoding="async">
     </picture>
     <div class="hero__shade" aria-hidden="true"></div>
     <div class="container hero__inner">
         <div class="hero__content reveal">
-            <span class="eyebrow eyebrow--light">Assessoria especializada em crédito imobiliário</span>
-            <h1 class="hero__title">Experiência que conecta pessoas, <em>negócios e conquistas.</em></h1>
-            <p class="hero__text">Há mais de 30 anos, a DMR oferece orientação especializada para quem deseja financiar um imóvel e para profissionais que movimentam o mercado imobiliário.</p>
+            <span class="eyebrow eyebrow--light"><?= ct('home.hero.eyebrow') ?></span>
+            <h1 class="hero__title"><?= ct_rich('home.hero.title') ?></h1>
+            <p class="hero__text"><?= ct('home.hero.text') ?></p>
             <div class="hero__actions">
-                <a class="btn btn--gold" href="#canais">Escolha seu caminho</a>
-                <a class="btn btn--ghost-light" href="<?= e($waLink('Olá! Gostaria de falar com a DMR sobre crédito imobiliário.')) ?>" target="_blank" rel="noopener">Falar no WhatsApp</a>
+                <a class="btn btn--gold" href="#canais"><?= ct('home.hero.button_primary') ?></a>
+                <a class="btn btn--ghost-light" href="<?= e($waLink(ct_plain('home.hero.whatsapp_message'))) ?>" target="_blank" rel="noopener"><?= ct('home.hero.button_whatsapp') ?></a>
             </div>
         </div>
     </div>
 </section>
 
 <!-- ============================ NÚMEROS ============================ -->
+<?php if ($stats !== []): ?>
 <section class="stats" aria-label="Números da DMR">
     <div class="container">
-        <ul class="stats__grid reveal">
-            <li class="stat"><strong>30+</strong><span>anos de experiência</span></li>
-            <li class="stat"><strong>100 mil+</strong><span>unidades financiadas</span></li>
-            <li class="stat"><strong>4</strong><span>grandes bancos parceiros</span></li>
-            <li class="stat"><strong>100%</strong><span>do processo acompanhado</span></li>
+        <ul class="stats__grid reveal" style="--cols: <?= count($stats) ?>">
+            <?php foreach ($stats as $s): ?>
+                <li class="stat"><strong><?= e($s['value']) ?></strong><span><?= e($s['label']) ?></span></li>
+            <?php endforeach; ?>
         </ul>
     </div>
 </section>
+<?php endif; ?>
 
 <!-- ============================ CANAIS (B2C / B2B) ============================ -->
 <section class="section section--channels" id="canais" aria-label="Escolha como a DMR pode ajudar">
@@ -63,10 +81,10 @@ $oldP = $channel === 'b2b' ? $old : [];
                     <svg viewBox="0 0 320 160" fill="none"><path d="M55 91 160 25l105 66v57H55V91Z" stroke="currentColor" stroke-width="3"/><path d="M125 148v-52h70v52M40 91l120-77 120 77" stroke="currentColor" stroke-width="3"/><circle cx="224" cy="57" r="13" stroke="currentColor" stroke-width="2.5"/></svg>
                 </div>
                 <div class="channel__body">
-                    <span class="eyebrow">Para você</span>
-                    <h2 class="channel__title">Quero financiar um imóvel</h2>
-                    <p>Entenda suas opções e avance com orientação e acompanhamento especializados.</p>
-                    <a class="btn btn--dark btn--block" href="#para-voce">Conhecer soluções para você</a>
+                    <span class="eyebrow"><?= ct('home.channels.b2c_eyebrow') ?></span>
+                    <h2 class="channel__title"><?= ct('home.channels.b2c_title') ?></h2>
+                    <p><?= ct('home.channels.b2c_text') ?></p>
+                    <a class="btn btn--dark btn--block" href="#para-voce"><?= ct('home.channels.b2c_button') ?></a>
                 </div>
             </article>
             <article class="channel">
@@ -74,10 +92,10 @@ $oldP = $channel === 'b2b' ? $old : [];
                     <svg viewBox="0 0 320 160" fill="none"><path d="M50 148V49h89v99M139 148V18h131v130M78 77h32M78 103h32M78 129h32M168 47h27M215 47h27M168 75h27M215 75h27M168 103h27M215 103h27M186 148v-23h39v23" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/></svg>
                 </div>
                 <div class="channel__body">
-                    <span class="eyebrow">Para parceiros</span>
-                    <h2 class="channel__title">Sou parceiro imobiliário</h2>
-                    <p>Conte com suporte especializado para apoiar seus clientes e suas operações.</p>
-                    <a class="btn btn--dark btn--block" href="#para-parceiros">Conhecer soluções para parceiros</a>
+                    <span class="eyebrow"><?= ct('home.channels.b2b_eyebrow') ?></span>
+                    <h2 class="channel__title"><?= ct('home.channels.b2b_title') ?></h2>
+                    <p><?= ct('home.channels.b2b_text') ?></p>
+                    <a class="btn btn--dark btn--block" href="#para-parceiros"><?= ct('home.channels.b2b_button') ?></a>
                 </div>
             </article>
         </div>
@@ -88,22 +106,21 @@ $oldP = $channel === 'b2b' ? $old : [];
 <section class="section section--soft" id="para-voce">
     <div class="container split">
         <div class="reveal">
-            <span class="eyebrow">Para você · Compradores</span>
-            <h2 class="section__title">O caminho até o seu imóvel começa com uma boa orientação.</h2>
-            <p class="section__lead">A DMR ajuda você a compreender as alternativas de financiamento, organizar a documentação e acompanhar cada etapa do processo com mais clareza.</p>
-            <a class="btn btn--gold" href="#contato" data-channel="b2c">Quero analisar meu financiamento</a>
+            <span class="eyebrow"><?= ct('home.b2c.eyebrow') ?></span>
+            <h2 class="section__title"><?= ct_rich('home.b2c.title') ?></h2>
+            <p class="section__lead"><?= ct('home.b2c.lead') ?></p>
+            <a class="btn btn--gold" href="#contato" data-channel="b2c"><?= ct('home.b2c.button') ?></a>
         </div>
         <div class="panel reveal">
-            <h3 class="panel__title">Como podemos ajudar</h3>
+            <h3 class="panel__title"><?= ct('home.b2c.panel_title') ?></h3>
             <ul class="check-list">
-                <li><?= icon('check', 18) ?> Financiamento residencial e comercial</li>
-                <li><?= icon('check', 18) ?> Análise de crédito</li>
-                <li><?= icon('check', 18) ?> Orientação documental e registro</li>
-                <li><?= icon('check', 18) ?> Uso do FGTS, quando aplicável</li>
-                <li><?= icon('check', 18) ?> Home Equity, conforme elegibilidade</li>
-                <li><?= icon('check', 18) ?> Consórcios</li>
+                <?php foreach (content_list('home.b2c.items') as $item): if (trim($item['text']) === '') { continue; } ?>
+                    <li><?= icon('check', 18) ?> <?= e($item['text']) ?></li>
+                <?php endforeach; ?>
             </ul>
-            <p class="small-note">A aprovação, as taxas e as condições dependem da avaliação da instituição financeira.</p>
+            <?php if (trim((string) content('home.b2c.note')) !== ''): ?>
+                <p class="small-note"><?= ct('home.b2c.note') ?></p>
+            <?php endif; ?>
         </div>
     </div>
 </section>
@@ -112,29 +129,21 @@ $oldP = $channel === 'b2b' ? $old : [];
 <section class="section" id="para-parceiros">
     <div class="container">
         <div class="section__head reveal">
-            <span class="eyebrow">Para parceiros · Mercado imobiliário</span>
-            <h2 class="section__title">Mais suporte para quem faz o mercado imobiliário acontecer.</h2>
-            <p class="section__lead">Conte com a experiência da DMR para apoiar seus clientes nas etapas de crédito imobiliário e facilitar a condução dos processos.</p>
+            <span class="eyebrow"><?= ct('home.b2b.eyebrow') ?></span>
+            <h2 class="section__title"><?= ct_rich('home.b2b.title') ?></h2>
+            <p class="section__lead"><?= ct('home.b2b.lead') ?></p>
         </div>
         <div class="partners reveal">
-            <article class="partner">
-                <span class="partner__ico"><?= icon('perfil') ?></span>
-                <h3>Corretores</h3>
-                <p>Você cuida da negociação. A DMR acompanha todo o financiamento dos seus clientes.</p>
-                <a class="partner__link" href="#contato" data-channel="b2b" data-profile="corretor">Conhecer a parceria <span aria-hidden="true">→</span></a>
-            </article>
-            <article class="partner">
-                <span class="partner__ico"><?= icon('assessoria') ?></span>
-                <h3>Imobiliárias</h3>
-                <p>Suporte especializado para sua equipe comercial e maior clareza na condução dos processos.</p>
-                <a class="partner__link" href="#contato" data-channel="b2b" data-profile="imobiliaria">Soluções para imobiliárias <span aria-hidden="true">→</span></a>
-            </article>
-            <article class="partner">
-                <span class="partner__ico"><?= icon('predio') ?></span>
-                <h3>Construtoras e incorporadoras</h3>
-                <p>Expertise na operação de crédito, com profissionalismo e agilidade para manter em dia o fluxo de caixa do seu empreendimento.</p>
-                <a class="partner__link" href="#contato" data-channel="b2b" data-profile="construtora">Conversar com a DMR <span aria-hidden="true">→</span></a>
-            </article>
+            <?php foreach (content_list('home.b2b.items') as $p): ?>
+                <article class="partner">
+                    <span class="partner__ico"><?= icon($p['icon'] !== '' ? $p['icon'] : 'perfil') ?></span>
+                    <h3><?= e($p['title']) ?></h3>
+                    <p><?= nl2br(e($p['text']), false) ?></p>
+                    <?php if (trim($p['link']) !== ''): ?>
+                        <a class="partner__link" href="#contato" data-channel="b2b"<?= array_key_exists($p['profile'], $partnerProfiles) ? ' data-profile="' . e($p['profile']) . '"' : '' ?>><?= e($p['link']) ?> <span aria-hidden="true">→</span></a>
+                    <?php endif; ?>
+                </article>
+            <?php endforeach; ?>
         </div>
     </div>
 </section>
@@ -143,15 +152,14 @@ $oldP = $channel === 'b2b' ? $old : [];
 <section class="section section--soft" id="como-funciona">
     <div class="container">
         <div class="section__head reveal">
-            <span class="eyebrow">Nossa forma de trabalhar</span>
-            <h2 class="section__title">Do primeiro contato à conclusão, você conta com a DMR.</h2>
-            <p class="section__lead">Um processo de assessoria estruturado para compradores e parceiros, adaptado às necessidades de cada operação.</p>
+            <span class="eyebrow"><?= ct('home.steps.eyebrow') ?></span>
+            <h2 class="section__title"><?= ct_rich('home.steps.title') ?></h2>
+            <p class="section__lead"><?= ct('home.steps.lead') ?></p>
         </div>
         <ol class="steps reveal">
-            <li class="step"><span class="step__n">01</span><h3>Entendimento</h3><p>Conhecemos o perfil e os objetivos da operação.</p></li>
-            <li class="step"><span class="step__n">02</span><h3>Análise</h3><p>Orientamos sobre alternativas e condições disponíveis.</p></li>
-            <li class="step"><span class="step__n">03</span><h3>Documentação</h3><p>Apoiamos a preparação e o encaminhamento dos documentos.</p></li>
-            <li class="step"><span class="step__n">04</span><h3>Acompanhamento</h3><p>Seguimos com você ao longo das etapas até a conclusão.</p></li>
+            <?php foreach ($steps as $i => $s): ?>
+                <li class="step"><span class="step__n"><?= sprintf('%02d', $i + 1) ?></span><h3><?= e($s['title']) ?></h3><p><?= nl2br(e($s['text']), false) ?></p></li>
+            <?php endforeach; ?>
         </ol>
     </div>
 </section>
@@ -160,92 +168,85 @@ $oldP = $channel === 'b2b' ? $old : [];
 <section class="section" id="sobre">
     <div class="container about">
         <figure class="about__photo reveal">
-            <img src="<?= e(asset('img/fundadora.jpg')) ?>" alt="Fundadora da DMR Assessoria Imobiliária" width="1086" height="1448" loading="lazy" decoding="async">
+            <img src="<?= e(content_image('home.about.image')) ?>" alt="<?= e(ct_plain('home.about.image_alt')) ?>"<?= content_image_dims('home.about.image') ?> loading="lazy" decoding="async">
         </figure>
         <div class="about__text reveal">
-            <span class="eyebrow">Nossa história</span>
-            <h2 class="section__title">Uma trajetória construída junto com o mercado imobiliário.</h2>
-            <p>A DMR nasceu da trajetória da sua fundadora, que dedicou mais de 30 anos ao crédito imobiliário. Nesse tempo, ela acompanhou de perto as mudanças do mercado e aprendeu que, por trás de cada contrato, existe a conquista de uma família ou um negócio importante.</p>
-            <p>Dessa experiência surgiu a DMR: uma assessoria criada para tornar o financiamento mais simples, com atendimento próximo e alguém que conhece o processo do início ao fim. Ao longo do caminho, foram mais de 100 mil unidades financiadas.</p>
-            <p>Hoje, a partir de São José do Rio Preto, a DMR atende quem quer comprar o seu imóvel e também corretores, imobiliárias e construtoras que confiam no nosso trabalho.</p>
-            <a class="btn btn--dark" href="#contato">Fale com nossa equipe</a>
+            <span class="eyebrow"><?= ct('home.about.eyebrow') ?></span>
+            <h2 class="section__title"><?= ct_rich('home.about.title') ?></h2>
+            <?= ct_paragraphs('home.about.text') ?>
+            <a class="btn btn--dark" href="#contato"><?= ct('home.about.button') ?></a>
         </div>
     </div>
 </section>
 
+<?php if ($hasPurpose): ?>
+<!-- ===================== NOSSO PROPÓSITO (substitui Missão, Visão e Valores) ===================== -->
+<section class="section section--soft" id="o-que-nos-orienta" aria-labelledby="proposito-titulo">
+    <div class="container">
+        <div class="purpose-statement reveal">
+            <span class="eyebrow"><?= ct('home.purpose.eyebrow') ?></span>
+            <h2 class="section__title" id="proposito-titulo"><?= ct_rich('home.purpose.title') ?></h2>
+            <div class="purpose-statement__text"><?= ct_paragraphs('home.purpose.text') ?></div>
+        </div>
+    </div>
+</section>
+<?php else: ?>
 <!-- ===================== O QUE NOS ORIENTA (MISSÃO, VISÃO E VALORES) ===================== -->
+<!-- Provisório: sai automaticamente quando o propósito for preenchido no painel. -->
 <section class="section section--soft" id="o-que-nos-orienta" aria-labelledby="orienta-titulo">
     <div class="container">
         <div class="section__head section__head--wide reveal">
-            <span class="eyebrow">Nossa essência</span>
-            <h2 class="section__title" id="orienta-titulo">O que nos orienta</h2>
-            <p class="section__lead">Acreditamos que a experiência faz a diferença quando é acompanhada de cuidado, transparência e compromisso com cada conquista.</p>
+            <span class="eyebrow"><?= ct('home.mvv.eyebrow') ?></span>
+            <h2 class="section__title" id="orienta-titulo"><?= ct_rich('home.mvv.title') ?></h2>
+            <p class="section__lead"><?= ct('home.mvv.lead') ?></p>
         </div>
 
         <div class="purpose reveal">
             <article class="purpose__card">
                 <span class="purpose__ico"><?= icon('alvo') ?></span>
-                <h3>Nossa Missão</h3>
-                <p>Simplificar o financiamento imobiliário com atendimento próximo, orientação especializada e processos eficientes, proporcionando tranquilidade aos compradores e resultados aos nossos parceiros.</p>
+                <h3><?= ct('home.mvv.mission_title') ?></h3>
+                <p><?= ct('home.mvv.mission_text') ?></p>
             </article>
             <article class="purpose__card">
                 <span class="purpose__ico"><?= icon('visao') ?></span>
-                <h3>Nossa Visão</h3>
-                <p>Ser referência em atendimento e eficiência no crédito imobiliário, ampliando parcerias e tornando o acesso ao financiamento cada vez mais simples e acessível.</p>
+                <h3><?= ct('home.mvv.vision_title') ?></h3>
+                <p><?= ct('home.mvv.vision_text') ?></p>
             </article>
         </div>
 
         <div class="values reveal">
             <div class="values__head">
                 <span class="purpose__ico"><?= icon('cuidado') ?></span>
-                <h3>Nossos Valores</h3>
+                <h3><?= ct('home.mvv.values_title') ?></h3>
             </div>
             <ul class="values__grid">
-                <li class="value"><strong>Honestidade</strong><p>Agimos com integridade.</p></li>
-                <li class="value"><strong>Transparência</strong><p>Comunicamos com clareza.</p></li>
-                <li class="value"><strong>Comprometimento</strong><p>Assumimos cada processo com responsabilidade.</p></li>
-                <li class="value"><strong>Profissionalismo</strong><p>Unimos experiência e organização.</p></li>
-                <li class="value"><strong>Cuidado com as pessoas</strong><p>Atendemos com atenção e respeito.</p></li>
-                <li class="value"><strong>Eficiência</strong><p>Valorizamos o tempo e os recursos de todos.</p></li>
+                <?php foreach (content_list('home.mvv.values') as $v): ?>
+                    <li class="value"><strong><?= e($v['title']) ?></strong><p><?= e($v['text']) ?></p></li>
+                <?php endforeach; ?>
             </ul>
         </div>
 
-        <p class="purpose__quote reveal">Cuidamos de pessoas. Simplificamos processos. Impulsionamos conquistas.</p>
+        <?php if (trim((string) content('home.mvv.quote')) !== ''): ?>
+            <p class="purpose__quote reveal"><?= ct('home.mvv.quote') ?></p>
+        <?php endif; ?>
 
+        <?php if (trim((string) content('home.mvv.details')) !== ''): ?>
         <details class="purpose__detail reveal">
-            <summary>Conheça nossos compromissos em mais detalhes</summary>
-            <div class="purpose__detail-body">
-                <h3>Nosso propósito</h3>
-                <p>Na DMR, acreditamos que financiar um imóvel deve ser uma experiência conduzida com clareza, segurança e tranquilidade. Com mais de 30 anos de experiência no mercado imobiliário, construímos nossa trajetória unindo conhecimento técnico, atendimento humano e processos estruturados. Por trás de cada financiamento existe uma conquista pessoal, uma decisão importante e uma relação de confiança.</p>
-                <p>Para nossos clientes, buscamos simplificar cada etapa, evitando burocracias desnecessárias e oferecendo orientação próxima e personalizada. Para nossos parceiros, trabalhamos para tornar os processos mais eficientes, apoiar a satisfação do comprador e contribuir para a conclusão das operações com agilidade e previsibilidade.</p>
-
-                <h3>Missão — compromisso diário</h3>
-                <p>Simplificar e facilitar o acesso ao financiamento imobiliário por meio de orientação especializada, atendimento próximo e processos estruturados e eficientes. Atuamos para proporcionar aos compradores uma experiência transparente, segura e tranquila, preservando seu tempo e seus recursos. Ao mesmo tempo, apoiamos nossos parceiros com agilidade, comprometimento e acompanhamento responsável, contribuindo para a conclusão das operações e para a eficiência de seus negócios.</p>
-
-                <h3>Visão — onde queremos chegar</h3>
-                <p>Ser reconhecida como referência em atendimento ao cliente, confiança e eficiência no mercado de crédito imobiliário. Buscamos expandir nossa rede de parceiros, fortalecer relacionamentos de longo prazo e contribuir para um mercado imobiliário mais acessível, transparente e eficiente, no qual compradores e profissionais encontrem na DMR uma parceira de confiança para suas conquistas e negócios.</p>
-
-                <h3>Valores — como agimos</h3>
-                <ul>
-                    <li><strong>Honestidade e integridade:</strong> agimos com ética e responsabilidade em todas as relações, fazendo o que é correto mesmo diante de desafios.</li>
-                    <li><strong>Transparência:</strong> comunicamos condições, possibilidades, etapas e desafios com sinceridade para apoiar decisões conscientes.</li>
-                    <li><strong>Comprometimento:</strong> acompanhamos cada operação com dedicação, responsabilidade e respeito aos compromissos estabelecidos.</li>
-                    <li><strong>Profissionalismo:</strong> unimos experiência, conhecimento técnico e processos estruturados para oferecer atendimento organizado e confiável.</li>
-                    <li><strong>Cuidado com as pessoas:</strong> valorizamos a escuta, a educação, a empatia e o atendimento personalizado.</li>
-                    <li><strong>Eficiência com responsabilidade:</strong> buscamos reduzir obstáculos e retrabalho, respeitando o tempo e os recursos envolvidos sem comprometer a segurança ou a qualidade.</li>
-                </ul>
-            </div>
+            <summary><?= ct('home.mvv.details_label') ?></summary>
+            <div class="purpose__detail-body"><?= ct_markup('home.mvv.details', 'h3') ?></div>
         </details>
+        <?php endif; ?>
     </div>
 </section>
+<?php endif; ?>
 
 <!-- ============================ INSTITUIÇÕES ============================ -->
 <section class="section section--tight" id="bancos">
     <div class="container">
         <div class="section__head section__head--center reveal">
-            <span class="eyebrow">Relacionamento financeiro</span>
-            <h2 class="section__title">Conexões com instituições financeiras do mercado.</h2>
-            <p class="section__lead">As alternativas de financiamento são avaliadas conforme as características da operação e os critérios de cada instituição.</p>
+            <span class="eyebrow"><?= ct('home.banks.eyebrow') ?></span>
+            <h2 class="section__title"><?= ct_rich('home.banks.title') ?></h2>
+            <p class="section__lead"><?= ct('home.banks.lead') ?></p>
         </div>
         <ul class="banks reveal">
             <?= \App\Core\View::renderPartial('site/partials/banks') ?>
@@ -254,43 +255,22 @@ $oldP = $channel === 'b2b' ? $old : [];
 </section>
 
 <!-- ============================ DEPOIMENTOS ============================ -->
-<?php
-// ATENÇÃO: depoimentos provisórios, criados para a cliente visualizar o layout.
-// Substituir por relatos reais e autorizados antes de publicar (CDC art. 37 /
-// Código do CONAR vedam depoimentos fictícios em publicidade).
-$testimonials = [
-    [
-        'text'   => 'Achei que financiar o primeiro apartamento seria uma dor de cabeça. A equipe da DMR explicou cada etapa, organizou a documentação com a gente e acompanhou tudo até a assinatura no banco.',
-        'name'   => 'Mariana S.',
-        'role'   => 'Compradora · São José do Rio Preto/SP',
-    ],
-    [
-        'text'   => 'Encaminho meus clientes para a DMR há anos. O retorno é rápido, o processo é transparente e eu consigo focar na negociação sabendo que o crédito está em boas mãos.',
-        'name'   => 'Ricardo A.',
-        'role'   => 'Corretor de imóveis',
-    ],
-    [
-        'text'   => 'Usamos o FGTS na compra da casa e tínhamos muitas dúvidas. Fomos atendidos com paciência e clareza do começo ao fim. Recomendamos para toda a família.',
-        'name'   => 'Juliana e Fernando P.',
-        'role'   => 'Compradores · Mirassol/SP',
-    ],
-];
-?>
+<?php if ($testimonials !== []): ?>
 <section class="section section--soft" id="depoimentos">
     <div class="container">
         <div class="section__head reveal">
-            <span class="eyebrow">Histórias e confiança</span>
-            <h2 class="section__title">Relacionamentos que fazem a diferença.</h2>
-            <p class="section__lead">A experiência de quem já contou com a DMR ajuda novos compradores e parceiros a conhecer nosso trabalho.</p>
+            <span class="eyebrow"><?= ct('home.testimonials.eyebrow') ?></span>
+            <h2 class="section__title"><?= ct_rich('home.testimonials.title') ?></h2>
+            <p class="section__lead"><?= ct('home.testimonials.lead') ?></p>
         </div>
         <ul class="testimonials reveal">
             <?php foreach ($testimonials as $t): ?>
                 <li class="testimonial">
                     <figure>
                         <span class="testimonial__stars" role="img" aria-label="Avaliação 5 de 5">★★★★★</span>
-                        <blockquote><p><?= e($t['text']) ?></p></blockquote>
+                        <blockquote><p><?= nl2br(e($t['text']), false) ?></p></blockquote>
                         <figcaption>
-                            <span class="testimonial__avatar" aria-hidden="true"><?= e(mb_substr($t['name'], 0, 1)) ?></span>
+                            <span class="testimonial__avatar" aria-hidden="true"><?= e(mb_strtoupper(mb_substr(trim($t['name']) !== '' ? trim($t['name']) : 'D', 0, 1))) ?></span>
                             <span><strong><?= e($t['name']) ?></strong><small><?= e($t['role']) ?></small></span>
                         </figcaption>
                     </figure>
@@ -299,45 +279,53 @@ $testimonials = [
         </ul>
     </div>
 </section>
+<?php endif; ?>
 
 <!-- ============================ PERGUNTAS FREQUENTES ============================ -->
+<?php if ($faq !== []): ?>
 <section class="section" id="perguntas">
     <div class="container faq">
         <div class="section__head reveal">
-            <span class="eyebrow">Dúvidas frequentes</span>
-            <h2 class="section__title">Respostas para começar com confiança.</h2>
+            <span class="eyebrow"><?= ct('home.faq.eyebrow') ?></span>
+            <h2 class="section__title"><?= ct_rich('home.faq.title') ?></h2>
         </div>
         <div class="faq__list reveal">
-            <details class="faq__item">
-                <summary>Posso falar com a DMR diretamente, sem um corretor?</summary>
-                <p>Sim. Compradores podem solicitar atendimento diretamente para conhecer as possibilidades de assessoria em crédito imobiliário.</p>
-            </details>
-            <details class="faq__item">
-                <summary>Sou corretor ou representante de imobiliária. Como funciona a parceria?</summary>
-                <p>Entre em contato pelo formulário de parceiros. A equipe poderá conhecer sua atuação e explicar as modalidades de suporte disponíveis.</p>
-            </details>
-            <details class="faq__item">
-                <summary>A DMR garante a aprovação do financiamento?</summary>
-                <p>Não. A aprovação e as condições dependem dos critérios e da análise da instituição financeira responsável.</p>
-            </details>
+            <?php foreach ($faq as $f): ?>
+                <details class="faq__item">
+                    <summary><?= e($f['q']) ?></summary>
+                    <p><?= nl2br(e($f['a']), false) ?></p>
+                </details>
+            <?php endforeach; ?>
         </div>
     </div>
 </section>
+<?php endif; ?>
 
 <!-- ============================ CONTATO ============================ -->
 <section class="section section--dark" id="contato">
     <div class="container cta">
         <div class="cta__intro reveal">
-            <span class="eyebrow eyebrow--light">Vamos conversar</span>
-            <h2 class="section__title section__title--light">Seu próximo passo merece a experiência certa.</h2>
-            <p class="cta__text">Seja para financiar um imóvel ou apoiar seus negócios imobiliários, escolha seu perfil e conte com a DMR.</p>
-            <ul class="cta__contacts">
-                <li><a href="https://wa.me/<?= e($whats) ?>" target="_blank" rel="noopener"><span><?= icon('whatsapp', 18) ?></span><?= e($phone) ?> · WhatsApp</a></li>
+            <span class="eyebrow eyebrow--light"><?= ct('home.contact.eyebrow') ?></span>
+            <h2 class="section__title section__title--light"><?= ct_rich('home.contact.title') ?></h2>
+            <p class="cta__text"><?= ct('home.contact.text') ?></p>
+            <div class="offices">
+                <?php foreach ($offices as $office): ?>
+                    <div class="office">
+                        <p class="office__label"><?= e($office['label']) ?> · <?= e($office['city']) ?></p>
+                        <ul class="cta__contacts">
+                            <li><a href="https://wa.me/<?= e($office['whatsapp']) ?>" target="_blank" rel="noopener"><span><?= icon('whatsapp', 18) ?></span><?= e($office['phone']) ?> · WhatsApp</a></li>
+                            <?php if ($office['address'] !== ''): ?>
+                                <li><a href="<?= e('https://www.google.com/maps/search/?api=1&query=' . rawurlencode($office['address'])) ?>" target="_blank" rel="noopener"><span><?= icon('local', 18) ?></span><address><?= e($office['address']) ?></address></a></li>
+                            <?php endif; ?>
+                        </ul>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+            <?php if ($insta !== ''): ?>
+            <ul class="cta__contacts cta__contacts--social">
                 <li><a href="https://instagram.com/<?= e($insta) ?>" target="_blank" rel="noopener"><span><?= icon('instagram', 18) ?></span>@<?= e($insta) ?></a></li>
-                <?php if ($address !== ''): ?>
-                    <li><a href="<?= e($mapsLink) ?>" target="_blank" rel="noopener"><span><?= icon('local', 18) ?></span><address><?= e($address) ?></address></a></li>
-                <?php endif; ?>
             </ul>
+            <?php endif; ?>
         </div>
 
         <div class="cta__form reveal">
@@ -345,8 +333,8 @@ $testimonials = [
             <?php if (!empty($contactError)): ?><div class="form-alert form-alert--error"><?= e($contactError) ?></div><?php endif; ?>
 
             <div class="tabs" role="tablist" aria-label="Tipo de atendimento">
-                <button class="tabs__btn" type="button" role="tab" id="tab-b2c" aria-controls="form-b2c" aria-selected="<?= $channel === 'b2c' ? 'true' : 'false' ?>" tabindex="<?= $channel === 'b2c' ? '0' : '-1' ?>" data-tab="b2c">Quero financiar</button>
-                <button class="tabs__btn" type="button" role="tab" id="tab-b2b" aria-controls="form-b2b" aria-selected="<?= $channel === 'b2b' ? 'true' : 'false' ?>" tabindex="<?= $channel === 'b2b' ? '0' : '-1' ?>" data-tab="b2b">Sou parceiro</button>
+                <button class="tabs__btn" type="button" role="tab" id="tab-b2c" aria-controls="form-b2c" aria-selected="<?= $channel === 'b2c' ? 'true' : 'false' ?>" tabindex="<?= $channel === 'b2c' ? '0' : '-1' ?>" data-tab="b2c"><?= ct('home.contact.tab_b2c') ?></button>
+                <button class="tabs__btn" type="button" role="tab" id="tab-b2b" aria-controls="form-b2b" aria-selected="<?= $channel === 'b2b' ? 'true' : 'false' ?>" tabindex="<?= $channel === 'b2b' ? '0' : '-1' ?>" data-tab="b2b"><?= ct('home.contact.tab_b2b') ?></button>
             </div>
 
             <!-- Canal B2C: comprador -->
@@ -355,40 +343,44 @@ $testimonials = [
                 <input type="text" name="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
                 <input type="hidden" name="audience" value="cliente">
                 <div class="field">
-                    <label for="c-name">Seu nome</label>
+                    <label for="c-name"><?= ct('home.contact.b2c_name') ?></label>
                     <input type="text" id="c-name" name="name" required autocomplete="name" value="<?= old('name', $oldC) ?>">
                 </div>
                 <div class="field-row">
                     <div class="field">
-                        <label for="c-phone">WhatsApp</label>
+                        <label for="c-phone"><?= ct('home.contact.phone') ?></label>
                         <input type="tel" id="c-phone" name="phone" required autocomplete="tel" value="<?= old('phone', $oldC) ?>">
                     </div>
                     <div class="field">
-                        <label for="c-email">E-mail</label>
+                        <label for="c-email"><?= ct('home.contact.email') ?></label>
                         <input type="email" id="c-email" name="email" required autocomplete="email" value="<?= old('email', $oldC) ?>">
                     </div>
                 </div>
                 <div class="field-row">
                     <div class="field">
-                        <label for="c-city">Cidade / Estado <small>(opcional)</small></label>
+                        <label for="c-city"><?= ct('home.contact.city') ?><?= $optional ?></label>
                         <input type="text" id="c-city" name="city" autocomplete="address-level2" value="<?= old('city', $oldC) ?>">
                     </div>
+                    <?php if ($interests !== []): ?>
                     <div class="field">
-                        <label for="c-interest">O que você procura?</label>
+                        <label for="c-interest"><?= ct('home.contact.interest') ?></label>
                         <select id="c-interest" name="interest">
-                            <?php $selI = $oldC['interest'] ?? 'residencial'; foreach (ContactController::INTERESTS as $v => $l): ?>
-                                <option value="<?= e($v) ?>" <?= $selI === $v ? 'selected' : '' ?>><?= e($l) ?></option>
+                            <?php $selI = (string) ($oldC['interest'] ?? $interests[0]); foreach ($interests as $label): ?>
+                                <option value="<?= e($label) ?>" <?= $selI === $label ? 'selected' : '' ?>><?= e($label) ?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>
+                    <?php endif; ?>
                 </div>
                 <div class="field">
-                    <label for="c-message">Mensagem <small>(opcional)</small></label>
+                    <label for="c-message"><?= ct('home.contact.message') ?><?= $optional ?></label>
                     <textarea id="c-message" name="message" rows="3"><?= old('message', $oldC) ?></textarea>
                 </div>
-                <p class="form-note">Não envie CPF, renda ou documentos por este formulário.</p>
-                <button type="submit" class="btn btn--gold btn--block">Solicitar orientação</button>
-                <p class="form-privacy">Ao enviar, você concorda com a <a href="<?= e(base_url('politica-de-privacidade')) ?>">Política de Privacidade</a>.</p>
+                <?php if (trim((string) content('home.contact.b2c_note')) !== ''): ?>
+                    <p class="form-note"><?= ct('home.contact.b2c_note') ?></p>
+                <?php endif; ?>
+                <button type="submit" class="btn btn--gold btn--block"><?= ct('home.contact.b2c_button') ?></button>
+                <?= ct_paragraphs('home.contact.privacy', 'form-privacy') ?>
             </form>
 
             <!-- Canal B2B: parceiros -->
@@ -397,11 +389,11 @@ $testimonials = [
                 <input type="text" name="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
                 <div class="field-row">
                     <div class="field">
-                        <label for="p-name">Nome do responsável</label>
+                        <label for="p-name"><?= ct('home.contact.b2b_name') ?></label>
                         <input type="text" id="p-name" name="name" required autocomplete="name" value="<?= old('name', $oldP) ?>">
                     </div>
                     <div class="field">
-                        <label for="p-audience">Perfil profissional</label>
+                        <label for="p-audience"><?= ct('home.contact.b2b_profile') ?></label>
                         <select id="p-audience" name="audience" required>
                             <?php $selP = $oldP['audience'] ?? 'corretor'; foreach ($partnerProfiles as $v => $l): ?>
                                 <option value="<?= e($v) ?>" <?= $selP === $v ? 'selected' : '' ?>><?= e($l) ?></option>
@@ -411,30 +403,30 @@ $testimonials = [
                 </div>
                 <div class="field-row">
                     <div class="field">
-                        <label for="p-company">Empresa <small>(opcional)</small></label>
+                        <label for="p-company"><?= ct('home.contact.b2b_company') ?><?= $optional ?></label>
                         <input type="text" id="p-company" name="company" autocomplete="organization" value="<?= old('company', $oldP) ?>">
                     </div>
                     <div class="field">
-                        <label for="p-city">Cidade / Estado <small>(opcional)</small></label>
+                        <label for="p-city"><?= ct('home.contact.city') ?><?= $optional ?></label>
                         <input type="text" id="p-city" name="city" autocomplete="address-level2" value="<?= old('city', $oldP) ?>">
                     </div>
                 </div>
                 <div class="field-row">
                     <div class="field">
-                        <label for="p-phone">WhatsApp</label>
+                        <label for="p-phone"><?= ct('home.contact.phone') ?></label>
                         <input type="tel" id="p-phone" name="phone" required autocomplete="tel" value="<?= old('phone', $oldP) ?>">
                     </div>
                     <div class="field">
-                        <label for="p-email">E-mail comercial</label>
+                        <label for="p-email"><?= ct('home.contact.b2b_email') ?></label>
                         <input type="email" id="p-email" name="email" required autocomplete="email" value="<?= old('email', $oldP) ?>">
                     </div>
                 </div>
                 <div class="field">
-                    <label for="p-message">Como podemos ajudar? <small>(opcional)</small></label>
+                    <label for="p-message"><?= ct('home.contact.b2b_message') ?><?= $optional ?></label>
                     <textarea id="p-message" name="message" rows="3"><?= old('message', $oldP) ?></textarea>
                 </div>
-                <button type="submit" class="btn btn--gold btn--block">Solicitar contato comercial</button>
-                <p class="form-privacy">Ao enviar, você concorda com a <a href="<?= e(base_url('politica-de-privacidade')) ?>">Política de Privacidade</a>.</p>
+                <button type="submit" class="btn btn--gold btn--block"><?= ct('home.contact.b2b_button') ?></button>
+                <?= ct_paragraphs('home.contact.privacy', 'form-privacy') ?>
             </form>
         </div>
     </div>

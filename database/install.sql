@@ -149,6 +149,18 @@ CREATE TABLE IF NOT EXISTS `password_resets` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- -----------------------------------------------------------------------------
+-- 014 — Conteúdo editável do site (textos e imagens pelo painel)
+-- -----------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `site_contents` (
+    `id`         INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `key_name`   VARCHAR(120) NOT NULL,
+    `value`      MEDIUMTEXT NULL DEFAULT NULL,
+    `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `uq_site_contents_key` (`key_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- -----------------------------------------------------------------------------
 -- 006 — Seed de perfis, permissões e configurações
 -- -----------------------------------------------------------------------------
 INSERT INTO `roles` (`slug`, `name`, `description`, `is_system`) VALUES
@@ -188,6 +200,10 @@ INSERT INTO `settings` (`group_name`, `key_name`, `value`, `is_secret`) VALUES
     ('general', 'contact_phone',   '(17) 99639-4104', 0),
     ('general', 'whatsapp_number', '5517996394104', 0),
     ('general', 'contact_address', 'Rua Romeu Strazzi, 325 – Sala 415, Vila Sinibaldi, São José do Rio Preto/SP – CEP 15084-010', 0),
+    ('general', 'branch_city',     'São Paulo/SP', 0),
+    ('general', 'branch_phone',    '(11) 98223-1363', 0),
+    ('general', 'branch_whatsapp', '5511982231363', 0),
+    ('general', 'purpose_text',    '', 0),
     ('general', 'instagram',       'dmrassessoriaoficial', 0),
     ('general', 'site_logo',       '', 0),
     ('general', 'site_logo_on_light', '', 0),
@@ -197,7 +213,8 @@ INSERT INTO `settings` (`group_name`, `key_name`, `value`, `is_secret`) VALUES
     ('smtp',    'smtp_password',   '', 1),
     ('smtp',    'smtp_encryption', 'tls', 0),
     ('smtp',    'smtp_from_name',  'DMR Assessoria Imobiliária', 0),
-    ('smtp',    'smtp_from_email', '', 0)
+    ('smtp',    'smtp_from_email', '', 0),
+    ('smtp',    'notify_email',    '', 0)
 ON DUPLICATE KEY UPDATE `group_name` = VALUES(`group_name`);
 
 -- -----------------------------------------------------------------------------
@@ -234,5 +251,7 @@ INSERT INTO `migrations` (`filename`) VALUES
     ('009_add_site_logo_settings.sql'),
     ('010_fix_instagram_handle.sql'),
     ('011_update_contact_rio_preto.sql'),
-    ('012_force_contact_phone_rio_preto.sql')
+    ('012_force_contact_phone_rio_preto.sql'),
+    ('013_add_branch_and_purpose_settings.sql'),
+    ('014_create_site_contents_table.sql')
 ON DUPLICATE KEY UPDATE `filename` = VALUES(`filename`);

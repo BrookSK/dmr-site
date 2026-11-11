@@ -16,6 +16,7 @@ use App\Controllers\AuthController;
 use App\Controllers\DashboardController;
 use App\Controllers\UserController;
 use App\Controllers\SettingController;
+use App\Controllers\ContentController;
 
 // --- Site público ----------------------------------------------------------
 $router->get('/', [HomeController::class, 'index']);
@@ -56,3 +57,10 @@ $router->post('/admin/configuracoes/geral', [SettingController::class, 'saveGene
 $router->post('/admin/configuracoes/smtp', [SettingController::class, 'saveSmtp'], ['Auth', 'CanManageSettings']);
 $router->post('/admin/configuracoes/smtp/teste', [SettingController::class, 'testSmtp'], ['Auth', 'CanManageSettings']);
 $router->post('/admin/configuracoes/limpar-cache', [SettingController::class, 'clearCache'], ['Auth', 'CanManageSettings']);
+$router->get('/admin/configuracoes/email-preview', [SettingController::class, 'emailPreview'], ['Auth', 'CanManageSettings']);
+
+// Conteúdo do site: textos e imagens de todas as páginas (exige settings.manage)
+$router->get('/admin/conteudo', [ContentController::class, 'index'], ['Auth', 'CanManageSettings']);
+$router->get('/admin/conteudo/{page}', [ContentController::class, 'edit'], ['Auth', 'CanManageSettings']);
+$router->post('/admin/conteudo/{page}/{section}', [ContentController::class, 'save'], ['Auth', 'CanManageSettings']);
+$router->post('/admin/conteudo/{page}/{section}/restaurar', [ContentController::class, 'restore'], ['Auth', 'CanManageSettings']);

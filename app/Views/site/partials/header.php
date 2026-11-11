@@ -15,11 +15,11 @@ $headerLogo = brand_logo_url('dark');
         </a>
 
         <nav class="site-nav" id="siteNav" aria-label="Navegação principal">
-            <a href="<?= e(base_url('#para-voce')) ?>">Para você</a>
-            <a href="<?= e(base_url('#para-parceiros')) ?>">Para parceiros</a>
-            <a href="<?= e(base_url('#como-funciona')) ?>">Como funciona</a>
-            <a href="<?= e(base_url('#sobre')) ?>">Sobre a DMR</a>
-            <a href="<?= e(base_url('#contato')) ?>" class="site-nav__cta">Fale com a DMR</a>
+            <a href="<?= e(base_url('#para-voce')) ?>"><?= ct('layout.menu.b2c') ?></a>
+            <a href="<?= e(base_url('#para-parceiros')) ?>"><?= ct('layout.menu.b2b') ?></a>
+            <a href="<?= e(base_url('#como-funciona')) ?>"><?= ct('layout.menu.steps') ?></a>
+            <a href="<?= e(base_url('#sobre')) ?>"><?= ct('layout.menu.about') ?></a>
+            <a href="<?= e(base_url('#contato')) ?>" class="site-nav__cta"><?= ct('layout.menu.cta') ?></a>
         </nav>
 
         <button class="nav-toggle" id="navToggle" aria-label="Abrir menu" aria-expanded="false" type="button">

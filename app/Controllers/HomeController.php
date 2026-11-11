@@ -17,10 +17,10 @@ final class HomeController extends Controller
     public function index(Request $request): void
     {
         $this->view('site/home', [
-            'title'       => 'DMR Assessoria Imobiliária | Crédito Imobiliário para Você e para Parceiros',
-            'description' => 'Assessoria especializada em crédito imobiliário para compradores, corretores, imobiliárias e construtoras. Mais de 30 anos de experiência. São José do Rio Preto/SP.',
+            'title'       => ct_plain('seo.home.title'),
+            'description' => ct_plain('seo.home.description'),
             'canonical'   => base_url(''),
-            'ogImage'     => asset('img/og-image.svg'),
+            'ogImage'     => content_image('seo.og_image'),
             'contactSuccess' => Session::flash('contact_success'),
             'contactError'   => Session::flash('contact_error'),
             'contactOld'     => Session::flash('contact_old'),

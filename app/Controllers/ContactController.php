@@ -8,37 +8,27 @@ use App\Core\Controller;
 use App\Core\Request;
 use App\Core\Session;
 use App\Models\Contact;
-use App\Models\Setting;
+use App\Services\LeadMail;
 use App\Services\MailService;
 use Throwable;
 
 /**
- * Processa o formulário de contato/orçamento da landing page.
+ * Processa o formulário de contato da landing page.
  *
- * Fluxo: valida -> checa honeypot -> persiste o lead -> envia e-mail via SMTP
- * configurado no painel. Nenhuma credencial fica no código.
+ * Fluxo: valida -> checa honeypot -> envia e-mail aos destinatários
+ * configurados no painel -> persiste o lead. Nenhuma credencial fica no código.
  */
 final class ContactController extends Controller
 {
-    /** Rótulos legíveis para o tipo de atendimento. */
+    /** Tipos de atendimento aceitos (chave gravada no banco => rótulo interno). */
     private const AUDIENCES = [
-        'cliente'       => 'Cliente final',
+        'cliente'       => 'Comprador(a)',
         'corretor'      => 'Corretor',
         'imobiliaria'   => 'Imobiliária',
-        'construtora'   => 'Construtora',
+        'construtora'   => 'Construtora / incorporadora',
         'incorporadora' => 'Incorporadora',
         'home-equity'   => 'Home Equity',
         'outro'         => 'Outro',
-    ];
-
-    /** Interesses do formulário "Quero financiar" (canal B2C). */
-    public const INTERESTS = [
-        'residencial'   => 'Financiamento residencial',
-        'comercial'     => 'Financiamento comercial',
-        'fgts'          => 'Uso do FGTS',
-        'home-equity'   => 'Home Equity',
-        'consorcio'     => 'Consórcio',
-        'outro'         => 'Outra orientação',
     ];
 
     public function submit(Request $request): void
@@ -48,86 +38,104 @@ final class ContactController extends Controller
         // Honeypot: bots preenchem o campo oculto "website".
         if ($request->string('website') !== '') {
             // Finge sucesso para não dar pistas ao bot.
-            Session::flash('contact_success', 'Mensagem enviada. Em breve entraremos em contato.');
+            Session::flash('contact_success', ct_plain('home.contact.success'));
             Session::flash('scroll_contact', '1');
             $this->redirect('/#contato');
         }
 
-        $name     = $request->string('name');
-        $email     = $request->string('email');
-        $phone     = $request->string('phone');
-        $audience  = $request->string('audience', 'outro');
-        $message   = $request->string('message');
+        $name     = mb_substr($request->string('name'), 0, 150);
+        $email    = mb_substr($request->string('email'), 0, 190);
+        $phone    = mb_substr($request->string('phone'), 0, 40);
+        $audience = $request->string('audience', 'outro');
+        $message  = mb_substr($request->string('message'), 0, 3000);
         // Campos complementares dos canais "Quero financiar" e "Sou parceiro".
-        $interest  = $request->string('interest');
-        $company   = mb_substr($request->string('company'), 0, 120);
-        $city      = mb_substr($request->string('city'), 0, 120);
+        $interest = $request->string('interest');
+        $company  = mb_substr($request->string('company'), 0, 120);
+        $city     = mb_substr($request->string('city'), 0, 120);
 
-        $errors = $this->validate($name, $email, $phone);
-        if ($errors !== null) {
-            $this->fail($errors, compact('name', 'email', 'phone', 'audience', 'message', 'interest', 'company', 'city'));
+        $error = $this->validate($name, $email, $phone);
+        if ($error !== null) {
+            $this->fail($error, compact('name', 'email', 'phone', 'audience', 'message', 'interest', 'company', 'city'));
         }
 
         if (!array_key_exists($audience, self::AUDIENCES)) {
             $audience = 'outro';
         }
-        if (!array_key_exists($interest, self::INTERESTS)) {
+        // Só aceita uma das opções cadastradas no painel.
+        $validInterests = array_map(static fn (array $i): string => trim($i['label']), content_list('home.contact.interests'));
+        if (!in_array($interest, $validInterests, true)) {
             $interest = '';
         }
 
-        // Limita tamanho da mensagem para evitar abuso.
-        $message = mb_substr($message, 0, 3000);
+        $isPartner = in_array($audience, ['corretor', 'imobiliaria', 'construtora', 'incorporadora'], true);
+        $lead = [
+            'name'        => $name,
+            'email'       => $email,
+            'phone'       => $phone,
+            'channel'     => $isPartner ? ct_plain('home.contact.tab_b2b') : ct_plain('home.contact.tab_b2c'),
+            'profile'     => $this->profileLabel($audience),
+            'interest'    => $interest,
+            'company'     => $company,
+            'city'        => $city,
+            'message'     => $message,
+            'received_at' => date('d/m/Y \à\s H:i'),
+        ];
 
-        // A tabela de contatos não tem colunas próprias para esses campos;
-        // eles entram como cabeçalho da mensagem (visível no painel e no e-mail).
-        $details = array_filter([
-            $interest !== '' ? 'Interesse: ' . self::INTERESTS[$interest] : null,
-            $company !== '' ? 'Empresa: ' . $company : null,
-            $city !== '' ? 'Cidade/UF: ' . $city : null,
-        ]);
-        if ($details !== []) {
-            $message = implode("\n", $details) . ($message !== '' ? "\n\n" . $message : '');
-        }
-
-        $contact = new Contact();
+        // Envia para cada destinatário (falha de e-mail não impede salvar o lead).
         $sent = false;
-
-        // Tenta enviar e-mail (não bloqueia o registro do lead em caso de falha).
         try {
             $mailer = new MailService();
             if ($mailer->isConfigured()) {
-                $toEmail = (string) Setting::get('contact_email', Setting::get('smtp_from_email'));
-                if ($toEmail !== '') {
-                    $mailer->send(
-                        $toEmail,
-                        (string) Setting::get('site_name', 'DMR Assessoria Imobiliária'),
-                        'Novo contato pelo site — ' . self::AUDIENCES[$audience],
-                        $this->emailBody($name, $email, $phone, $audience, $message),
-                        $email,
-                        $name
-                    );
-                    $sent = true;
+                $html = LeadMail::html($lead);
+                $text = LeadMail::text($lead);
+                foreach (LeadMail::recipients() as $to) {
+                    try {
+                        $mailer->send($to, '', LeadMail::subject($lead), $html, $email, $name, $text);
+                        $sent = true;
+                    } catch (Throwable $e) {
+                        error_log('[DMR][contato] Falha no envio para ' . $to . ': ' . $e->getMessage());
+                    }
                 }
             }
         } catch (Throwable $e) {
             error_log('[DMR][contato] Falha no envio de e-mail: ' . $e->getMessage());
-            $sent = false;
         }
 
-        $contact->store([
+        // A tabela de contatos não tem colunas para interesse/empresa/cidade;
+        // eles entram como cabeçalho da mensagem salva.
+        $details = array_filter([
+            $interest !== '' ? 'Interesse: ' . $interest : null,
+            $company !== '' ? 'Empresa: ' . $company : null,
+            $city !== '' ? 'Cidade/UF: ' . $city : null,
+        ]);
+        $stored = $details !== [] ? implode("\n", $details) . ($message !== '' ? "\n\n" . $message : '') : $message;
+
+        (new Contact())->store([
             'name'       => $name,
             'email'      => $email,
             'phone'      => $phone,
             'audience'   => $audience,
-            'message'    => $message,
+            'message'    => $stored,
             'ip'         => $request->ip(),
             'user_agent' => mb_substr($request->userAgent(), 0, 255),
             'email_sent' => $sent,
         ]);
 
-        Session::flash('contact_success', 'Recebemos sua mensagem. A DMR entrará em contato em breve.');
+        Session::flash('contact_success', ct_plain('home.contact.success'));
         Session::flash('scroll_contact', '1');
         $this->redirect('/#contato');
+    }
+
+    /** Rótulo do perfil igual ao que a pessoa viu no formulário. */
+    private function profileLabel(string $audience): string
+    {
+        return match ($audience) {
+            'cliente'     => self::AUDIENCES['cliente'],
+            'corretor'    => ct_plain('home.contact.profile_corretor'),
+            'imobiliaria' => ct_plain('home.contact.profile_imobiliaria'),
+            'construtora' => ct_plain('home.contact.profile_construtora'),
+            default       => self::AUDIENCES[$audience] ?? 'Outro',
+        };
     }
 
     /** @return string|null mensagem de erro ou null se válido */
@@ -153,33 +161,5 @@ final class ContactController extends Controller
         Session::flash('contact_old', $old);
         Session::flash('scroll_contact', '1');
         $this->redirect('/#contato');
-    }
-
-    private function emailBody(string $name, string $email, string $phone, string $audience, string $message): string
-    {
-        $name = e($name);
-        $email = e($email);
-        $phone = e($phone);
-        $audienceLabel = e(self::AUDIENCES[$audience] ?? 'Outro');
-        $message = nl2br(e($message !== '' ? $message : '(sem mensagem)'));
-        $date = date('d/m/Y H:i');
-
-        return <<<HTML
-<div style="font-family:Arial,Helvetica,sans-serif;color:#1a1a1a;max-width:600px;margin:0 auto;">
-  <div style="background:#000;color:#CBAE6C;padding:22px;text-align:center;font-size:20px;letter-spacing:3px;">DMR</div>
-  <div style="padding:24px;border:1px solid #EAE6DF;border-top:none;">
-    <h2 style="color:#A3805F;margin-top:0;">Novo contato pelo site</h2>
-    <table style="width:100%;border-collapse:collapse;font-size:15px;">
-      <tr><td style="padding:8px 0;color:#6f6760;width:150px;">Nome</td><td style="padding:8px 0;"><strong>{$name}</strong></td></tr>
-      <tr><td style="padding:8px 0;color:#6f6760;">E-mail</td><td style="padding:8px 0;">{$email}</td></tr>
-      <tr><td style="padding:8px 0;color:#6f6760;">Telefone</td><td style="padding:8px 0;">{$phone}</td></tr>
-      <tr><td style="padding:8px 0;color:#6f6760;">Tipo</td><td style="padding:8px 0;">{$audienceLabel}</td></tr>
-    </table>
-    <h3 style="color:#A3805F;margin-bottom:6px;">Mensagem</h3>
-    <p style="background:#faf8f4;padding:14px;border-radius:8px;margin:0;">{$message}</p>
-    <p style="color:#999;font-size:13px;margin-top:20px;">Recebido em {$date}.</p>
-  </div>
-</div>
-HTML;
     }
 }

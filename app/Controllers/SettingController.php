@@ -8,8 +8,8 @@ use App\Core\Controller;
 use App\Core\Request;
 use App\Core\Session;
 use App\Models\Setting;
-use App\Services\AuthService;
 use App\Services\BrandLogoService;
+use App\Services\LeadMail;
 use App\Services\MailService;
 use RuntimeException;
 use Throwable;
@@ -45,6 +45,9 @@ final class SettingController extends Controller
             'contact_phone'   => $request->string('contact_phone'),
             'whatsapp_number' => preg_replace('/\D+/', '', $request->string('whatsapp_number')),
             'contact_address' => mb_substr($request->string('contact_address'), 0, 255),
+            'branch_city'     => mb_substr($request->string('branch_city'), 0, 120),
+            'branch_phone'    => mb_substr($request->string('branch_phone'), 0, 40),
+            'branch_whatsapp' => preg_replace('/\D+/', '', $request->string('branch_whatsapp')),
             'instagram'       => ltrim($request->string('instagram'), '@'),
         ];
 
@@ -91,8 +94,23 @@ final class SettingController extends Controller
             $this->redirect('/admin/configuracoes');
         }
 
+        // E-mail(s) que recebem os contatos: aceita vários, separados por vírgula.
+        $notify = array_values(array_unique(array_filter(array_map('trim', preg_split('/[,;\s]+/', $request->string('notify_email')) ?: []))));
+        foreach ($notify as $mail) {
+            if (!filter_var($mail, FILTER_VALIDATE_EMAIL)) {
+                Session::flash('error', 'E-mail inválido em "quem recebe os contatos": ' . $mail);
+                Session::flash('active_tab', 'smtp');
+                $this->redirect('/admin/configuracoes');
+            }
+        }
+        $values['notify_email'] = implode(', ', $notify);
+
         // A senha é marcada como secreta; se vier vazia, mantém a atual.
         Setting::updateMany($values, ['smtp_password']);
+        if (Setting::get('notify_email') !== null) {
+            // Garante o grupo correto mesmo se a migration 014 não tiver criado a chave.
+            \App\Core\Database::instance()->run("UPDATE settings SET group_name = 'smtp' WHERE key_name = 'notify_email'");
+        }
 
         Session::flash('success', 'Configurações de SMTP salvas.');
         Session::flash('active_tab', 'smtp');
@@ -110,17 +128,20 @@ final class SettingController extends Controller
             $this->redirect('/admin/configuracoes');
         }
 
-        $user = AuthService::user();
-        $html = $this->testEmailHtml($user['name'] ?? 'Administrador');
+        // O teste usa o mesmo layout do e-mail de contato real, com dados de exemplo.
+        $lead = LeadMail::sample();
 
         try {
             (new MailService())->send(
                 $to,
-                'Teste DMR',
-                'Teste de SMTP — DMR Assessoria Imobiliária',
-                $html
+                '',
+                LeadMail::subject($lead, true),
+                LeadMail::html($lead, true),
+                null,
+                null,
+                LeadMail::text($lead, true)
             );
-            Session::flash('success', 'E-mail de teste enviado para ' . $to . '. Verifique a caixa de entrada.');
+            Session::flash('success', 'E-mail de teste enviado para ' . $to . ' com o mesmo layout dos contatos reais. Verifique a caixa de entrada (e o spam).');
         } catch (Throwable $e) {
             Session::flash('error', 'Falha no envio: ' . $e->getMessage());
         }
@@ -179,21 +200,10 @@ final class SettingController extends Controller
         Setting::set($settingKey, $stored);
     }
 
-    private function testEmailHtml(string $name): string
+    /** Mostra no navegador como chega o e-mail de contato (dados de exemplo). */
+    public function emailPreview(Request $request): void
     {
-        $name = e($name);
-        $date = date('d/m/Y H:i');
-        return <<<HTML
-<div style="font-family:Arial,Helvetica,sans-serif;color:#1a1a1a;max-width:560px;margin:0 auto;">
-  <div style="background:#000;color:#CBAE6C;padding:24px;text-align:center;font-size:22px;letter-spacing:2px;">DMR</div>
-  <div style="padding:24px;border:1px solid #EAE6DF;border-top:none;">
-    <h2 style="color:#A3805F;">Configuração de SMTP funcionando</h2>
-    <p>Olá, {$name}.</p>
-    <p>Este é um e-mail de teste enviado pelo painel administrativo da DMR Assessoria Imobiliária.</p>
-    <p>Se você recebeu esta mensagem, as credenciais de SMTP estão corretas e o envio de e-mails está operacional.</p>
-    <p style="color:#777;font-size:13px;">Enviado em {$date}.</p>
-  </div>
-</div>
-HTML;
+        header('X-Robots-Tag: noindex');
+        \App\Core\Response::html(LeadMail::html(LeadMail::sample(), true));
     }
 }
