@@ -25,7 +25,7 @@ $footerLogo = brand_logo_url('dark');
             <a href="<?= e(base_url('#para-parceiros')) ?>"><?= ct('layout.menu.b2b') ?></a>
             <a href="<?= e(base_url('#como-funciona')) ?>"><?= ct('layout.menu.steps') ?></a>
             <a href="<?= e(base_url('#sobre')) ?>"><?= ct('layout.menu.about') ?></a>
-            <a href="<?= e(base_url('#o-que-nos-orienta')) ?>"><?= $hasPurpose ? ct('home.purpose.title') : ct('layout.footer.nav_purpose') ?></a>
+            <a href="<?= e(base_url('#o-que-nos-orienta')) ?>"><?= $hasPurpose ? ct('home.purpose.eyebrow') : ct('layout.footer.nav_purpose') ?></a>
             <a href="<?= e(base_url('#contato')) ?>"><?= ct('layout.footer.nav_contact') ?></a>
         </nav>
 

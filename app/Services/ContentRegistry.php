@@ -38,6 +38,8 @@ final class ContentRegistry
         'bancos'         => 'Banco',
         'consorcio'      => 'Moedas',
         'cuidado'        => 'Coração',
+        'simplicidade'   => 'Blocos conectados',
+        'resultados'     => 'Seta de crescimento',
         'transparencia'  => 'Olho',
         'agilidade'      => 'Raio',
         'alvo'           => 'Alvo',
@@ -239,11 +241,23 @@ final class ContentRegistry
                 ],
                 'purpose' => [
                     'title' => 'Nosso propósito',
-                    'help' => 'Enquanto o texto do propósito estiver vazio, o site mostra a seção "Missão, visão e valores" (logo abaixo). Ao preencher e salvar, o propósito a substitui.',
+                    'help' => 'O propósito substitui a seção "Missão, visão e valores". Se o texto do propósito ficar vazio, Missão, visão e valores volta a aparecer.',
                     'fields' => [
-                        self::f('home.purpose.eyebrow', 'Chamada pequena', 'text', 'Nossa essência'),
-                        self::f('home.purpose.title', 'Título', 'rich', 'Nosso propósito'),
-                        self::f('home.purpose.text', 'Texto do propósito', 'paragraphs', '', ['help' => 'Vazio = continua aparecendo Missão, visão e valores.']),
+                        self::f('home.purpose.eyebrow', 'Chamada pequena (também usada no link do rodapé)', 'text', 'Nosso propósito'),
+                        self::f('home.purpose.title', 'Título', 'rich', 'Cuidamos de pessoas. Simplificamos processos. Impulsionamos conquistas.'),
+                        self::f('home.purpose.text', 'Texto do propósito', 'paragraphs', "Acreditamos que cada financiamento imobiliário representa mais do que uma operação financeira. É uma conquista importante para quem compra e uma oportunidade de crescimento para quem movimenta o mercado imobiliário.\n\nHá mais de 30 anos, combinamos experiência, atendimento próximo e processos estruturados para tornar essa jornada mais simples, transparente e eficiente.\n\nNosso compromisso é oferecer tranquilidade e orientação personalizada aos compradores, enquanto apoiamos corretores, imobiliárias e incorporadoras na condução de seus negócios com agilidade, segurança e responsabilidade.", ['help' => 'Deixe uma linha em branco entre os parágrafos. Vazio = volta a aparecer Missão, visão e valores.']),
+                        self::f('home.purpose.pillars', 'Pilares (abaixo do texto)', 'list', [
+                            ['icon' => 'cuidado', 'title' => 'Cuidado', 'text' => 'Pessoas em primeiro lugar'],
+                            ['icon' => 'simplicidade', 'title' => 'Simplicidade', 'text' => 'Menos obstáculos, mais clareza'],
+                            ['icon' => 'resultados', 'title' => 'Resultados', 'text' => 'Conquistas e negócios realizados'],
+                        ], [
+                            'item' => [
+                                self::f('icon', 'Ícone', 'icon', 'cuidado'),
+                                self::f('title', 'Título', 'text', ''),
+                                self::f('text', 'Frase', 'text', ''),
+                            ],
+                            'add_label' => 'Adicionar pilar', 'max' => 4,
+                        ]),
                     ],
                 ],
                 'mvv' => [
@@ -428,7 +442,7 @@ TXT;
                         self::f('layout.footer.tagline', 'Frase abaixo do nome (quando não há logo)', 'text', 'Assessoria Imobiliária'),
                         self::f('layout.footer.desc', 'Frase do rodapé', 'textarea', 'Experiência que conecta pessoas, negócios e conquistas.'),
                         self::f('layout.footer.nav_title', 'Título da coluna de links', 'text', 'Navegação'),
-                        self::f('layout.footer.nav_purpose', 'Link "O que nos orienta"', 'text', 'O que nos orienta', ['help' => 'Quando o propósito for publicado, este link passa a mostrar o título do propósito.']),
+                        self::f('layout.footer.nav_purpose', 'Link "O que nos orienta"', 'text', 'O que nos orienta', ['help' => 'Usado só quando o propósito está vazio. Com o propósito publicado, o link mostra a chamada pequena do propósito.']),
                         self::f('layout.footer.nav_contact', 'Link "Contato"', 'text', 'Contato'),
                         self::f('layout.footer.contact_title', 'Título da coluna de contato', 'text', 'Contato'),
                         self::f('layout.footer.legal_title', 'Título da coluna institucional', 'text', 'Institucional'),

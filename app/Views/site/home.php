@@ -188,6 +188,18 @@ $faq = array_values(array_filter(content_list('home.faq.items'), static fn (arra
             <h2 class="section__title" id="proposito-titulo"><?= ct_rich('home.purpose.title') ?></h2>
             <div class="purpose-statement__text"><?= ct_paragraphs('home.purpose.text') ?></div>
         </div>
+        <?php $pillars = array_values(array_filter(content_list('home.purpose.pillars'), static fn (array $p): bool => trim($p['title']) !== '')); ?>
+        <?php if ($pillars !== []): ?>
+            <ul class="pillars reveal" style="--cols: <?= count($pillars) ?>">
+                <?php foreach ($pillars as $p): ?>
+                    <li class="pillar">
+                        <span class="pillar__ico"><?= icon($p['icon'] !== '' ? $p['icon'] : 'cuidado', 26) ?></span>
+                        <strong><?= e($p['title']) ?></strong>
+                        <?php if (trim($p['text']) !== ''): ?><span><?= e($p['text']) ?></span><?php endif; ?>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+        <?php endif; ?>
     </div>
 </section>
 <?php else: ?>

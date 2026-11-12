@@ -278,6 +278,14 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .purpose-statement .eyebrow::before { display: none; }
 .purpose-statement__text p { font-family: 'Fraunces', Georgia, serif; font-size: clamp(1.2rem, 1rem + .9vw, 1.6rem); line-height: 1.5; color: var(--ink); margin: 0 0 1.1rem; }
 .purpose-statement__text p:last-child { margin-bottom: 0; }
+/* Título do propósito é a frase-manifesto; os parágrafos ficam em texto corrido. */
+.purpose-statement .section__title { font-size: clamp(1.6rem, 1.1rem + 1.8vw, 2.4rem); margin-bottom: 28px; }
+.purpose-statement__text p { font-family: inherit; font-size: 1.08rem; line-height: 1.75; color: var(--body); }
+.pillars { display: grid; grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr)); gap: 20px; max-width: 900px; margin: 52px auto 0; padding-top: 40px; border-top: 1px solid var(--line); }
+.pillar { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px; }
+.pillar__ico { display: inline-grid; place-items: center; width: 52px; height: 52px; border-radius: 50%; background: #fff; border: 1px solid var(--line); color: var(--gold-deep); margin-bottom: 8px; }
+.pillar strong { font-weight: 600; color: var(--ink); font-size: 1.05rem; }
+.pillar span:last-child:not(.pillar__ico) { color: var(--muted); font-size: .95rem; }
 .site-footer__office { margin-bottom: 14px; }
 .site-footer__office-label { display: block; font-size: 11px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--gold); margin-bottom: 4px; }
 .site-footer__office a { margin-bottom: 4px; }
@@ -464,6 +472,8 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
     .bank--square img { max-height: 40px; }
 
     .purpose { grid-template-columns: 1fr; gap: 16px; }
+    .pillars { grid-template-columns: 1fr; gap: 26px; margin-top: 36px; padding-top: 30px; }
+    .purpose-statement__text p { font-size: 1rem; }
     .purpose__card, .values { padding: 24px 22px; }
     .values { margin-top: 16px; }
     .purpose__quote { padding: 20px 22px; }

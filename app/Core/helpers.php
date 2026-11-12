@@ -273,6 +273,10 @@ if (!function_exists('icon')) {
             'whatsapp'      => '<path d="M3.5 20.5 5 16a8.5 8.5 0 1 1 3 3l-4.5 1.5Z"/><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5l1-1.5-2-1-1 .8a3.6 3.6 0 0 1-1.8-1.8l.8-1-1-2L9 9.5Z"/>',
             // Instagram
             'instagram'     => '<rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h0"/>',
+            // Simplicidade — dois blocos conectados
+            'simplicidade'  => '<rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="13" width="8" height="8" rx="2"/><path d="M11 7h3a3 3 0 0 1 3 3v3"/>',
+            // Resultados — seta de crescimento
+            'resultados'    => '<path d="m3 17 6-6 4 4 8-8"/><path d="M15 7h6v6"/>',
             // Missão — alvo
             'alvo'          => '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/>',
             // Visão — estrela/brilho
